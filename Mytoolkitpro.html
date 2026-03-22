@@ -838,31 +838,37 @@ let fbDB=null, fbAuth=null, fbUID=null, fbReady=false;
 let _fbRef=null, _fbOnValue=null, _fbSet=null, _fbGet=null;
 let _dataListening=false, _lastWrite=0, _pushTimer=null;
 
-// ── Boot Firebase ──
+// ── Boot Firebase — returns Promise that resolves when ready ──
 async function initFirebase(){
   showSyncStatus('syncing');
-  try{
-    const {initializeApp}                                = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
-    const {getAuth,signInAnonymously,onAuthStateChanged} = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
-    const {getDatabase,ref,set,get,onValue}              = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js');
+  return new Promise(async resolve=>{
+    try{
+      const {initializeApp}                                = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+      const {getAuth,signInAnonymously,onAuthStateChanged} = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+      const {getDatabase,ref,set,get,onValue}              = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js');
 
-    const app = initializeApp(FB_CONFIG);
-    fbAuth = getAuth(app);
-    fbDB   = getDatabase(app);
-    _fbRef = ref; _fbSet = set; _fbGet = get; _fbOnValue = onValue;
+      const app = initializeApp(FB_CONFIG);
+      fbAuth = getAuth(app);
+      fbDB   = getDatabase(app);
+      _fbRef = ref; _fbSet = set; _fbGet = get; _fbOnValue = onValue;
 
-    await new Promise(resolve=>{
+      // Wait for anonymous auth to complete
       const unsub = onAuthStateChanged(fbAuth, user=>{
-        if(user){ fbUID=user.uid; fbReady=true; unsub(); resolve(); }
+        if(user){
+          fbUID   = user.uid;
+          fbReady = true;
+          unsub();
+          showSyncStatus('online');
+          resolve(); // Firebase is ready
+        }
       });
-      signInAnonymously(fbAuth).catch(()=>{ unsub(); resolve(); });
-    });
-
-    showSyncStatus('online');
-  }catch(e){
-    showSyncStatus('offline');
-    console.warn('Firebase boot failed:',e.message);
-  }
+      await signInAnonymously(fbAuth);
+    }catch(e){
+      showSyncStatus('offline');
+      console.warn('Firebase boot failed:',e.message);
+      resolve(); // still resolve so app doesn't hang
+    }
+  });
 }
 
 // ── Write to Firebase FIRST, then update local cache ──
@@ -1015,57 +1021,69 @@ function startDataSync(phone){
   });
 }
 
-// ── Auth: push/pull credentials ──
+// ── Auth: push credentials to Firebase immediately (no debounce) ──
 async function pushAuthToFirebase(){
-  const auth = getLocalAuth();
-  if(!auth.users || Object.keys(auth.users).length===0) return;
-  // Remove data from credentials — store only phone+password
-  const slim = {};
-  Object.keys(auth.users).forEach(p=>{
-    slim[p] = { password: auth.users[p].password, createdAt: auth.users[p].createdAt||'' };
-  });
-  fbWrite(authPath(), slim);
+  if(!fbReady||!fbDB||!_fbRef||!_fbSet) return;
+  try{
+    const auth = getLocalAuth();
+    if(!auth.users || Object.keys(auth.users).length===0) return;
+    const slim = {};
+    Object.keys(auth.users).forEach(p=>{
+      slim[p] = {
+        password:  auth.users[p].password  || '',
+        createdAt: auth.users[p].createdAt || new Date().toISOString()
+      };
+    });
+    await _fbSet(_fbRef(fbDB, authPath()), slim);
+    console.log('✅ Auth pushed to Firebase:', Object.keys(slim));
+  }catch(e){ console.warn('pushAuth failed:',e.message); }
 }
 
 async function pullAuthFromFirebase(){
-  if(!fbReady||!fbDB) return;
+  if(!fbReady||!fbDB||!_fbRef||!_fbGet) return;
   try{
     const snap = await _fbGet(_fbRef(fbDB, authPath()));
     const remote = snap.val();
-    if(!remote) return;
+    if(!remote){ console.log('No remote auth found'); return; }
+    console.log('📥 Pulled auth from Firebase:', Object.keys(remote));
     const local = getLocalAuth();
-    // Merge — remote password wins (latest change)
-    const merged = { ...local };
-    if(!merged.users) merged.users={};
+    if(!local.users) local.users = {};
+    // Remote always wins — latest password from Firebase
     Object.keys(remote).forEach(phone=>{
-      if(!merged.users[phone]){
-        merged.users[phone] = { password: remote[phone].password, data:{}, createdAt: remote[phone].createdAt||'' };
+      if(!local.users[phone]){
+        local.users[phone] = { password: remote[phone].password, data:{}, createdAt: remote[phone].createdAt||'' };
       } else {
-        merged.users[phone].password = remote[phone].password; // remote password wins
+        local.users[phone].password  = remote[phone].password;
+        local.users[phone].createdAt = remote[phone].createdAt || local.users[phone].createdAt;
       }
     });
-    saveLocalAuth(merged);
-  }catch(e){ console.warn('Auth pull failed:',e.message); }
+    saveLocalAuth(local);
+    console.log('✅ Auth merged locally');
+  }catch(e){ console.warn('pullAuth failed:',e.message); }
 }
 
 function startAuthSync(){
-  if(!fbReady||!fbDB) return;
+  if(!fbReady||!fbDB||!_fbRef||!_fbOnValue) return;
   _fbOnValue(_fbRef(fbDB, authPath()), snap=>{
     const remote = snap.val();
     if(!remote) return;
     const local = getLocalAuth();
-    if(!local.users) return;
+    if(!local.users) local.users = {};
     let changed = false;
     Object.keys(remote).forEach(phone=>{
-      if(local.users[phone] && local.users[phone].password !== remote[phone].password){
-        local.users[phone].password = remote[phone].password;
+      const rPass = remote[phone].password;
+      if(!local.users[phone]){
+        local.users[phone] = { password: rPass, data:{}, createdAt: remote[phone].createdAt||'' };
         changed = true;
-      } else if(!local.users[phone]){
-        local.users[phone] = { password: remote[phone].password, data:{}, createdAt:'' };
+      } else if(local.users[phone].password !== rPass){
+        local.users[phone].password = rPass;
         changed = true;
       }
     });
-    if(changed){ saveLocalAuth(local); console.log('Auth updated from Firebase'); }
+    if(changed){
+      saveLocalAuth(local);
+      console.log('🔄 Auth updated from Firebase live');
+    }
   });
 }
 
@@ -1248,13 +1266,15 @@ function doLogin(){
     if(pass !== '0000' && !auth._firstTimeWarned){
       errEl.textContent = 'New user! Default password is 0000. Try again or use any password to register.';
       errEl.style.display='block';
-      auth._firstTimeWarned=true;saveAuth(auth);return;
+      auth._firstTimeWarned=true; saveLocalAuth(auth); return;
     }
-    auth.users[phone] = {password: pass, data: {}, createdAt: new Date().toISOString()};
+    auth.users[phone] = {password: pass, data:{}, createdAt: new Date().toISOString()};
     auth.currentPhone = phone;
     auth._firstTimeWarned = false;
-    saveAuth(auth);
+    saveLocalAuth(auth);
     localStorage.setItem(SK, JSON.stringify({}));
+    // Push new user credentials to Firebase immediately
+    pushAuthToFirebase();
     hideLoginScreen();
     alert('✅ Welcome! New account created for ' + phone);
     return;
@@ -1264,15 +1284,14 @@ function doLogin(){
   const user = auth.users[phone];
   if(user.password !== pass){
     errEl.textContent = '❌ Galat password. "Change Password" option use karein agar bhool gaye.';
-    errEl.style.display='block';return;
+    errEl.style.display='block'; return;
   }
   auth.currentPhone = phone;
   auth._firstTimeWarned = false;
-  saveAuth(auth);
-  // Save session so refresh doesn't ask for login again
-  
+  saveLocalAuth(auth);
   localStorage.setItem(SK, JSON.stringify(user.data || {}));
-  pushAuthToFirebase(); // sync credentials to all devices
+  // Push credentials to Firebase so other devices get latest
+  pushAuthToFirebase();
   hideLoginScreen();
 }
 
