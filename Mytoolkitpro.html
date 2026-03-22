@@ -163,8 +163,9 @@ body.dark .dot-item{color:#e8eaf6;border-bottom-color:rgba(255,255,255,.06)}
 .dot-item:hover{background:var(--surface2)}
 .dot-item.active-tool{color:var(--accent);background:rgba(37,99,235,.08)}
 body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
-/* SWIPE AREA */
-#swipeArea{position:fixed;inset:0;pointer-events:none;z-index:50}
+/* LOGIN GATE — hide app until logged in */
+#appContent{display:none}
+#appContent.unlocked{display:block}
 /* SORT/FILTER BUTTONS */
 .sort-btn{padding:5px 10px;border-radius:18px;border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;font-size:11px;font-weight:600;transition:all .2s;white-space:nowrap;font-family:'Inter',sans-serif}
 .sort-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -182,7 +183,7 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
 <div id="swipeArea"></div>
 
 <!-- ═══ LOGIN SCREEN ═══ -->
-<div id="loginScreen" style="display:none;position:fixed;inset:0;background:linear-gradient(135deg,#1e40af,#2563eb);z-index:9999;overflow-y:auto">
+<div id="loginScreen" style="display:block;position:fixed;inset:0;background:linear-gradient(135deg,#1e40af,#2563eb);z-index:9999;overflow-y:auto">
   <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px">
 
     <!-- Logo -->
@@ -286,6 +287,9 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
     <div style="color:rgba(255,255,255,0.5);font-size:11px;margin-top:20px;text-align:center">Default: Phone=your number &nbsp;|&nbsp; Password=0000</div>
   </div>
 </div>
+
+<!-- ═══ APP CONTENT — hidden until login ═══ -->
+<div id="appContent">
 
 <!-- ═══ APP HEADER ═══ -->
 <header id="appHeader" style="background:linear-gradient(135deg,#1e40af,#2563eb);padding:11px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 3px 14px rgba(0,0,0,.35)">
@@ -809,8 +813,9 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
   </div>
 </div>
 
+</div><!-- end #appContent -->
+
 <script>
-// ═══════════ PDF.JS ═══════════
 if(typeof pdfjsLib!=='undefined') pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 // ═══════════ PWA ═══════════
@@ -818,265 +823,377 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js').catch(()=>{});
 }
 
-// ═══════════ FIREBASE REAL-TIME SYNC ═══════════
-// ✅ Config directly hardcoded — bar bar dalne ki zarurat nahi!
+// ═══════════ FIREBASE — PRIMARY STORAGE ENGINE ═══════════
+// ALL data lives in Firebase. localStorage = offline cache only.
+
 const FB_CONFIG = {
-  apiKey:      "AIzaSyDYqFDuBd3I9tvb1SMlCBCuDMUfVXxc8PU",
-  authDomain:  "mytoolkit-e6525.firebaseapp.com",
-  databaseURL: "https://mytoolkit-e6525-default-rtdb.firebaseio.com",
-  projectId:   "mytoolkit-e6525",
+  apiKey:        "AIzaSyDYqFDuBd3I9tvb1SMlCBCuDMUfVXxc8PU",
+  authDomain:    "mytoolkit-e6525.firebaseapp.com",
+  databaseURL:   "https://mytoolkit-e6525-default-rtdb.firebaseio.com",
+  projectId:     "mytoolkit-e6525",
   storageBucket: "mytoolkit-e6525.appspot.com",
-  messagingSenderId: "",
-  appId: ""
 };
 
-// Load user-saved Firebase config from localStorage (overrides hardcoded if set)
-(function(){
-  try{
-    const saved=JSON.parse(localStorage.getItem('MyToolkit_FBConfig')||'null');
-    if(saved&&saved.apiKey&&saved.apiKey!=='YOUR_API_KEY'){
-      Object.assign(FB_CONFIG,saved);
-    }
-  }catch{}
-})();
+let fbDB=null, fbAuth=null, fbUID=null, fbReady=false;
+let _fbRef=null, _fbOnValue=null, _fbSet=null, _fbGet=null;
+let _dataListening=false, _lastWrite=0, _pushTimer=null;
 
-let fbDB=null,fbAuth=null,fbUID=null,fbSyncEnabled=false;
-
+// ── Boot Firebase ──
 async function initFirebase(){
-  showSyncStatus('syncing','Connecting...');
+  showSyncStatus('syncing');
   try{
-    const {initializeApp}       = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+    const {initializeApp}                                = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
     const {getAuth,signInAnonymously,onAuthStateChanged} = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
-    const {getDatabase,ref,set,onValue} = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js');
+    const {getDatabase,ref,set,get,onValue}              = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js');
 
     const app = initializeApp(FB_CONFIG);
-    fbAuth     = getAuth(app);
-    fbDB       = getDatabase(app);
+    fbAuth = getAuth(app);
+    fbDB   = getDatabase(app);
+    _fbRef = ref; _fbSet = set; _fbGet = get; _fbOnValue = onValue;
 
-    onAuthStateChanged(fbAuth, user=>{
-      if(user){
-        fbUID=user.uid;fbSyncEnabled=true;
-        showSyncStatus('online','🟢 Synced');
-        // Listen for remote changes
-        const auth2=getAuth2();
-        const phone=auth2.currentPhone||fbUID;
-        onValue(ref(fbDB,'users/'+phone+'/data'),snapshot=>{
-          const remote=snapshot.val();
-          if(!remote)return;
-          const local=gd();
-          // Merge remote into local (remote wins for new keys)
-          const merged={...local,...remote};
-          localStorage.setItem(SK,JSON.stringify(merged));
-          renderProfiles();renderWAList();
-          showSyncStatus('online','🟢 '+new Date().toLocaleTimeString());
-        });
-      }
+    await new Promise(resolve=>{
+      const unsub = onAuthStateChanged(fbAuth, user=>{
+        if(user){ fbUID=user.uid; fbReady=true; unsub(); resolve(); }
+      });
+      signInAnonymously(fbAuth).catch(()=>{ unsub(); resolve(); });
     });
-    await signInAnonymously(fbAuth);
+
+    showSyncStatus('online');
   }catch(e){
-    showSyncStatus('offline','⚪ Firebase unavailable');
-    console.warn('Firebase:',e.message);
+    showSyncStatus('offline');
+    console.warn('Firebase boot failed:',e.message);
   }
 }
 
-function showSyncStatus(state,msg){
-  const el=document.getElementById('sync_status');
-  if(!el) return;
-  // Show only short emoji in header — full msg in tooltip to prevent overlap
-  if(state==='online'){
-    el.textContent='🟢';
-    el.style.color='#86efac';
-    el.title='Synced — '+msg;
-  } else if(state==='syncing'){
-    el.textContent='🔄';
-    el.style.color='#fde68a';
-    el.title=msg;
-  } else {
-    el.textContent='⚪';
-    el.style.color='rgba(255,255,255,.7)';
-    el.title='Tap to setup Firebase — '+msg;
-  }
+// ── Write to Firebase FIRST, then update local cache ──
+function fbWrite(path, data){
+  // Always update local cache immediately (for UI responsiveness)
+  _localCacheSet(path, data);
+
+  // Push to Firebase
+  clearTimeout(_pushTimer);
+  _pushTimer = setTimeout(async()=>{
+    if(!fbReady || !fbDB) return;
+    try{
+      _lastWrite = Date.now();
+      await _fbSet(_fbRef(fbDB, path), data);
+      showSyncStatus('online');
+    }catch(e){
+      showSyncStatus('offline');
+      console.warn('Write failed, cached locally:',e.message);
+    }
+  }, 300); // 300ms debounce — near real-time
 }
 
-function pushToFirebase(){
-  if(!fbSyncEnabled||!fbDB)return;
-  const auth2=getAuth2();
-  const phone=auth2.currentPhone||fbUID;
-  if(!phone)return;
-  import('https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js').then(({ref,set})=>{
-    set(ref(fbDB,'users/'+phone+'/data'),gd())
-      .then(()=>showSyncStatus('online','🟢 '+new Date().toLocaleTimeString()))
-      .catch(()=>showSyncStatus('offline','⚠️ Sync failed'));
+// ── Read from Firebase, fallback to local cache ──
+async function fbRead(path){
+  if(fbReady && fbDB){
+    try{
+      const snap = await _fbGet(_fbRef(fbDB, path));
+      const val = snap.val();
+      if(val !== null){
+        _localCacheSet(path, val); // update cache
+        return val;
+      }
+    }catch(e){ console.warn('Read failed, using cache:',e.message); }
+  }
+  return _localCacheGet(path);
+}
+
+// ── Real-time listener for a path ──
+function fbListen(path, callback){
+  if(!fbReady || !fbDB || !_fbOnValue) return;
+  _fbOnValue(_fbRef(fbDB, path), snapshot=>{
+    const val = snapshot.val();
+    if(val === null) return;
+    // Skip echo from our own recent write
+    if(Date.now() - _lastWrite < 1000) return;
+    _localCacheSet(path, val);
+    callback(val);
   });
 }
 
-// ═══════════ LOCAL STORAGE (always works, Firebase is bonus) ═══════════
-const SK='MyToolkit_Data';
-const gd=()=>{try{return JSON.parse(localStorage.getItem(SK))||{}}catch{return{}}};
-const sd=d=>{
-  localStorage.setItem(SK,JSON.stringify(d));
-  // Save to auth store for multi-user isolation
-  saveUserDataToAuth();
-  // Push to Firebase on every save (debounced)
-  clearTimeout(sd._t);
-  sd._t=setTimeout(pushToFirebase, 1500);
+// ── Local cache helpers (path-based) ──
+const _CACHE_KEY = 'MTK_Cache';
+function _localCacheGet(path){
+  try{
+    const all = JSON.parse(localStorage.getItem(_CACHE_KEY)||'{}');
+    return path.split('/').reduce((o,k)=>o&&o[k], all) ?? null;
+  }catch{ return null; }
+}
+function _localCacheSet(path, data){
+  try{
+    const all = JSON.parse(localStorage.getItem(_CACHE_KEY)||'{}');
+    const keys = path.split('/');
+    let obj = all;
+    for(let i=0;i<keys.length-1;i++){
+      if(!obj[keys[i]] || typeof obj[keys[i]]!=='object') obj[keys[i]]={};
+      obj = obj[keys[i]];
+    }
+    obj[keys[keys.length-1]] = data;
+    localStorage.setItem(_CACHE_KEY, JSON.stringify(all));
+  }catch{}
+}
+function _localCacheClear(){
+  localStorage.removeItem(_CACHE_KEY);
+  localStorage.removeItem('MyToolkit_Data');
+  localStorage.removeItem('MyToolkit_Auth');
+  localStorage.removeItem('MyToolkit_Session');
+}
+
+// ── Data path for a user ──
+const userPath = phone => 'users/'+phone+'/data';
+const authPath = ()    => 'app_auth/users';
+
+function showSyncStatus(state){
+  const el=document.getElementById('sync_status');
+  if(!el) return;
+  if(state==='online'){ el.textContent='🟢'; el.style.color='#86efac'; el.title='Live — Firebase synced'; }
+  else if(state==='syncing'){ el.textContent='🔄'; el.style.color='#fde68a'; el.title='Connecting...'; }
+  else { el.textContent='🔴'; el.style.color='#fca5a5'; el.title='Offline — using cache'; }
+}
+
+// ═══════════ DATA API — all reads/writes go through Firebase ═══════════
+const SK = 'MyToolkit_Data'; // legacy key — kept for compatibility
+
+// gd() — get all app data (from cache, Firebase is source of truth)
+const gd = ()=>{
+  try{ return JSON.parse(localStorage.getItem(SK))||{}; }catch{ return {}; }
 };
-const gs=k=>gd()[k]||[];
-const ss=(k,v)=>{const d=gd();d[k]=v;sd(d)};
-const exportAllData=()=>{const b=new Blob([JSON.stringify(gd(),null,2)],{type:'application/json'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='MyToolkit_Data.json';a.click();URL.revokeObjectURL(u)};
-const importAllData=e=>{
+
+// sd() — save all app data → Firebase PRIMARY, localStorage cache
+const sd = d=>{
+  localStorage.setItem(SK, JSON.stringify(d)); // cache
+  saveUserDataToAuth();
+  // Push to Firebase
+  const phone = getLocalAuth().currentPhone;
+  if(phone && fbReady) fbWrite(userPath(phone), d);
+};
+
+const gs = k => gd()[k] || [];
+const ss = (k,v) => { const d=gd(); d[k]=v; sd(d); };
+
+const exportAllData = ()=>{
+  const b=new Blob([JSON.stringify(gd(),null,2)],{type:'application/json'});
+  const u=URL.createObjectURL(b);const a=document.createElement('a');
+  a.href=u;a.download='MyToolkit_Data.json';a.click();URL.revokeObjectURL(u);
+};
+const importAllData = e=>{
   const f=e.target.files[0];if(!f)return;
   const r=new FileReader();
   r.onload=ev=>{
     try{
       const d=JSON.parse(ev.target.result);
-      // Save to main localStorage
       localStorage.setItem(SK,JSON.stringify(d));
-      // Also save to auth store under current user
-      const auth=getAuth2();
-      if(auth.currentPhone && auth.users && auth.users[auth.currentPhone]){
-        auth.users[auth.currentPhone].data=d;
-        saveAuth(auth);
-      }
-      // Push to Firebase
-      pushToFirebase();
-      alert('✅ Data imported successfully!\n'+
-        (d.loanProfiles?d.loanProfiles.length+' loan profiles\n':'')+
-        (d.signatures?d.signatures.length+' signatures\n':'')+
-        'Refreshing...');
-      setTimeout(()=>location.reload(), 600);
-    }catch{alert('❌ Invalid file format. Please use a valid MyToolkit export file.')}
+      const phone=getLocalAuth().currentPhone;
+      if(phone && fbReady) fbWrite(userPath(phone), d);
+      alert('✅ Data imported!\nRefreshing...');
+      setTimeout(()=>location.reload(),600);
+    }catch{ alert('❌ Invalid file format.'); }
   };
   r.readAsText(f);
 };
+
+// ── Start live data listener for logged-in user ──
+function startDataSync(phone){
+  if(_dataListening) return;
+  _dataListening = true;
+
+  // Load from Firebase immediately
+  fbRead(userPath(phone)).then(data=>{
+    if(!data) return;
+    localStorage.setItem(SK, JSON.stringify(data));
+    renderProfiles(); renderSigs(); renderWAList(); renderLoanOverview();
+  });
+
+  // Real-time listener — any change on any device → update UI
+  fbListen(userPath(phone), data=>{
+    if(!data) return;
+    localStorage.setItem(SK, JSON.stringify(data));
+    renderProfiles(); renderSigs(); renderWAList(); renderLoanOverview();
+    showSyncStatus('online');
+  });
+}
+
+// ── Auth: push/pull credentials ──
+async function pushAuthToFirebase(){
+  const auth = getLocalAuth();
+  if(!auth.users || Object.keys(auth.users).length===0) return;
+  // Remove data from credentials — store only phone+password
+  const slim = {};
+  Object.keys(auth.users).forEach(p=>{
+    slim[p] = { password: auth.users[p].password, createdAt: auth.users[p].createdAt||'' };
+  });
+  fbWrite(authPath(), slim);
+}
+
+async function pullAuthFromFirebase(){
+  if(!fbReady||!fbDB) return;
+  try{
+    const snap = await _fbGet(_fbRef(fbDB, authPath()));
+    const remote = snap.val();
+    if(!remote) return;
+    const local = getLocalAuth();
+    // Merge — remote password wins (latest change)
+    const merged = { ...local };
+    if(!merged.users) merged.users={};
+    Object.keys(remote).forEach(phone=>{
+      if(!merged.users[phone]){
+        merged.users[phone] = { password: remote[phone].password, data:{}, createdAt: remote[phone].createdAt||'' };
+      } else {
+        merged.users[phone].password = remote[phone].password; // remote password wins
+      }
+    });
+    saveLocalAuth(merged);
+  }catch(e){ console.warn('Auth pull failed:',e.message); }
+}
+
+function startAuthSync(){
+  if(!fbReady||!fbDB) return;
+  _fbOnValue(_fbRef(fbDB, authPath()), snap=>{
+    const remote = snap.val();
+    if(!remote) return;
+    const local = getLocalAuth();
+    if(!local.users) return;
+    let changed = false;
+    Object.keys(remote).forEach(phone=>{
+      if(local.users[phone] && local.users[phone].password !== remote[phone].password){
+        local.users[phone].password = remote[phone].password;
+        changed = true;
+      } else if(!local.users[phone]){
+        local.users[phone] = { password: remote[phone].password, data:{}, createdAt:'' };
+        changed = true;
+      }
+    });
+    if(changed){ saveLocalAuth(local); console.log('Auth updated from Firebase'); }
+  });
+}
 
 // ═══════════ DARK MODE ═══════════
 function toggleDark(){
   document.body.classList.toggle('dark');
   ss('darkMode',document.body.classList.contains('dark'));
-  // Header stays blue always — no override needed
 }
 if(gd().darkMode===true) document.body.classList.add('dark');
 
 // ═══════════ LOGIN SYSTEM ═══════════
-const AUTH_KEY = 'MyToolkit_Auth';
-const getAuth2 = () => { try{return JSON.parse(localStorage.getItem(AUTH_KEY))||{}}catch{return{}} };
-const saveAuth = d => localStorage.setItem(AUTH_KEY, JSON.stringify(d));
+// Auth credentials stored locally + synced to Firebase
+// Session (which phone is logged in on THIS device) stored locally only
+const AUTH_KEY    = 'MyToolkit_Auth';
+const SESSION_KEY = 'MyToolkit_Session';
+const getLocalAuth  = ()=>{ try{ return JSON.parse(localStorage.getItem(AUTH_KEY))||{}; }catch{ return {}; } };
+const saveLocalAuth = d=>localStorage.setItem(AUTH_KEY, JSON.stringify(d));
+const getAuth2      = getLocalAuth; // alias for legacy code
+const saveAuth      = saveLocalAuth;
+const getSession    = ()=>{ try{ return JSON.parse(localStorage.getItem(SESSION_KEY))||{}; }catch{ return {}; } };
+const saveSession   = d=>localStorage.setItem(SESSION_KEY, JSON.stringify(d));
 
-function initLogin(){
-  const auth = getAuth2();
+async function initLogin(){
+  // 1. Boot Firebase
+  await initFirebase();
 
-  // ── MIGRATION: Check if old data exists without login system ──
-  const oldData = gd(); // reads current localStorage MyToolkit_Data
+  // 2. Pull latest credentials from Firebase
+  await pullAuthFromFirebase();
+
+  // 3. Start real-time credential sync
+  startAuthSync();
+
+  const auth = getLocalAuth();
+
+  // ── Migration: old data without login ──
+  const oldData = gd();
   const hasOldData = oldData && (
-    (oldData.loanProfiles && oldData.loanProfiles.length > 0) ||
-    (oldData.signatures   && oldData.signatures.length   > 0) ||
-    (oldData.waScheduled  && oldData.waScheduled.length  > 0)
+    (oldData.loanProfiles&&oldData.loanProfiles.length>0)||
+    (oldData.signatures&&oldData.signatures.length>0)||
+    (oldData.waScheduled&&oldData.waScheduled.length>0)
   );
-  const alreadyMigrated = auth._migrated === true;
-
-  if(hasOldData && !alreadyMigrated && (!auth.users || Object.keys(auth.users).length === 0)){
-    // Old data found, no login system yet → auto-migrate
-    // Show migration prompt
-    document.getElementById('loginScreen').style.display = 'block';
-    document.getElementById('loginCard').innerHTML = `
-      <div style="text-align:center;margin-bottom:16px">
-        <div style="font-size:36px">📦</div>
-        <div style="font-family:'Baloo 2',sans-serif;font-size:18px;font-weight:800;color:#1e2240;margin-top:6px">Existing Data Found!</div>
-        <div style="font-size:12px;color:#5a6490;margin-top:6px;line-height:1.6">
-          We found your existing data:<br>
-          <strong style="color:#2563eb">${(oldData.loanProfiles||[]).length} Loan Profiles</strong> &nbsp;|&nbsp;
-          <strong style="color:#16a34a">${(oldData.signatures||[]).length} Signatures</strong> &nbsp;|&nbsp;
-          <strong style="color:#ea580c">${(oldData.waScheduled||[]).length} WA Messages</strong>
-        </div>
-      </div>
-      <div style="background:#eff6ff;border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;color:#1e40af;line-height:1.6">
-        ✅ Enter your phone number & set a password to <strong>keep all your data</strong> and continue.
-      </div>
-      <label style="font-size:12px;color:#5a6490;margin-bottom:4px;display:block;font-weight:500">📱 Your Phone Number</label>
-      <input id="migPhone" type="tel" placeholder="Enter your phone number" style="width:100%;background:#eef1fa;border:1.5px solid rgba(37,99,235,.2);border-radius:10px;padding:11px 14px;color:#1e2240;font-size:14px;margin-bottom:10px;outline:none;font-family:'Inter',sans-serif">
-      <label style="font-size:12px;color:#5a6490;margin-bottom:4px;display:block;font-weight:500">🔒 Set Password (default: 0000)</label>
-      <div style="position:relative;margin-bottom:14px">
-        <input id="migPass" type="password" placeholder="Set your password (default: 0000)" style="width:100%;background:#eef1fa;border:1.5px solid rgba(37,99,235,.2);border-radius:10px;padding:11px 40px 11px 14px;color:#1e2240;font-size:14px;outline:none;font-family:'Inter',sans-serif">
-        <button onclick="togglePassVis('migPass')" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px">👁️</button>
-      </div>
-      <div id="migError" style="color:#dc2626;font-size:11px;margin-bottom:8px;display:none"></div>
-      <button onclick="doMigrate()" style="width:100%;background:linear-gradient(135deg,#1e40af,#2563eb);color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif">
-        ✅ Save My Data &amp; Continue
-      </button>
-    `;
+  if(hasOldData && !auth._migrated && (!auth.users||Object.keys(auth.users).length===0)){
+    document.getElementById('loginScreen').style.display='block';
+    buildMigrationUI(oldData);
     return;
   }
 
-  // Normal flow
-  if(!auth.users || Object.keys(auth.users).length === 0){
-    document.getElementById('loginScreen').style.display = 'block';
-    return;
-  }
-  if(auth.currentPhone){
-    hideLoginScreen();
-    return;
-  }
-  document.getElementById('loginScreen').style.display = 'block';
+  // ── ALWAYS show login on every page load / refresh ──
+  document.getElementById('loginScreen').style.display='block';
+}
+
+function buildMigrationUI(oldData){
+  const card = document.getElementById('panel_login');
+  if(!card) return;
+  card.innerHTML = `
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:36px">📦</div>
+      <div style="font-family:'Baloo 2',sans-serif;font-size:18px;font-weight:800;color:#1e2240;margin-top:6px">Existing Data Found!</div>
+      <div style="font-size:12px;color:#5a6490;margin-top:6px;line-height:1.6">
+        <strong style="color:#2563eb">${(oldData.loanProfiles||[]).length} Loan Profiles</strong> &nbsp;|&nbsp;
+        <strong style="color:#16a34a">${(oldData.signatures||[]).length} Signatures</strong>
+      </div>
+    </div>
+    <div style="background:#eff6ff;border-radius:10px;padding:10px;margin-bottom:14px;font-size:12px;color:#1e40af;line-height:1.6">
+      ✅ Phone number aur password set karo — data save rahega.
+    </div>
+    <label style="font-size:12px;color:#5a6490;margin-bottom:4px;display:block;font-weight:500">📱 Your Phone Number</label>
+    <input id="migPhone" type="tel" placeholder="Enter your phone number" style="width:100%;background:#eef1fa;border:1.5px solid rgba(37,99,235,.2);border-radius:10px;padding:11px 14px;color:#1e2240;font-size:14px;margin-bottom:10px;outline:none;font-family:'Inter',sans-serif">
+    <label style="font-size:12px;color:#5a6490;margin-bottom:4px;display:block;font-weight:500">🔒 Password (default: 0000)</label>
+    <input id="migPass" type="password" placeholder="Set password (default: 0000)" style="width:100%;background:#eef1fa;border:1.5px solid rgba(37,99,235,.2);border-radius:10px;padding:11px 14px;color:#1e2240;font-size:14px;margin-bottom:14px;outline:none;font-family:'Inter',sans-serif">
+    <div id="migError" style="color:#dc2626;font-size:11px;margin-bottom:8px;display:none"></div>
+    <button onclick="doMigrate()" style="width:100%;background:linear-gradient(135deg,#1e40af,#2563eb);color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif">
+      ✅ Save &amp; Continue
+    </button>`;
 }
 
 function doMigrate(){
-  const phone = document.getElementById('migPhone').value.trim();
-  const pass  = (document.getElementById('migPass').value || '0000');
-  const errEl = document.getElementById('migError');
-  if(!phone){ errEl.textContent='Phone number zaroori hai'; errEl.style.display='block'; return; }
-
-  // Save old data under this phone number
+  const phone = (document.getElementById('migPhone')||{}).value?.trim();
+  const pass  =  document.getElementById('migPass')?.value || '0000';
+  const errEl =  document.getElementById('migError');
+  if(!phone){ if(errEl){errEl.textContent='Phone number daalo';errEl.style.display='block';} return; }
   const oldData = gd();
   const auth = getAuth2();
-  if(!auth.users) auth.users = {};
-  auth.users[phone] = {
-    password: pass,
-    data: oldData,
-    createdAt: new Date().toISOString(),
-    migratedAt: new Date().toISOString()
-  };
-  auth.currentPhone = phone;
-  auth._migrated = true;
+  if(!auth.users) auth.users={};
+  auth.users[phone]={password:pass,data:oldData,createdAt:new Date().toISOString()};
+  auth.currentPhone=phone; auth._migrated=true;
   saveAuth(auth);
-
-  // Keep same data in localStorage
+  
+  pushAuthToFirebase();
   hideLoginScreen();
-  alert(`✅ Data successfully migrated!\nPhone: ${phone}\nAll your ${(oldData.loanProfiles||[]).length} loan profiles and other data are saved.`);
 }
 
 function hideLoginScreen(){
-  document.getElementById('loginScreen').style.display = 'none';
-  // Load correct user's data from auth store
-  const auth = getAuth2();
+  // Hide login, show app
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('appContent').classList.add('unlocked');
+
+  const auth  = getLocalAuth();
   const phone = auth.currentPhone;
+
+  // Load cached data first for instant UI
   if(phone && auth.users && auth.users[phone]){
-    const userData = auth.users[phone].data || {};
-    // Restore ALL user data to localStorage
-    localStorage.setItem(SK, JSON.stringify(userData));
+    localStorage.setItem(SK, JSON.stringify(auth.users[phone].data||{}));
   }
-  // Restore dark mode preference
+
   if(gd().darkMode===true) document.body.classList.add('dark');
   else document.body.classList.remove('dark');
-  // Refresh ALL UI sections completely
-  renderProfiles();
-  renderSigs();
-  renderWAList();
-  renderLoanOverview();
-  initCash();
-  buildA2WUI();
-  convA2W();
-  setCL('low');
-  // Re-init nav tabs order from saved preference
-  const savedTabs = gs('navTabs');
-  if(savedTabs && savedTabs.length === DEFAULT_TABS.length &&
-     DEFAULT_TABS.every(d=>savedTabs.some(s=>s.id===d.id))){
+  renderProfiles(); renderSigs(); renderWAList(); renderLoanOverview();
+  initCash(); buildA2WUI(); convA2W(); setCL('low');
+  const savedTabs=gs('navTabs');
+  if(savedTabs&&savedTabs.length===DEFAULT_TABS.length&&DEFAULT_TABS.every(d=>savedTabs.some(s=>s.id===d.id))){
     tabs.length=0; savedTabs.forEach(t=>tabs.push(t));
   }
-  renderNav();
-  showSection('sec_'+tabs[0].id);
-  // Start auto-logout timer
+  renderNav(); showSection('sec_'+tabs[0].id);
   resetAutoLogout();
+  // ── Start Firebase data sync — primary source ──
+  if(phone) startDataSync(phone);
+}
+
+function lockScreen(){
+  // Show login, hide app — used by logout and auto-logout
+  document.getElementById('appContent').classList.remove('unlocked');
+  document.getElementById('loginScreen').style.display='block';
+  // Clear fields
+  const lp=document.getElementById('loginPhone'); if(lp) lp.value='';
+  const lpass=document.getElementById('loginPass'); if(lpass){lpass.value='';lpass.style.borderColor='';lpass.style.background='';}
+  document.getElementById('loginError').style.display='none';
+  showPanel('panel_login');
 }
 
 function loginPhoneChanged(){
@@ -1104,12 +1221,14 @@ function tryAutoLogin(){
     passEl.style.borderColor = '#16a34a';
     passEl.style.background  = 'rgba(22,163,74,0.06)';
   }
-  // Small delay so user sees the green flash
   setTimeout(()=>{
     auth.currentPhone = phone;
     auth._firstTimeWarned = false;
     saveAuth(auth);
+    // Save persistent session
+    
     localStorage.setItem(SK, JSON.stringify(user.data || {}));
+    pushAuthToFirebase();
     hideLoginScreen();
   }, 300);
 }
@@ -1150,18 +1269,24 @@ function doLogin(){
   auth.currentPhone = phone;
   auth._firstTimeWarned = false;
   saveAuth(auth);
+  // Save session so refresh doesn't ask for login again
+  
   localStorage.setItem(SK, JSON.stringify(user.data || {}));
+  pushAuthToFirebase(); // sync credentials to all devices
   hideLoginScreen();
 }
 
-// Save current user data back to auth store on every sd() call
+// Save current user data — Firebase is PRIMARY
 function saveUserDataToAuth(){
-  const auth = getAuth2();
-  if(!auth.currentPhone) return;
-  if(!auth.users) auth.users = {};
-  if(!auth.users[auth.currentPhone]) auth.users[auth.currentPhone]={password:'0000',data:{}};
-  auth.users[auth.currentPhone].data = gd();
-  saveAuth(auth);
+  const phone = getLocalAuth().currentPhone;
+  if(!phone) return;
+  const auth = getLocalAuth();
+  if(!auth.users) auth.users={};
+  if(!auth.users[phone]) auth.users[phone]={password:'0000',data:{}};
+  auth.users[phone].data = gd();
+  saveLocalAuth(auth);
+  // Write to Firebase (primary storage)
+  if(fbReady) fbWrite(userPath(phone), gd());
 }
 
 function showForgotPass(){
@@ -1219,6 +1344,10 @@ function doChangePassword(){
   // All good — update password
   auth.users[oldPhone].password = newPass;
   saveAuth(auth);
+  // Update session with new password
+  
+  // Push new credentials to Firebase so all devices get updated password
+  pushAuthToFirebase();
 
   // Show success
   okEl.textContent='✅ Password successfully change ho gaya! Ab naye password se login karein.';
@@ -1256,8 +1385,9 @@ function logoutUser(){
     auth.users[auth.currentPhone].data = gd();
   }
   auth.currentPhone = null;
-  saveAuth(auth);
-  location.reload();
+  saveLocalAuth(auth);
+  _dataListening = false; // reset listener flag
+  lockScreen();
 }
 
 // ═══════════ NAV TABS ═══════════
@@ -2165,22 +2295,21 @@ let autoLogoutTimer=null;
 const AUTO_LOGOUT_MS=10*60*1000; // 10 minutes
 function resetAutoLogout(){
   clearTimeout(autoLogoutTimer);
-  const auth=getAuth2();
-  if(!auth.currentPhone)return; // not logged in, skip
+  const auth=getLocalAuth();
+  if(!auth.currentPhone)return;
   autoLogoutTimer=setTimeout(()=>{
-    const auth2=getAuth2();
+    const auth2=getLocalAuth();
     if(!auth2.currentPhone)return;
-    // Save data before auto-logout
     if(auth2.users&&auth2.users[auth2.currentPhone]){
       auth2.users[auth2.currentPhone].data=gd();
     }
     auth2.currentPhone=null;
-    saveAuth(auth2);
-    alert('⏱️ 10 minute inactivity — auto logout ho gaya. Please login karein.');
-    location.reload();
+    saveLocalAuth(auth2);
+    _dataListening=false;
+    lockScreen();
+    alert('⏱️ 10 minute inactivity — auto logout. Please login karein.');
   },AUTO_LOGOUT_MS);
 }
-// Track any user activity
 ['click','touchstart','keydown','scroll','mousemove'].forEach(ev=>{
   document.addEventListener(ev,resetAutoLogout,{passive:true});
 });
@@ -2798,7 +2927,7 @@ function saveFirebaseConfig(){
   closeM('firebaseSetupModal');
   showSyncStatus('offline','🔄 Connecting...');
   initFirebase().then(()=>{
-    if(fbSyncEnabled)alert('✅ Firebase connected! Real-time sync shuru ho gaya.');
+    if(fbReady)alert('✅ Firebase connected! Real-time sync shuru ho gaya.');
     else alert('⚠️ Config save hua lekin connection fail hua. Config check karein aur refresh karein.');
   });
 }
@@ -2807,9 +2936,12 @@ function saveFirebaseConfig(){
 renderNav();showSection('sec_'+tabs[0].id);setEmiSolve('emi');
 renderProfiles();renderSigs();renderWAList();startWAScheduler();initCash();buildA2WUI();convA2W();setCL('low');setPPMode('tenure');
 const nw=new Date();nw.setMinutes(nw.getMinutes()+30);document.getElementById('wa_time').value=nw.toISOString().slice(0,16);
-// Start Firebase sync
-initFirebase();
-// Show login screen
+// ── Clear any leftover session on every page load — always ask login ──
+(()=>{
+  localStorage.removeItem('MyToolkit_Session');
+  const a=getLocalAuth(); a.currentPhone=null; saveLocalAuth(a);
+})();
+// initLogin handles Firebase init + login screen
 initLogin();
 </script>
 </body>
