@@ -406,10 +406,13 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
     </div>
   </div>
 
-  <!-- Summary grid -->
+  <!-- Summary grid — Active loans only -->
+  <div style="font-size:10px;color:var(--text2);margin-bottom:4px;font-weight:600;display:flex;align-items:center;gap:6px">
+    📊 Summary (Active Loans Only) &nbsp;<span id="lo_active_badge" style="background:rgba(37,99,235,.1);color:var(--accent);border-radius:9px;padding:1px 8px;font-size:10px;font-weight:700"></span>
+  </div>
   <div class="lo-grid" id="lo_summary_grid">
     <div class="lo-cell"><div class="lo-label">Loan Amount</div><div class="lo-val" id="lo_total_amt">—</div></div>
-    <div class="lo-cell"><div class="lo-label">EMI</div><div class="lo-val" id="lo_total_emi">—</div></div>
+    <div class="lo-cell"><div class="lo-label">Monthly EMI</div><div class="lo-val" id="lo_total_emi">—</div></div>
     <div class="lo-cell"><div class="lo-label">Amount Paid</div><div class="lo-val" id="lo_total_paid">—</div></div>
     <div class="lo-cell"><div class="lo-label">Outstanding</div><div class="lo-val grn" id="lo_total_out">—</div></div>
   </div>
@@ -425,31 +428,91 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
 
 <!-- ═══ SIGNATURE ═══ -->
 <section class="section" id="sec_signature">
-<div class="card">
-  <div class="card-title">✍️ Signature Pad</div>
-  <div class="sig-tb">
-    <div class="cdot active" style="background:#000;border-color:#888!important" onclick="setPenColor('#000000',this)"></div>
-    <div class="cdot" style="background:#fff;border:1px solid #ccc" onclick="setPenColor('#ffffff',this)"></div>
-    <div class="cdot" style="background:#2563eb" onclick="setPenColor('#2563eb',this)"></div>
-    <div class="cdot" style="background:#dc2626" onclick="setPenColor('#dc2626',this)"></div>
-    <div class="cdot" style="background:#16a34a" onclick="setPenColor('#16a34a',this)"></div>
-    <div class="cdot" style="background:#ea580c" onclick="setPenColor('#ea580c',this)"></div>
-    <button class="sz-btn active" onclick="setPenSize(1.5,this)">S</button>
-    <button class="sz-btn" onclick="setPenSize(3,this)">M</button>
-    <button class="sz-btn" onclick="setPenSize(6,this)">L</button>
-    <button class="sz-btn" onclick="setPenSize(10,this)">XL</button>
+<!-- TAB switcher -->
+<div style="display:flex;gap:6px;margin-bottom:10px">
+  <button id="sigtab_draw" class="btn bp" style="flex:1;font-size:12px" onclick="setSigTab('draw')">✍️ Draw</button>
+  <button id="sigtab_scan" class="btn bs" style="flex:1;font-size:12px" onclick="setSigTab('scan')">📷 Scan & Extract</button>
+  <button id="sigtab_saved" class="btn bs" style="flex:1;font-size:12px" onclick="setSigTab('saved')">📚 Saved</button>
+</div>
+
+<!-- ── DRAW TAB ── -->
+<div id="sig_panel_draw">
+<div class="card" style="padding:10px">
+  <!-- Toolbar row 1: color + bg + undo/clear -->
+  <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
+    <div style="font-size:10px;color:var(--text2);font-weight:600;flex-shrink:0">Color:</div>
+    <input type="color" id="sigColorPk" value="#000000" onchange="sigSetColor(this.value)" style="width:30px;height:28px;border-radius:6px;border:1.5px solid var(--border);cursor:pointer;flex-shrink:0">
+    <div style="display:flex;gap:3px;flex-wrap:wrap">
+      <div class="cdot active" id="sc_black" style="background:#000;width:22px;height:22px" onclick="sigSetColor('#000000')"></div>
+      <div class="cdot" id="sc_blue" style="background:#1d4ed8;width:22px;height:22px" onclick="sigSetColor('#1d4ed8')"></div>
+      <div class="cdot" id="sc_red" style="background:#dc2626;width:22px;height:22px" onclick="sigSetColor('#dc2626')"></div>
+      <div class="cdot" id="sc_green" style="background:#16a34a;width:22px;height:22px" onclick="sigSetColor('#16a34a')"></div>
+      <div class="cdot" id="sc_purple" style="background:#7c3aed;width:22px;height:22px" onclick="sigSetColor('#7c3aed')"></div>
+      <div class="cdot" id="sc_orange" style="background:#ea580c;width:22px;height:22px" onclick="sigSetColor('#ea580c')"></div>
+      <div class="cdot" id="sc_white" style="background:#fff;border-color:#ccc!important;width:22px;height:22px" onclick="sigSetColor('#ffffff')"></div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:4px">
+      <button class="btn bs" style="padding:4px 9px;font-size:11px" onclick="undoSig()">↩️ Undo</button>
+      <button class="btn br" style="padding:4px 9px;font-size:11px" onclick="clearSig()">🗑️</button>
+    </div>
   </div>
-  <div style="display:flex;gap:6px;align-items:center;margin-bottom:7px;flex-wrap:wrap">
-    <label style="margin:0;font-size:11px">BG:</label>
+
+  <!-- Pen Style panel -->
+  <div style="background:var(--surface2);border-radius:9px;padding:9px;margin-bottom:8px;border:1px solid var(--border)">
+    <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:8px">🖊️ Pen Style</div>
+    <!-- Preview -->
+    <canvas id="penPreviewC" width="300" height="40" style="width:100%;border-radius:7px;background:var(--surface);border:1px solid var(--border);display:block;margin-bottom:8px"></canvas>
+    <!-- Pen Size -->
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:2px"><span>Pen Size</span><span id="penSizeVal" style="color:var(--accent);font-weight:700">3</span></div>
+    <input type="range" id="penSizeR" min="1" max="50" value="3" oninput="sigPenChanged()" style="width:100%;accent-color:var(--accent);margin-bottom:6px">
+    <!-- Flow -->
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:2px"><span>Flow (Smoothness)</span><span id="penFlowVal" style="color:var(--accent);font-weight:700">80</span></div>
+    <input type="range" id="penFlowR" min="0" max="100" value="80" oninput="sigPenChanged()" style="width:100%;accent-color:var(--accent);margin-bottom:6px">
+    <!-- Opacity -->
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:2px"><span>Opacity</span><span id="penOpacityVal" style="color:var(--accent);font-weight:700">100%</span></div>
+    <input type="range" id="penOpacityR" min="10" max="100" value="100" oninput="sigPenChanged()" style="width:100%;accent-color:var(--accent);margin-bottom:8px">
+    <!-- Pen Type -->
+    <div style="font-size:11px;color:var(--text2);margin-bottom:5px">Pen Type</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:5px">
+      <button id="pt_pen" class="btn bp" style="font-size:10px;padding:6px 2px;flex-direction:column;gap:2px" onclick="setSigPenType('pen')">✒️<span style="font-size:9px">Pen</span></button>
+      <button id="pt_pencil" class="btn bs" style="font-size:10px;padding:6px 2px;flex-direction:column;gap:2px" onclick="setSigPenType('pencil')">✏️<span style="font-size:9px">Pencil</span></button>
+      <button id="pt_calli" class="btn bs" style="font-size:10px;padding:6px 2px;flex-direction:column;gap:2px" onclick="setSigPenType('calli')">🖋️<span style="font-size:9px">Calli</span></button>
+      <button id="pt_hl" class="btn bs" style="font-size:10px;padding:6px 2px;flex-direction:column;gap:2px" onclick="setSigPenType('hl')">🖌️<span style="font-size:9px">Highl.</span></button>
+      <button id="pt_brush" class="btn bs" style="font-size:10px;padding:6px 2px;flex-direction:column;gap:2px" onclick="setSigPenType('brush')">🪄<span style="font-size:9px">Brush</span></button>
+    </div>
+  </div>
+
+  <!-- Eraser panel -->
+  <div style="background:var(--surface2);border-radius:9px;padding:9px;margin-bottom:8px;border:1px solid var(--border)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <div style="font-size:11px;font-weight:700;color:var(--accent)">◻️ Eraser</div>
+      <div style="display:flex;gap:5px">
+        <button id="erMode_pen" class="btn bp" style="font-size:10px;padding:4px 9px" onclick="setEraserMode(false)">✒️ Draw</button>
+        <button id="erMode_erase" class="btn bs" style="font-size:10px;padding:4px 9px" onclick="setEraserMode(true)">◻️ Erase</button>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:2px"><span>Eraser Size</span><span id="eraserSizeVal" style="color:var(--accent);font-weight:700">20</span></div>
+    <input type="range" id="eraserSizeR" min="5" max="80" value="20" oninput="document.getElementById('eraserSizeVal').textContent=this.value" style="width:100%;accent-color:var(--accent);margin-bottom:6px">
+    <div style="font-size:10px;color:var(--text2);margin-bottom:5px">Eraser Type</div>
+    <div style="display:flex;gap:6px">
+      <button id="et_soft" class="btn bp" style="flex:1;font-size:10px;padding:6px" onclick="setEraserType('soft')">◻️ Soft Eraser</button>
+      <button id="et_hard" class="btn bs" style="flex:1;font-size:10px;padding:6px" onclick="setEraserType('hard')">▪️ Hard Eraser</button>
+    </div>
+  </div>
+
+  <!-- Background -->
+  <div style="display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
+    <span style="font-size:10px;color:var(--text2);font-weight:600">Background:</span>
     <input type="color" id="sigBgPk" value="#ffffff" onchange="changeSigBg(this.value)" style="width:28px;height:24px;border-radius:5px;border:1px solid var(--border);cursor:pointer">
     <select id="sigBgPre" onchange="applyBgPre(this.value)" style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:5px 8px;color:var(--text);font-size:11px;outline:none;font-family:'Inter',sans-serif">
       <option value="#ffffff">White</option><option value="#000000">Black</option><option value="#f5f5dc">Cream</option><option value="transparent">Transparent</option>
     </select>
-    <button class="btn bs" style="padding:4px 8px;font-size:10px" onclick="clearSig()">🗑️</button>
-    <button class="btn bs" style="padding:4px 8px;font-size:10px" onclick="undoSig()">↩️</button>
   </div>
-  <div id="sigWrap" style="border-radius:9px;overflow:hidden;box-shadow:var(--shadow)">
-    <canvas id="sigCanvas" width="360" height="200" style="width:100%;display:block;background:#fff"></canvas>
+
+  <!-- Canvas -->
+  <div id="sigWrap" style="border-radius:9px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:8px;position:relative">
+    <canvas id="sigCanvas" width="360" height="220" style="width:100%;display:block;background:#fff;touch-action:none"></canvas>
+    <div id="eraserCursor" style="position:absolute;border:2px solid #888;border-radius:50%;pointer-events:none;display:none;transform:translate(-50%,-50%)"></div>
   </div>
   <div class="btn-row">
     <button class="btn bp" onclick="saveSig()">💾 Save</button>
@@ -457,63 +520,121 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
     <button class="btn bo" onclick="dlSigTransparent()">🪟 Transparent</button>
   </div>
 </div>
-<!-- EXTRACTOR — FIX 4: properly working -->
-<div class="card">
-  <div class="card-title">🖼️ Signature Extractor</div>
-  <div class="ibox io">💡 <strong>Best results:</strong> Dark ink on white paper. Upload → Set background type → Adjust threshold → Download transparent PNG.</div>
+</div>
+
+<!-- ── SCAN TAB ── -->
+<div id="sig_panel_scan" style="display:none">
+<div class="card" style="padding:10px">
+  <div class="card-title" style="margin-bottom:8px">📷 Scan & Extract Signature</div>
+  <div class="ibox io" style="margin-bottom:10px">📸 Photo upload karo → background hatao → adjust karo → save karo</div>
   <div style="display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap">
     <div class="schip as" id="estep1">1️⃣ Upload</div>
-    <div class="schip" id="estep2">2️⃣ Adjust</div>
-    <div class="schip" id="estep3">3️⃣ Download</div>
+    <div class="schip" id="estep2">2️⃣ Fix Scan</div>
+    <div class="schip" id="estep3">3️⃣ Adjust</div>
+    <div class="schip" id="estep4">4️⃣ Download</div>
   </div>
+
   <div id="ex_s1">
     <div class="uarea" onclick="document.getElementById('sigExtIn').click()">
-      <div style="font-size:24px;margin-bottom:5px">📷</div>
-      <div style="font-size:12px;color:var(--text2)">Tap to select photo with signature</div>
+      <div style="font-size:28px;margin-bottom:5px">📷</div>
+      <div style="font-size:12px;color:var(--text2)">Tap to upload photo with signature</div>
     </div>
     <input type="file" id="sigExtIn" accept="image/*" style="display:none" onchange="loadExtImg(event)">
   </div>
+
   <div id="ex_s2" style="display:none">
+    <!-- Preview pair -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px">
-      <div><div style="font-size:10px;color:var(--text2);margin-bottom:3px">📸 Original</div><canvas id="extOrigC" style="width:100%;border-radius:7px;background:#fff;image-rendering:auto"></canvas></div>
-      <div><div style="font-size:10px;color:var(--text2);margin-bottom:3px">✨ Result Preview</div><canvas id="extC" style="width:100%;border-radius:7px;background:repeating-conic-gradient(#bbb 0% 25%,#fff 0% 50%) 0 0/12px 12px;image-rendering:auto"></canvas></div>
+      <div>
+        <div style="font-size:10px;color:var(--text2);margin-bottom:3px;font-weight:600">📸 Original</div>
+        <canvas id="extOrigC" style="width:100%;border-radius:7px;background:#fff;image-rendering:auto;border:1px solid var(--border)"></canvas>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--text2);margin-bottom:3px;font-weight:600">✨ Result</div>
+        <canvas id="extC" style="width:100%;border-radius:7px;background:repeating-conic-gradient(#bbb 0% 25%,#fff 0% 50%) 0 0/12px 12px;image-rendering:auto;border:1px solid var(--border)"></canvas>
+      </div>
     </div>
-    <label>Paper/Background Type:</label>
-    <div style="display:flex;gap:6px;margin-bottom:9px">
-      <button id="bgLBtn" class="btn bp" style="flex:1;font-size:11px" onclick="setBgMode('light')">☀️ Light/White Paper</button>
-      <button id="bgDBtn" class="btn bs" style="flex:1;font-size:11px" onclick="setBgMode('dark')">🌙 Dark Background</button>
+
+    <!-- Fix Scan (threshold) -->
+    <div style="background:var(--surface2);border-radius:9px;padding:9px;margin-bottom:9px;border:1px solid var(--border)">
+      <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px">🔧 Fix Scan</div>
+      <!-- Background type -->
+      <div style="font-size:10px;color:var(--text2);margin-bottom:5px">Background Type</div>
+      <div style="display:flex;gap:6px;margin-bottom:9px">
+        <button id="bgLBtn" class="btn bp" style="flex:1;font-size:11px" onclick="setBgMode('light')">☀️ Light/White</button>
+        <button id="bgDBtn" class="btn bs" style="flex:1;font-size:11px" onclick="setBgMode('dark')">🌙 Dark BG</button>
+      </div>
+      <!-- Fix Scan slider (main threshold) -->
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:2px">
+        <span>Fix Scan (Threshold)</span><span id="thrVal" style="color:var(--accent);font-weight:700">128</span>
+      </div>
+      <input type="range" id="extThr" min="5" max="250" value="128" oninput="thrChange()" style="width:100%;accent-color:var(--accent);margin-bottom:2px">
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text2);margin-bottom:8px"><span>← Keep more ink</span><span>Remove more →</span></div>
+      <!-- Edge Smooth -->
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:2px">
+        <span>Edge Smooth</span><span id="edgeSmoothVal" style="color:var(--accent);font-weight:700">3</span>
+      </div>
+      <input type="range" id="edgeSmoothR" min="0" max="10" value="3" oninput="document.getElementById('edgeSmoothVal').textContent=this.value;applyExt()" style="width:100%;accent-color:var(--accent);margin-bottom:8px">
+      <!-- Noise Reduce -->
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:2px">
+        <span>Noise Reduce</span><span id="noiseReduceVal" style="color:var(--accent);font-weight:700">2</span>
+      </div>
+      <input type="range" id="noiseReduceR" min="0" max="10" value="2" oninput="document.getElementById('noiseReduceVal').textContent=this.value;applyExt()" style="width:100%;accent-color:var(--accent);margin-bottom:8px">
+      <!-- Enhance Contrast toggle -->
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11px;color:var(--text2)">Enhance Contrast</span>
+        <div id="enhanceContrastToggle" onclick="toggleEnhanceContrast()" style="width:44px;height:24px;border-radius:12px;background:var(--accent);cursor:pointer;position:relative;transition:background .2s">
+          <div id="enhanceContrastKnob" style="position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s"></div>
+        </div>
+      </div>
     </div>
-    <label>Sensitivity Threshold: <strong id="thrVal">128</strong> <span style="color:var(--text2)">(lower = keep more ink)</span></label>
-    <input type="range" id="extThr" min="5" max="250" value="128" oninput="thrChange()">
-    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text2);margin-bottom:8px"><span>← Keep more</span><span>Remove more →</span></div>
-    <label>Output ink color:</label>
-    <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">
-      <input type="color" id="extColor" value="#000000" onchange="applyExt()" style="width:32px;height:24px;border-radius:5px;border:1px solid var(--border);cursor:pointer">
-      <span style="font-size:11px;color:var(--text2)">Change signature color (default: black)</span>
+
+    <!-- Ink Color -->
+    <div style="background:var(--surface2);border-radius:9px;padding:9px;margin-bottom:9px;border:1px solid var(--border)">
+      <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px">🎨 Ink Color</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input type="color" id="extColor" value="#000000" onchange="applyExt()" style="width:32px;height:28px;border-radius:5px;border:1px solid var(--border);cursor:pointer">
+        <div style="display:flex;gap:4px;flex-wrap:wrap">
+          <div style="width:24px;height:24px;border-radius:5px;background:#000;cursor:pointer;border:2px solid var(--border)" onclick="setExtColor('#000000')"></div>
+          <div style="width:24px;height:24px;border-radius:5px;background:#1d4ed8;cursor:pointer;border:2px solid var(--border)" onclick="setExtColor('#1d4ed8')"></div>
+          <div style="width:24px;height:24px;border-radius:5px;background:#dc2626;cursor:pointer;border:2px solid var(--border)" onclick="setExtColor('#dc2626')"></div>
+          <div style="width:24px;height:24px;border-radius:5px;background:#7c3aed;cursor:pointer;border:2px solid var(--border)" onclick="setExtColor('#7c3aed')"></div>
+          <div style="width:24px;height:24px;border-radius:5px;background:#16a34a;cursor:pointer;border:2px solid var(--border)" onclick="setExtColor('#16a34a')"></div>
+        </div>
+        <span style="font-size:10px;color:var(--text2)">Signature color</span>
+      </div>
     </div>
-    <!-- CROP / TRIM TOOLS -->
-    <div style="background:var(--surface2);border-radius:9px;padding:10px;margin-bottom:10px;border:1px solid var(--border)">
-      <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:8px">✂️ Crop / Trim Edges</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
-        <div><label style="font-size:10px">Trim Top (px)</label><input class="inp" type="number" id="crop_top" value="0" min="0" placeholder="0" oninput="applyCropPreview()" style="margin:0;font-size:12px;padding:6px 8px"></div>
-        <div><label style="font-size:10px">Trim Bottom (px)</label><input class="inp" type="number" id="crop_bottom" value="0" min="0" placeholder="0" oninput="applyCropPreview()" style="margin:0;font-size:12px;padding:6px 8px"></div>
-        <div><label style="font-size:10px">Trim Left (px)</label><input class="inp" type="number" id="crop_left" value="0" min="0" placeholder="0" oninput="applyCropPreview()" style="margin:0;font-size:12px;padding:6px 8px"></div>
-        <div><label style="font-size:10px">Trim Right (px)</label><input class="inp" type="number" id="crop_right" value="0" min="0" placeholder="0" oninput="applyCropPreview()" style="margin:0;font-size:12px;padding:6px 8px"></div>
+
+    <!-- Crop/Trim -->
+    <div style="background:var(--surface2);border-radius:9px;padding:9px;margin-bottom:9px;border:1px solid var(--border)">
+      <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:7px">✂️ Crop / Trim Edges</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:7px">
+        <div><label style="font-size:10px">Trim Top (px)</label><input class="inp" type="number" id="crop_top" value="0" min="0" oninput="applyCropPreview()" style="margin:0;font-size:12px;padding:6px 8px"></div>
+        <div><label style="font-size:10px">Trim Bottom (px)</label><input class="inp" type="number" id="crop_bottom" value="0" min="0" oninput="applyCropPreview()" style="margin:0;font-size:12px;padding:6px 8px"></div>
+        <div><label style="font-size:10px">Trim Left (px)</label><input class="inp" type="number" id="crop_left" value="0" min="0" oninput="applyCropPreview()" style="margin:0;font-size:12px;padding:6px 8px"></div>
+        <div><label style="font-size:10px">Trim Right (px)</label><input class="inp" type="number" id="crop_right" value="0" min="0" oninput="applyCropPreview()" style="margin:0;font-size:12px;padding:6px 8px"></div>
       </div>
       <div class="btn-row" style="margin-top:0">
         <button class="btn bp" onclick="autoTrimSignature()">✨ Auto-Trim</button>
-        <button class="btn bs" onclick="resetCrop()">↺ Reset Crop</button>
+        <button class="btn bs" onclick="resetCrop()">↺ Reset</button>
       </div>
     </div>
+
     <div class="btn-row">
       <button class="btn bs" onclick="resetExt()">🔄 Re-upload</button>
-      <button class="btn bg bfull" onclick="dlExtracted()">⬇️ Download Transparent PNG</button>
+      <button class="btn bp" onclick="saveExtractedSig()">💾 Save to Library</button>
+      <button class="btn bg bfull" onclick="dlExtracted()">⬇️ Download PNG</button>
     </div>
   </div>
 </div>
+</div>
+
+<!-- ── SAVED TAB ── -->
+<div id="sig_panel_saved" style="display:none">
 <div class="card">
   <div class="card-title">📚 Saved Signatures</div>
   <div id="saved_sigs"></div>
+</div>
 </div>
 </section>
 
@@ -711,7 +832,19 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
   <div style="background:var(--surface2);border-radius:7px;padding:8px;margin-top:5px;display:flex;justify-content:space-between;font-size:12px">
     <span style="color:var(--text2)">Total Notes/Coins</span><span style="font-weight:700;color:var(--accent)" id="cash_cnt">0</span>
   </div>
-  <div class="btn-row"><button class="btn bs" onclick="clearCash()">🗑️ Clear</button><button class="btn bg" onclick="copyCash()">📋 Copy</button><button class="btn bo" onclick="shareCash()">📤 Share</button></div>
+  <div class="btn-row">
+    <button class="btn bs" onclick="clearCash()">🗑️ Clear</button>
+    <button class="btn bg" onclick="copyCash()">📋 Copy</button>
+    <button class="btn bo" onclick="shareCash()">📤 Share</button>
+    <button class="btn bp" onclick="saveCashHistory()">💾 Save</button>
+  </div>
+</div>
+<div class="card">
+  <div class="card-title">📋 Cash History
+    <span id="cash_hist_count" class="bdg" style="margin-left:4px">0</span>
+    <button class="btn br" style="padding:3px 9px;font-size:10px;margin-left:auto" onclick="clearAllCashHistory()">🗑️ Clear All</button>
+  </div>
+  <div id="cash_history_list"><div style="text-align:center;color:var(--text2);padding:12px;font-size:12px">No history yet. Save karo 💾</div></div>
 </div>
 </section>
 
@@ -831,6 +964,8 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
     <button class="mc" onclick="closeM('editMenuModal')">✕</button>
     <div class="modal-title">⚙️ Edit Profile</div>
     <div class="ep-menu-item" onclick="openEditDetails()"><div class="ep-menu-icon">📋</div><div class="ep-menu-label">Loan Details</div><div class="ep-menu-arrow">›</div></div>
+    <div class="ep-menu-item" onclick="openForeclosureModal()"><div class="ep-menu-icon">🔒</div><div class="ep-menu-label">Foreclosure</div><div class="ep-menu-sub" style="font-size:10px;color:var(--text2);margin-left:auto;margin-right:6px">Outstanding update</div><div class="ep-menu-arrow">›</div></div>
+    <div class="ep-menu-item" onclick="openProcessingFeesModal()"><div class="ep-menu-icon">💼</div><div class="ep-menu-label">Processing Fees</div><div class="ep-menu-sub" style="font-size:10px;color:var(--text2);margin-left:auto;margin-right:6px">% ya Manual</div><div class="ep-menu-arrow">›</div></div>
     <div class="ep-menu-item" onclick="openPrePayment()"><div class="ep-menu-icon">💳</div><div class="ep-menu-label">Loan Pre-Payment</div><div class="ep-menu-arrow">›</div></div>
     <div class="ep-menu-item" onclick="openVariableRate()"><div class="ep-menu-icon">📈</div><div class="ep-menu-label">Variable Interest Rate</div><div class="ep-menu-arrow">›</div></div>
     <div class="ep-menu-item" onclick="openMoratorium()"><div class="ep-menu-icon">⏸️</div><div class="ep-menu-label">Moratorium Period</div><div class="ep-menu-arrow">›</div></div>
@@ -845,10 +980,73 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
     <label>Profile Name</label><input class="inp" id="ep_name">
     <label>Bank Name</label><input class="inp" id="ep_bank">
     <label>Loan A/C No</label><input class="inp" id="ep_ac">
-    <label>Loan Amount (₹)</label><input class="inp" type="number" id="ep_P">
+    <label>Loan Amount (₹)</label><input class="inp" type="number" id="ep_P" oninput="epFeePctChanged();epForePctChanged()">
     <label>Interest Rate %</label><input class="inp" type="number" id="ep_rA">
     <label>Tenure (months)</label><input class="inp" type="number" id="ep_n">
-    <label>Processing Fees (₹)</label><input class="inp" type="number" id="ep_fees">
+
+    <!-- PROCESSING FEES dual-box -->
+    <div style="background:var(--surface2);border-radius:10px;padding:10px;margin-bottom:10px;border:1px solid var(--border)">
+      <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:7px">💼 Processing Fees</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div>
+          <label style="font-size:10px;margin-bottom:3px">% of Loan Amount</label>
+          <div style="position:relative">
+            <input class="inp" type="number" id="ep_fees_pct" placeholder="Ex: 1.5" step="0.01" min="0"
+              oninput="epFeePctChanged()" style="margin:0;padding-right:24px">
+            <span style="position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--text2);pointer-events:none;font-weight:600">%</span>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:10px;margin-bottom:3px">Manual Amount (₹)</label>
+          <div style="position:relative">
+            <input class="inp" type="number" id="ep_fees_amt" placeholder="Ex: 5000" min="0"
+              oninput="epFeeAmtChanged()" style="margin:0;padding-right:20px">
+            <span style="position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--text2);pointer-events:none;font-weight:600">₹</span>
+          </div>
+        </div>
+      </div>
+      <div id="ep_fees_note" style="font-size:10px;color:var(--accent);margin-top:5px;min-height:15px"></div>
+    </div>
+
+    <!-- FORECLOSURE dual-box -->
+    <div style="background:var(--surface2);border-radius:10px;padding:10px;margin-bottom:10px;border:1px solid var(--border)">
+      <div style="font-size:11px;font-weight:700;color:var(--accent2);margin-bottom:2px">🔒 Foreclosure Charges</div>
+      <div style="font-size:10px;color:var(--text2);margin-bottom:7px">Outstanding ke hisaab se auto-update hoga</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div>
+          <label style="font-size:10px;margin-bottom:3px">% of Outstanding</label>
+          <div style="position:relative">
+            <input class="inp" type="number" id="ep_fore_pct" placeholder="Ex: 2" step="0.01" min="0"
+              oninput="epForePctChanged()" style="margin:0;padding-right:24px">
+            <span style="position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--text2);pointer-events:none;font-weight:600">%</span>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:10px;margin-bottom:3px">Manual Amount (₹)</label>
+          <div style="position:relative">
+            <input class="inp" type="number" id="ep_fore_amt" placeholder="Ex: 3000" min="0"
+              oninput="epForeAmtChanged()" style="margin:0;padding-right:20px">
+            <span style="position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--text2);pointer-events:none;font-weight:600">₹</span>
+          </div>
+        </div>
+      </div>
+      <div id="ep_fore_note" style="font-size:10px;color:var(--accent2);margin-top:5px;min-height:15px"></div>
+      <div id="ep_fore_total_row" style="display:none;margin-top:8px;background:var(--surface);border-radius:8px;padding:8px;border:1px solid rgba(234,88,12,.25)">
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+          <span style="color:var(--text2)">Outstanding Principal</span>
+          <span style="font-weight:700;color:var(--red)" id="ep_fore_outstanding">₹0</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+          <span style="color:var(--text2)">Foreclosure Charge</span>
+          <span style="font-weight:700;color:var(--accent2)" id="ep_fore_charge">₹0</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;padding-top:6px;border-top:1px solid var(--border)">
+          <span style="font-weight:700;color:var(--text)">Total to Close Loan</span>
+          <span style="font-weight:800;color:var(--accent2)" id="ep_fore_total">₹0</span>
+        </div>
+      </div>
+    </div>
+
     <label>Loan Date</label><input class="inp" type="date" id="ep_loandate">
     <label>First EMI Date</label><input class="inp" type="date" id="ep_firstemi">
     <button class="btn bp bfull" onclick="saveEditedProfile()">💾 Save Changes</button>
@@ -897,6 +1095,138 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
     <label>Moratorium Duration (months)</label><input class="inp" type="number" id="mor_months" placeholder="Ex: 3">
     <button class="btn bp bfull" onclick="calcMoratorium()">Calculate Effect</button>
     <div id="mor_result" style="display:none;margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- ══ FORECLOSURE MODAL ══ -->
+<div class="mov" id="foreclosureModal">
+  <div class="modal">
+    <button class="mc" onclick="closeM('foreclosureModal')">✕</button>
+    <div class="modal-title">🔒 Foreclosure</div>
+    <div class="ibox io" style="margin-bottom:10px">Outstanding principal ke basis par foreclosure charge calculate karein. Percentage ya manual amount — dono option hain.</div>
+
+    <!-- Outstanding live display -->
+    <div id="fore_outstanding_banner" style="background:linear-gradient(135deg,rgba(234,88,12,.12),rgba(234,88,12,.06));border:1.5px solid rgba(234,88,12,.3);border-radius:10px;padding:10px 13px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:10px;color:var(--text2);font-weight:600">Outstanding Principal</div>
+        <div style="font-family:'Baloo 2',sans-serif;font-size:22px;font-weight:800;color:var(--red)" id="fore_modal_outstanding">₹0</div>
+      </div>
+      <div style="font-size:28px">🏦</div>
+    </div>
+
+    <!-- Dual box row — both always visible, no overlap -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px">
+      <!-- Box 1: Percentage -->
+      <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;padding:10px">
+        <div style="font-size:10px;font-weight:700;color:var(--accent2);margin-bottom:6px;display:flex;align-items:center;gap:4px">📊 % se Calculate</div>
+        <label style="font-size:10px">% of Outstanding</label>
+        <div style="position:relative;margin-bottom:4px">
+          <input class="inp" type="number" id="fore_pct_inp" placeholder="Ex: 2" step="0.01" min="0"
+            oninput="foreModalPctChanged()" style="margin:0;padding-right:26px;font-size:13px;font-weight:700">
+          <span style="position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--accent2);font-weight:800;pointer-events:none">%</span>
+        </div>
+        <div id="fore_pct_result" style="font-size:10px;color:var(--accent2);min-height:14px;font-weight:600"></div>
+      </div>
+
+      <!-- Box 2: Manual Amount -->
+      <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;padding:10px">
+        <div style="font-size:10px;font-weight:700;color:var(--green);margin-bottom:6px;display:flex;align-items:center;gap:4px">✏️ Manual Amount</div>
+        <label style="font-size:10px">Amount (₹)</label>
+        <div style="position:relative;margin-bottom:4px">
+          <input class="inp" type="number" id="fore_amt_inp" placeholder="Ex: 3000" min="0"
+            oninput="foreModalAmtChanged()" style="margin:0;padding-right:22px;font-size:13px;font-weight:700">
+          <span style="position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--green);font-weight:800;pointer-events:none">₹</span>
+        </div>
+        <div id="fore_amt_result" style="font-size:10px;color:var(--green);min-height:14px;font-weight:600"></div>
+      </div>
+    </div>
+
+    <!-- Summary row -->
+    <div id="fore_modal_summary" style="display:none;background:var(--surface);border:1.5px solid rgba(234,88,12,.3);border-radius:10px;padding:10px;margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+        <span style="color:var(--text2)">Outstanding Principal</span>
+        <span style="font-weight:700;color:var(--red)" id="fore_sum_out">₹0</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+        <span style="color:var(--text2)">Foreclosure Charge</span>
+        <span style="font-weight:700;color:var(--accent2)" id="fore_sum_charge">₹0</span>
+      </div>
+      <div style="border-top:1px solid var(--border);padding-top:7px;display:flex;justify-content:space-between;font-size:14px">
+        <span style="font-weight:700;color:var(--text)">Total to Close Loan</span>
+        <span style="font-weight:800;color:var(--accent2);font-family:'Baloo 2',sans-serif" id="fore_sum_total">₹0</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn bs bfull" onclick="closeM('foreclosureModal');openM('editMenuModal')">← Back</button>
+      <button class="btn bo bfull" onclick="saveForeclosureFromModal()">💾 Save Foreclosure</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROCESSING FEES MODAL ══ -->
+<div class="mov" id="processingFeesModal">
+  <div class="modal">
+    <button class="mc" onclick="closeM('processingFeesModal')">✕</button>
+    <div class="modal-title">💼 Processing Fees</div>
+    <div class="ibox ig" style="margin-bottom:10px">Loan amount ke basis par processing fees calculate karein. % se ya manual amount — dono option hain.</div>
+
+    <!-- Loan amount live display -->
+    <div id="pfees_loan_banner" style="background:linear-gradient(135deg,rgba(37,99,235,.12),rgba(37,99,235,.06));border:1.5px solid rgba(37,99,235,.25);border-radius:10px;padding:10px 13px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:10px;color:var(--text2);font-weight:600">Loan Amount</div>
+        <div style="font-family:'Baloo 2',sans-serif;font-size:22px;font-weight:800;color:var(--accent)" id="pfees_modal_loanamt">₹0</div>
+      </div>
+      <div style="font-size:28px">💰</div>
+    </div>
+
+    <!-- Dual box row -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px">
+      <!-- Box 1: Percentage -->
+      <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;padding:10px">
+        <div style="font-size:10px;font-weight:700;color:var(--accent);margin-bottom:6px">📊 % se Calculate</div>
+        <label style="font-size:10px">% of Loan Amount</label>
+        <div style="position:relative;margin-bottom:4px">
+          <input class="inp" type="number" id="pfees_pct_inp" placeholder="Ex: 1.5" step="0.01" min="0"
+            oninput="pfeesModalPctChanged()" style="margin:0;padding-right:26px;font-size:13px;font-weight:700">
+          <span style="position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--accent);font-weight:800;pointer-events:none">%</span>
+        </div>
+        <div id="pfees_pct_result" style="font-size:10px;color:var(--accent);min-height:14px;font-weight:600"></div>
+      </div>
+
+      <!-- Box 2: Manual Amount -->
+      <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;padding:10px">
+        <div style="font-size:10px;font-weight:700;color:var(--green);margin-bottom:6px">✏️ Manual Amount</div>
+        <label style="font-size:10px">Amount (₹)</label>
+        <div style="position:relative;margin-bottom:4px">
+          <input class="inp" type="number" id="pfees_amt_inp" placeholder="Ex: 5000" min="0"
+            oninput="pfeesModalAmtChanged()" style="margin:0;padding-right:22px;font-size:13px;font-weight:700">
+          <span style="position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--green);font-weight:800;pointer-events:none">₹</span>
+        </div>
+        <div id="pfees_amt_result" style="font-size:10px;color:var(--green);min-height:14px;font-weight:600"></div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div id="pfees_modal_summary" style="display:none;background:var(--surface);border:1.5px solid rgba(37,99,235,.25);border-radius:10px;padding:10px;margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+        <span style="color:var(--text2)">Loan Amount</span>
+        <span style="font-weight:700;color:var(--accent)" id="pfees_sum_loan">₹0</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+        <span style="color:var(--text2)">Processing Fees</span>
+        <span style="font-weight:700;color:var(--green)" id="pfees_sum_fees">₹0</span>
+      </div>
+      <div style="border-top:1px solid var(--border);padding-top:7px;display:flex;justify-content:space-between;font-size:14px">
+        <span style="font-weight:700;color:var(--text)">Net Disbursement</span>
+        <span style="font-weight:800;color:var(--accent);font-family:'Baloo 2',sans-serif" id="pfees_sum_net">₹0</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn bs bfull" onclick="closeM('processingFeesModal');openM('editMenuModal')">← Back</button>
+      <button class="btn bp bfull" onclick="saveProcessingFeesFromModal()">💾 Save Fees</button>
+    </div>
   </div>
 </div>
 
@@ -1343,6 +1673,8 @@ function hideLoginScreen(){
   else document.body.classList.remove('dark');
   renderProfiles(); renderSigs(); renderWAList(); renderLoanOverview(); renderCmpHistory();
   initCash(); buildA2WUI(); convA2W(); setCL('low');
+  renderCashHistory();
+  setTimeout(()=>{initSigPad();updatePenPreview();},150);
   const savedTabs=gs('navTabs');
   if(savedTabs&&savedTabs.length===DEFAULT_TABS.length&&DEFAULT_TABS.every(d=>savedTabs.some(s=>s.id===d.id))){
     tabs.length=0; savedTabs.forEach(t=>tabs.push(t));
@@ -1809,18 +2141,27 @@ function renderLoanOverview(){
   };
   ps.sort(sorters[loSort]||sorters.tenure);
 
-  // ── Summary (use all profiles, not filtered) ──
+  // ── Summary — ACTIVE loans only (skip closed: outstanding=0 OR remaining tenure=0) ──
   const allPs=gs('loanProfiles');
-  let totalAmt=0,totalEmi=0,totalPaid=0,totalOut=0;
+  let totalAmt=0,totalEmi=0,totalPaid=0,totalOut=0,activeCount=0,closedCount=0;
   allPs.forEach(p=>{
-    totalAmt+=p.P||0;totalEmi+=p.emi||0;
     const pd=calcPaidEMIs(p);
-    totalPaid+=pd.totalPaid;totalOut+=Math.max(0,(p.P||0)-pd.priPaid);
+    const outPri2=Math.max(0,(p.P||0)-pd.priPaid);
+    const remTenure=Math.max(0,(p.n||0)-pd.paidCount);
+    const isClosed=(outPri2<=0)||(remTenure<=0);
+    if(isClosed){closedCount++;return;}
+    activeCount++;
+    totalAmt+=p.P||0;
+    totalEmi+=p.emi||0;
+    totalPaid+=pd.totalPaid;
+    totalOut+=outPri2;
   });
   document.getElementById('lo_total_amt').textContent=fmt(totalAmt);
   document.getElementById('lo_total_emi').textContent=fmt(totalEmi);
   document.getElementById('lo_total_paid').textContent=fmt(totalPaid);
   document.getElementById('lo_total_out').textContent=fmt(totalOut);
+  const activeBadge=document.getElementById('lo_active_badge');
+  if(activeBadge)activeBadge.textContent='Active: '+activeCount+' | Closed: '+closedCount;
 
   const el=document.getElementById('lo_list');
   if(!ps.length){
@@ -1867,6 +2208,11 @@ function showProfile(id){
   const paid=calcPaidEMIs(p);
   const outInt=Math.max(0,(p.interest||0)-paid.intPaid);
   const outPri=Math.max(0,(p.P||0)-paid.priPaid);
+  const _fc=p.foreClosureAmt>0?p.foreClosureAmt:(p.foreClosurePct>0?outPri*p.foreClosurePct/100:0);
+  const _ft=outPri+_fc;
+  const foreRow=_fc>0?`
+      <tr style="background:rgba(234,88,12,.05)"><td>Foreclosure Charges</td><td><strong style="color:var(--accent2)">\u20b9${fmtF(_fc)}</strong>${p.foreClosurePct>0?' <span style=\"color:var(--text2);font-size:10px\">('+p.foreClosurePct.toFixed(2)+'%)</span>':''}</td></tr>
+      <tr style="background:rgba(234,88,12,.08)"><td><strong>Total to Close Loan</strong></td><td><strong style="color:var(--red);font-size:13px">\u20b9${fmtF(_ft)}</strong></td></tr>`:'';
   document.getElementById('profile_detail_inner').innerHTML=`
     <table class="ldt"><tr class="ldt-title"><td colspan="2">#${profileNum} — ${p.name.toUpperCase()}</td></tr>
       <tr><td>Loan A/C No</td><td>${p.ac||'-'}</td></tr>
@@ -1875,7 +2221,7 @@ function showProfile(id){
       <tr><td>Interest Rate %</td><td><strong>${Number(p.rA||0).toFixed(1)}%</strong></td></tr>
       <tr><td>Tenure (In Month)</td><td><strong>${p.n||'-'}</strong></td></tr>
       <tr><td><strong>EMI</strong></td><td><strong>${fmtF(p.emi)}</strong></td></tr>
-      <tr><td>Processing Fees</td><td>${fmtF(p.fees)}</td></tr>
+      <tr><td>Processing Fees</td><td>${fmtF(p.fees)}${p.feesPct>0?' <span style=\"color:var(--text2);font-size:10px\">('+p.feesPct.toFixed(2)+'%)</span>':''}</td></tr>
       <tr><td>Loan Date</td><td>${fmtDate(p.loanDate)}</td></tr>
       <tr><td>First EMI Date</td><td>${fmtDate(p.firstEmi)}</td></tr>
       <tr><td>Last EMI Date</td><td>${fmtDate(p.lastEmiDate)}</td></tr>
@@ -1886,6 +2232,7 @@ function showProfile(id){
       <tr><td>Outstanding Principal</td><td>${fmtF(outPri)}</td></tr>
       <tr><td>Outstanding Total</td><td>${fmtF(outInt+outPri)}</td></tr>
       <tr><td>Total Interest</td><td><strong>${fmtF(p.interest)}</strong></td></tr>
+      ${foreRow}
     </table>`;
   if(p.P&&p.r&&p.n&&p.emi)genSched(p.P,p.r,p.n,p.emi);
   openM('profileDetailModal');
@@ -1986,7 +2333,93 @@ function editHistEntry(idx){
 }
 
 function openEditMenu(){closeM('profileDetailModal');openM('editMenuModal')}
-function openEditDetails(){closeM('editMenuModal');const p=gs('loanProfiles').find(x=>x.id===curPid);if(!p)return;['name','bank','ac','loandate','firstemi','fees'].forEach(f=>{const el=document.getElementById('ep_'+f);if(el)el.value=p[{name:'name',bank:'bank',ac:'ac',loandate:'loanDate',firstemi:'firstEmi',fees:'fees'}[f]]||''});document.getElementById('ep_P').value=Math.round(p.P||0);document.getElementById('ep_rA').value=Number(p.rA||0).toFixed(2);document.getElementById('ep_n').value=p.n||0;openM('editDetailsModal')}
+
+function openEditDetails(){
+  closeM('editMenuModal');
+  const p=gs('loanProfiles').find(x=>x.id===curPid);
+  if(!p)return;
+  document.getElementById('ep_name').value=p.name||'';
+  document.getElementById('ep_bank').value=p.bank||'';
+  document.getElementById('ep_ac').value=p.ac||'';
+  document.getElementById('ep_loandate').value=p.loanDate||'';
+  document.getElementById('ep_firstemi').value=p.firstEmi||'';
+  document.getElementById('ep_P').value=Math.round(p.P||0);
+  document.getElementById('ep_rA').value=Number(p.rA||0).toFixed(2);
+  document.getElementById('ep_n').value=p.n||0;
+  // Processing fees — populate both boxes
+  const feesAmt=p.fees||0;
+  document.getElementById('ep_fees_amt').value=feesAmt||'';
+  document.getElementById('ep_fees_pct').value=(feesAmt&&p.P)?Number((feesAmt/p.P*100).toFixed(3)):'';
+  document.getElementById('ep_fees_note').textContent=(feesAmt&&p.P)?((feesAmt/p.P*100).toFixed(2)+'% of ₹'+fmt(p.P)+' = ₹'+fmt(feesAmt)):'';
+  // Foreclosure
+  document.getElementById('ep_fore_pct').value=p.foreClosurePct||'';
+  document.getElementById('ep_fore_amt').value=p.foreClosureAmt||'';
+  document.getElementById('ep_fore_note').textContent='';
+  _epUpdateForeclosureDisplay(p);
+  openM('editDetailsModal');
+}
+
+function epFeePctChanged(){
+  const pct=parseFloat(document.getElementById('ep_fees_pct').value);
+  const P=parseFloat(document.getElementById('ep_P').value)||0;
+  const noteEl=document.getElementById('ep_fees_note');
+  if(!isNaN(pct)&&pct>=0&&P>0){
+    const amt=Math.round(P*pct/100);
+    document.getElementById('ep_fees_amt').value=amt;
+    noteEl.textContent=pct+'% of ₹'+fmt(P)+' = ₹'+fmt(amt);
+  } else {
+    noteEl.textContent=(P<=0&&!isNaN(pct))?'Loan amount pehle bharo':'';
+  }
+}
+function epFeeAmtChanged(){
+  const amt=parseFloat(document.getElementById('ep_fees_amt').value)||0;
+  const P=parseFloat(document.getElementById('ep_P').value)||0;
+  const noteEl=document.getElementById('ep_fees_note');
+  if(P>0&&amt>=0){
+    const pct=(amt/P*100);
+    document.getElementById('ep_fees_pct').value=pct.toFixed(3);
+    noteEl.textContent='₹'+fmt(amt)+' = '+pct.toFixed(2)+'% of ₹'+fmt(P);
+  } else { noteEl.textContent=''; }
+}
+
+function epForePctChanged(){
+  const pct=parseFloat(document.getElementById('ep_fore_pct').value);
+  const p=gs('loanProfiles').find(x=>x.id===curPid);if(!p)return;
+  const paid=calcPaidEMIs(p);
+  const outPri=Math.max(0,(p.P||0)-paid.priPaid);
+  if(!isNaN(pct)&&pct>=0&&outPri>0){
+    document.getElementById('ep_fore_amt').value=Math.round(outPri*pct/100);
+  }
+  _epUpdateForeclosureDisplay(p);
+}
+function epForeAmtChanged(){
+  const amt=parseFloat(document.getElementById('ep_fore_amt').value)||0;
+  const p=gs('loanProfiles').find(x=>x.id===curPid);if(!p)return;
+  const paid=calcPaidEMIs(p);
+  const outPri=Math.max(0,(p.P||0)-paid.priPaid);
+  if(outPri>0&&amt>=0) document.getElementById('ep_fore_pct').value=(amt/outPri*100).toFixed(3);
+  _epUpdateForeclosureDisplay(p);
+}
+function _epUpdateForeclosureDisplay(p){
+  const paid=calcPaidEMIs(p);
+  const outPri=Math.max(0,(p.P||0)-paid.priPaid);
+  const foreAmt=parseFloat(document.getElementById('ep_fore_amt').value)||0;
+  const forePct=parseFloat(document.getElementById('ep_fore_pct').value)||0;
+  const charge=foreAmt>0?foreAmt:(forePct>0?outPri*forePct/100:0);
+  const total=outPri+charge;
+  const noteEl=document.getElementById('ep_fore_note');
+  const rowEl=document.getElementById('ep_fore_total_row');
+  if(noteEl) noteEl.textContent=(forePct>0&&outPri>0)?(forePct+'% of ₹'+fmt(outPri)+' = ₹'+fmt(charge)):'';
+  if(rowEl){
+    if(outPri>0){
+      rowEl.style.display='block';
+      document.getElementById('ep_fore_outstanding').textContent='₹'+fmt(outPri);
+      document.getElementById('ep_fore_charge').textContent='₹'+fmt(charge);
+      document.getElementById('ep_fore_total').textContent='₹'+fmt(total);
+    } else { rowEl.style.display='none'; }
+  }
+}
+
 function saveEditedProfile(){
   let ps=gs('loanProfiles');const idx=ps.findIndex(x=>x.id===curPid);if(idx<0)return;
   const P=parseFloat(document.getElementById('ep_P').value)||ps[idx].P;
@@ -1994,8 +2427,165 @@ function saveEditedProfile(){
   const n=parseInt(document.getElementById('ep_n').value)||ps[idx].n;
   const r=rA/12/100,emi=r===0?P/n:P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
   const firstEmi=document.getElementById('ep_firstemi').value;
-  ps[idx]={...ps[idx],name:document.getElementById('ep_name').value||ps[idx].name,bank:document.getElementById('ep_bank').value,ac:document.getElementById('ep_ac').value,loanDate:document.getElementById('ep_loandate').value,firstEmi,lastEmiDate:calcLastEmiDate(firstEmi,n),fees:parseFloat(document.getElementById('ep_fees').value)||0,P,rA,r,n,emi,total:emi*n,interest:emi*n-P};
-  ss('loanProfiles',ps);closeM('editDetailsModal');emiData=ps[idx];renderProfiles();alert('Updated!');
+  const fees=parseFloat(document.getElementById('ep_fees_amt').value)||0;
+  const feesPct=parseFloat(document.getElementById('ep_fees_pct').value)||0;
+  const forePct=parseFloat(document.getElementById('ep_fore_pct').value)||0;
+  const foreAmt=parseFloat(document.getElementById('ep_fore_amt').value)||0;
+  ps[idx]={...ps[idx],
+    name:document.getElementById('ep_name').value||ps[idx].name,
+    bank:document.getElementById('ep_bank').value,
+    ac:document.getElementById('ep_ac').value,
+    loanDate:document.getElementById('ep_loandate').value,
+    firstEmi,lastEmiDate:calcLastEmiDate(firstEmi,n),
+    fees,feesPct,foreClosurePct:forePct,foreClosureAmt:foreAmt,
+    P,rA,r,n,emi,total:emi*n,interest:emi*n-P};
+  ss('loanProfiles',ps);closeM('editDetailsModal');emiData=ps[idx];renderProfiles();alert('\u2705 Updated!');
+}
+
+// ── FORECLOSURE MODAL FUNCTIONS ──
+function openForeclosureModal(){
+  closeM('editMenuModal');
+  const p=gs('loanProfiles').find(x=>x.id===curPid);if(!p)return;
+  const paid=calcPaidEMIs(p);
+  const outPri=Math.max(0,(p.P||0)-paid.priPaid);
+  // Set outstanding banner
+  document.getElementById('fore_modal_outstanding').textContent='₹'+fmt(outPri);
+  // Restore saved values
+  const forePct=p.foreClosurePct||'';
+  const foreAmt=p.foreClosureAmt||'';
+  document.getElementById('fore_pct_inp').value=forePct;
+  document.getElementById('fore_amt_inp').value=foreAmt;
+  document.getElementById('fore_pct_result').textContent='';
+  document.getElementById('fore_amt_result').textContent='';
+  // Trigger display update if values exist
+  if(forePct) _foreModalUpdateFromPct(outPri, parseFloat(forePct));
+  else if(foreAmt) _foreModalUpdateFromAmt(outPri, parseFloat(foreAmt));
+  else document.getElementById('fore_modal_summary').style.display='none';
+  openM('foreclosureModal');
+}
+function _foreModalUpdateFromPct(outPri, pct){
+  const charge=outPri>0&&pct>0?Math.round(outPri*pct/100):0;
+  document.getElementById('fore_pct_result').textContent=outPri>0&&pct>0?pct+'% = ₹'+fmt(charge):(outPri<=0?'Loan amount check karein':'');
+  document.getElementById('fore_modal_summary').style.display=charge>0?'block':'none';
+  if(charge>0){
+    document.getElementById('fore_sum_out').textContent='₹'+fmt(outPri);
+    document.getElementById('fore_sum_charge').textContent='₹'+fmt(charge);
+    document.getElementById('fore_sum_total').textContent='₹'+fmt(outPri+charge);
+  }
+}
+function _foreModalUpdateFromAmt(outPri, amt){
+  const pctEq=outPri>0&&amt>0?(amt/outPri*100).toFixed(2):0;
+  document.getElementById('fore_amt_result').textContent=outPri>0&&amt>0?'= '+pctEq+'% of outstanding':'';
+  document.getElementById('fore_modal_summary').style.display=amt>0?'block':'none';
+  if(amt>0){
+    document.getElementById('fore_sum_out').textContent='₹'+fmt(outPri);
+    document.getElementById('fore_sum_charge').textContent='₹'+fmt(amt);
+    document.getElementById('fore_sum_total').textContent='₹'+fmt(outPri+amt);
+  }
+}
+function foreModalPctChanged(){
+  const p=gs('loanProfiles').find(x=>x.id===curPid);if(!p)return;
+  const paid=calcPaidEMIs(p);
+  const outPri=Math.max(0,(p.P||0)-paid.priPaid);
+  const pct=parseFloat(document.getElementById('fore_pct_inp').value)||0;
+  if(pct>0&&outPri>0){
+    const amt=Math.round(outPri*pct/100);
+    document.getElementById('fore_amt_inp').value=amt;
+    document.getElementById('fore_amt_result').textContent='= '+(pct).toFixed(2)+'% auto-set';
+  }
+  _foreModalUpdateFromPct(outPri, pct);
+}
+function foreModalAmtChanged(){
+  const p=gs('loanProfiles').find(x=>x.id===curPid);if(!p)return;
+  const paid=calcPaidEMIs(p);
+  const outPri=Math.max(0,(p.P||0)-paid.priPaid);
+  const amt=parseFloat(document.getElementById('fore_amt_inp').value)||0;
+  if(amt>0&&outPri>0){
+    const pct=(amt/outPri*100).toFixed(3);
+    document.getElementById('fore_pct_inp').value=pct;
+    document.getElementById('fore_pct_result').textContent='= '+parseFloat(pct).toFixed(2)+'% auto-set';
+  }
+  _foreModalUpdateFromAmt(outPri, amt);
+}
+function saveForeclosureFromModal(){
+  let ps=gs('loanProfiles');const idx=ps.findIndex(x=>x.id===curPid);if(idx<0)return;
+  const pct=parseFloat(document.getElementById('fore_pct_inp').value)||0;
+  const amt=parseFloat(document.getElementById('fore_amt_inp').value)||0;
+  ps[idx].foreClosurePct=pct;
+  ps[idx].foreClosureAmt=amt;
+  ss('loanProfiles',ps);
+  closeM('foreclosureModal');
+  alert('✅ Foreclosure saved!');
+}
+
+// ── PROCESSING FEES MODAL FUNCTIONS ──
+function openProcessingFeesModal(){
+  closeM('editMenuModal');
+  const p=gs('loanProfiles').find(x=>x.id===curPid);if(!p)return;
+  const loanAmt=p.P||0;
+  document.getElementById('pfees_modal_loanamt').textContent='₹'+fmt(loanAmt);
+  const feesAmt=p.fees||0;
+  const feesPct=p.feesPct||(feesAmt&&loanAmt?(feesAmt/loanAmt*100):0);
+  document.getElementById('pfees_pct_inp').value=feesPct?Number(feesPct).toFixed(3):'';
+  document.getElementById('pfees_amt_inp').value=feesAmt||'';
+  document.getElementById('pfees_pct_result').textContent='';
+  document.getElementById('pfees_amt_result').textContent='';
+  if(feesAmt>0) _pfeesModalUpdateFromAmt(loanAmt, feesAmt);
+  else if(feesPct>0) _pfeesModalUpdateFromPct(loanAmt, feesPct);
+  else document.getElementById('pfees_modal_summary').style.display='none';
+  openM('processingFeesModal');
+}
+function _pfeesModalUpdateFromPct(loanAmt, pct){
+  const fees=loanAmt>0&&pct>0?Math.round(loanAmt*pct/100):0;
+  document.getElementById('pfees_pct_result').textContent=loanAmt>0&&pct>0?pct+'% = ₹'+fmt(fees):'';
+  document.getElementById('pfees_modal_summary').style.display=fees>0?'block':'none';
+  if(fees>0){
+    document.getElementById('pfees_sum_loan').textContent='₹'+fmt(loanAmt);
+    document.getElementById('pfees_sum_fees').textContent='₹'+fmt(fees);
+    document.getElementById('pfees_sum_net').textContent='₹'+fmt(loanAmt-fees);
+  }
+}
+function _pfeesModalUpdateFromAmt(loanAmt, amt){
+  const pctEq=loanAmt>0&&amt>0?(amt/loanAmt*100).toFixed(2):0;
+  document.getElementById('pfees_amt_result').textContent=loanAmt>0&&amt>0?'= '+pctEq+'% of loan':'';
+  document.getElementById('pfees_modal_summary').style.display=amt>0?'block':'none';
+  if(amt>0){
+    document.getElementById('pfees_sum_loan').textContent='₹'+fmt(loanAmt);
+    document.getElementById('pfees_sum_fees').textContent='₹'+fmt(amt);
+    document.getElementById('pfees_sum_net').textContent='₹'+fmt(Math.max(0,loanAmt-amt));
+  }
+}
+function pfeesModalPctChanged(){
+  const p=gs('loanProfiles').find(x=>x.id===curPid);if(!p)return;
+  const loanAmt=p.P||0;
+  const pct=parseFloat(document.getElementById('pfees_pct_inp').value)||0;
+  if(pct>0&&loanAmt>0){
+    const amt=Math.round(loanAmt*pct/100);
+    document.getElementById('pfees_amt_inp').value=amt;
+    document.getElementById('pfees_amt_result').textContent='auto-set';
+  }
+  _pfeesModalUpdateFromPct(loanAmt, pct);
+}
+function pfeesModalAmtChanged(){
+  const p=gs('loanProfiles').find(x=>x.id===curPid);if(!p)return;
+  const loanAmt=p.P||0;
+  const amt=parseFloat(document.getElementById('pfees_amt_inp').value)||0;
+  if(amt>0&&loanAmt>0){
+    const pct=(amt/loanAmt*100).toFixed(3);
+    document.getElementById('pfees_pct_inp').value=pct;
+    document.getElementById('pfees_pct_result').textContent='auto-set';
+  }
+  _pfeesModalUpdateFromAmt(loanAmt, amt);
+}
+function saveProcessingFeesFromModal(){
+  let ps=gs('loanProfiles');const idx=ps.findIndex(x=>x.id===curPid);if(idx<0)return;
+  const pct=parseFloat(document.getElementById('pfees_pct_inp').value)||0;
+  const amt=parseFloat(document.getElementById('pfees_amt_inp').value)||0;
+  ps[idx].feesPct=pct;
+  ps[idx].fees=amt;
+  ss('loanProfiles',ps);
+  closeM('processingFeesModal');
+  alert('✅ Processing Fees saved!');
 }
 
 // Pre-Payment
@@ -2055,27 +2645,183 @@ function exportSchedXLS(){
   const b=new Blob([csv],{type:'text/csv'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=`EMI${name?'_'+name.replace(/\s/g,'_'):''}.csv`;a.click();URL.revokeObjectURL(u);
 }
 
-// ═══════════ SIGNATURE (FIX 4) ═══════════
-const sc=document.getElementById('sigCanvas'),sctx=sc.getContext('2d');
-let isd=false,pc='#000000',ps2=1.5,sh=[],lx=0,ly=0,sbg='#ffffff';
-function initSig(){sctx.fillStyle=sbg;sctx.fillRect(0,0,sc.width,sc.height)}
-initSig();
-function gpt(e,c){const r=c.getBoundingClientRect();const sx=c.width/r.width,sy=c.height/r.height;const t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)*sx,y:(t.clientY-r.top)*sy}}
-sc.addEventListener('mousedown',e=>{e.preventDefault();isd=true;const p=gpt(e,sc);lx=p.x;ly=p.y;sh.push(sctx.getImageData(0,0,sc.width,sc.height));if(sh.length>40)sh.shift()});
-sc.addEventListener('mousemove',e=>{e.preventDefault();if(!isd)return;const p=gpt(e,sc);sctx.strokeStyle=pc;sctx.lineWidth=ps2;sctx.lineCap='round';sctx.lineJoin='round';sctx.beginPath();sctx.moveTo(lx,ly);sctx.lineTo(p.x,p.y);sctx.stroke();lx=p.x;ly=p.y});
-sc.addEventListener('mouseup',()=>isd=false);sc.addEventListener('mouseleave',()=>isd=false);
-sc.addEventListener('touchstart',e=>{e.preventDefault();isd=true;const p=gpt(e,sc);lx=p.x;ly=p.y;sh.push(sctx.getImageData(0,0,sc.width,sc.height));if(sh.length>40)sh.shift()},{passive:false});
-sc.addEventListener('touchmove',e=>{e.preventDefault();if(!isd)return;const p=gpt(e,sc);sctx.strokeStyle=pc;sctx.lineWidth=ps2;sctx.lineCap='round';sctx.lineJoin='round';sctx.beginPath();sctx.moveTo(lx,ly);sctx.lineTo(p.x,p.y);sctx.stroke();lx=p.x;ly=p.y},{passive:false});
-sc.addEventListener('touchend',()=>isd=false,{passive:false});
-function undoSig(){if(sh.length)sctx.putImageData(sh.pop(),0,0)}
-function clearSig(){sctx.clearRect(0,0,sc.width,sc.height);if(sbg!=='transparent'){sctx.fillStyle=sbg;sctx.fillRect(0,0,sc.width,sc.height)}}
-const setPenColor=(c,el)=>{pc=c;document.querySelectorAll('.cdot').forEach(d=>d.classList.remove('active'));el.classList.add('active')};
-const setPenSize=(s,el)=>{ps2=s;document.querySelectorAll('.sz-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active')};
-function changeSigBg(c){sbg=c;const w=document.getElementById('sigWrap');w.style.background=c==='transparent'?'repeating-conic-gradient(#ccc 0% 25%,#fff 0% 50%) 0 0/16px 16px':c;clearSig()}
-function applyBgPre(v){document.getElementById('sigBgPk').value=v==='transparent'?'#ffffff':v;changeSigBg(v)}
-function saveSig(){const sigs=gs('signatures');sigs.push({id:Date.now(),data:sc.toDataURL('image/png'),date:new Date().toLocaleDateString()});ss('signatures',sigs);renderSigs();alert('Signature saved!')}
-function dlSig(){const a=document.createElement('a');a.href=sc.toDataURL('image/png');a.download='signature.png';a.click()}
+// ═══════════ SIGNATURE — FULL PROFESSIONAL ═══════════
+// Tab switcher
+function setSigTab(t){
+  ['draw','scan','saved'].forEach(tab=>{
+    const p=document.getElementById('sig_panel_'+tab);
+    const b=document.getElementById('sigtab_'+tab);
+    if(p)p.style.display=tab===t?'block':'none';
+    if(b){b.className=tab===t?'btn bp':'btn bs';b.style.flex='1';b.style.fontSize='12px';}
+  });
+  if(t==='saved')renderSigs();
+}
+
+// ── DRAW PAD ──
+let sc,sctx,sigDrawing=false,sigHistory=[],sigLX=0,sigLY=0,sbg='#ffffff';
+let sigPenColor='#000000',sigPenSize=3,sigOpacity=1,sigFlow=0.8,sigPenType='pen',sigErasing=false,sigEraserSize=20,sigEraserType='soft';
+let sigPoints=[];
+
+function initSigPad(){
+  sc=document.getElementById('sigCanvas');
+  if(!sc)return;
+  sctx=sc.getContext('2d');
+  sctx.fillStyle='#ffffff';sctx.fillRect(0,0,sc.width,sc.height);
+  sc.addEventListener('mousedown',sigStart,{passive:false});
+  sc.addEventListener('mousemove',sigMove,{passive:false});
+  sc.addEventListener('mouseup',sigEnd,{passive:false});
+  sc.addEventListener('mouseleave',sigEnd,{passive:false});
+  sc.addEventListener('touchstart',sigStart,{passive:false});
+  sc.addEventListener('touchmove',sigMove,{passive:false});
+  sc.addEventListener('touchend',sigEnd,{passive:false});
+  sc.addEventListener('mousemove',sigShowEraserCursor,{passive:true});
+  updatePenPreview();
+}
+function sigGetPt(e){const r=sc.getBoundingClientRect();const sx=sc.width/r.width,sy=sc.height/r.height;const t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)*sx,y:(t.clientY-r.top)*sy}}
+function sigStart(e){
+  e.preventDefault();sigDrawing=true;sigPoints=[];
+  const p=sigGetPt(e);sigLX=p.x;sigLY=p.y;sigPoints.push(p);
+  sigHistory.push(sctx.getImageData(0,0,sc.width,sc.height));
+  if(sigHistory.length>50)sigHistory.shift();
+}
+function sigMove(e){
+  e.preventDefault();if(!sigDrawing)return;
+  const p=sigGetPt(e);
+  if(sigErasing){
+    _sigDoErase(p);
+  } else {
+    sigPoints.push(p);
+    _sigDrawStroke(p);
+  }
+  sigLX=p.x;sigLY=p.y;
+}
+function sigEnd(e){sigDrawing=false;sigPoints=[];}
+function _sigDoErase(p){
+  const sz=sigEraserSize;
+  if(sigEraserType==='hard'){
+    sctx.globalCompositeOperation='destination-out';
+    sctx.beginPath();sctx.arc(p.x,p.y,sz/2,0,Math.PI*2);sctx.fill();
+    sctx.globalCompositeOperation='source-over';
+    // Refill bg color on erased area
+    if(sbg!=='transparent'){
+      sctx.globalCompositeOperation='destination-over';
+      sctx.fillStyle=sbg;sctx.beginPath();sctx.arc(p.x,p.y,sz/2,0,Math.PI*2);sctx.fill();
+      sctx.globalCompositeOperation='source-over';
+    }
+  } else {
+    // Soft eraser — reduce opacity gradually
+    sctx.globalCompositeOperation='destination-out';
+    const g=sctx.createRadialGradient(p.x,p.y,0,p.x,p.y,sz/2);
+    g.addColorStop(0,'rgba(0,0,0,0.4)');g.addColorStop(1,'rgba(0,0,0,0)');
+    sctx.fillStyle=g;sctx.beginPath();sctx.arc(p.x,p.y,sz/2,0,Math.PI*2);sctx.fill();
+    sctx.globalCompositeOperation='source-over';
+  }
+}
+function _sigDrawStroke(p){
+  sctx.globalAlpha=sigOpacity;
+  sctx.strokeStyle=sigPenColor;
+  sctx.lineCap='round';sctx.lineJoin='round';
+  if(sigPenType==='pen'){
+    sctx.lineWidth=sigPenSize;
+    sctx.beginPath();sctx.moveTo(sigLX,sigLY);sctx.lineTo(p.x,p.y);sctx.stroke();
+  } else if(sigPenType==='pencil'){
+    sctx.lineWidth=sigPenSize*0.7;
+    sctx.globalAlpha=sigOpacity*0.7;
+    // Add slight texture
+    const dx=p.x-sigLX,dy=p.y-sigLY,dist=Math.sqrt(dx*dx+dy*dy);
+    for(let i=0;i<dist;i+=1){
+      const t2=i/dist;const nx=sigLX+dx*t2+((Math.random()-0.5)*sigPenSize*0.4);
+      const ny=sigLY+dy*t2+((Math.random()-0.5)*sigPenSize*0.4);
+      sctx.beginPath();sctx.arc(nx,ny,sigPenSize*0.2,0,Math.PI*2);sctx.fillStyle=sigPenColor;sctx.fill();
+    }
+  } else if(sigPenType==='calli'){
+    // Calligraphy — variable width based on direction
+    const angle=Math.atan2(p.y-sigLY,p.x-sigLX);
+    const wVar=sigPenSize*(0.3+Math.abs(Math.sin(angle))*1.7);
+    sctx.lineWidth=Math.max(1,wVar);
+    sctx.beginPath();sctx.moveTo(sigLX,sigLY);sctx.lineTo(p.x,p.y);sctx.stroke();
+  } else if(sigPenType==='hl'){
+    sctx.globalAlpha=0.35;
+    sctx.lineWidth=sigPenSize*3;
+    sctx.beginPath();sctx.moveTo(sigLX,sigLY);sctx.lineTo(p.x,p.y);sctx.stroke();
+  } else if(sigPenType==='brush'){
+    // Brush — tapered strokes
+    const speedX=p.x-sigLX,speedY=p.y-sigLY;
+    const speed=Math.sqrt(speedX*speedX+speedY*speedY);
+    const w=Math.max(1,sigPenSize-(speed*0.15));
+    sctx.lineWidth=w;
+    sctx.beginPath();sctx.moveTo(sigLX,sigLY);sctx.lineTo(p.x,p.y);sctx.stroke();
+  }
+  sctx.globalAlpha=1;
+}
+function sigShowEraserCursor(e){
+  const cur=document.getElementById('eraserCursor');if(!cur||!sigErasing){if(cur)cur.style.display='none';return;}
+  const r=sc.getBoundingClientRect();
+  cur.style.display='block';
+  cur.style.left=(e.clientX-r.left)+'px';
+  cur.style.top=(e.clientY-r.top)+'px';
+  cur.style.width=sigEraserSize+'px';cur.style.height=sigEraserSize+'px';
+}
+
+function undoSig(){if(sigHistory.length)sctx.putImageData(sigHistory.pop(),0,0)}
+function clearSig(){if(!sctx||!sc)return;sctx.clearRect(0,0,sc.width,sc.height);if(sbg!=='transparent'){sctx.fillStyle=sbg;sctx.fillRect(0,0,sc.width,sc.height)}}
+function sigSetColor(c){
+  sigPenColor=c;
+  document.getElementById('sigColorPk').value=c;
+  document.querySelectorAll('.cdot').forEach(d=>d.style.border='2px solid transparent');
+  updatePenPreview();
+}
+function setSigPenType(t){
+  sigPenType=t;
+  ['pen','pencil','calli','hl','brush'].forEach(x=>{
+    const b=document.getElementById('pt_'+x);
+    if(b){b.className=x===t?'btn bp':'btn bs';b.style.fontSize='10px';b.style.padding='6px 2px';b.style.flexDirection='column';b.style.gap='2px';}
+  });
+  updatePenPreview();
+}
+function sigPenChanged(){
+  sigPenSize=parseInt(document.getElementById('penSizeR').value)||3;
+  sigFlow=parseInt(document.getElementById('penFlowR').value)/100;
+  sigOpacity=parseInt(document.getElementById('penOpacityR').value)/100;
+  document.getElementById('penSizeVal').textContent=sigPenSize;
+  document.getElementById('penFlowVal').textContent=Math.round(sigFlow*100);
+  document.getElementById('penOpacityVal').textContent=Math.round(sigOpacity*100)+'%';
+  updatePenPreview();
+}
+function updatePenPreview(){
+  const pc2=document.getElementById('penPreviewC');if(!pc2)return;
+  const ctx=pc2.getContext('2d');
+  ctx.clearRect(0,0,pc2.width,pc2.height);
+  ctx.fillStyle='#f8faff';ctx.fillRect(0,0,pc2.width,pc2.height);
+  ctx.strokeStyle=sigPenColor;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.lineWidth=sigPenSize;ctx.globalAlpha=sigOpacity;
+  ctx.beginPath();
+  const pts=[[20,28],[50,12],[90,32],[130,15],[170,30],[210,12],[250,28],[280,18]];
+  ctx.moveTo(pts[0][0],pts[0][1]);
+  for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i][0],pts[i][1]);
+  ctx.stroke();ctx.globalAlpha=1;
+}
+function setEraserMode(erasing){
+  sigErasing=erasing;
+  const d=document.getElementById('erMode_pen'),e=document.getElementById('erMode_erase');
+  if(d){d.className=!erasing?'btn bp':'btn bs';d.style.fontSize='10px';d.style.padding='4px 9px';}
+  if(e){e.className=erasing?'btn bp':'btn bs';e.style.fontSize='10px';e.style.padding='4px 9px';}
+  const cur=document.getElementById('eraserCursor');
+  if(cur)cur.style.display=erasing?'block':'none';
+  if(sc)sc.style.cursor=erasing?'none':'crosshair';
+}
+function setEraserType(t){
+  sigEraserType=t;
+  const s=document.getElementById('et_soft'),h=document.getElementById('et_hard');
+  if(s){s.className=t==='soft'?'btn bp':'btn bs';s.style.flex='1';s.style.fontSize='10px';s.style.padding='6px';}
+  if(h){h.className=t==='hard'?'btn bp':'btn bs';h.style.flex='1';h.style.fontSize='10px';h.style.padding='6px';}
+}
+function changeSigBg(c){sbg=c;const w=document.getElementById('sigWrap');if(w)w.style.background=c==='transparent'?'repeating-conic-gradient(#ccc 0% 25%,#fff 0% 50%) 0 0/16px 16px':c;clearSig()}
+function applyBgPre(v){const pk=document.getElementById('sigBgPk');if(pk)pk.value=v==='transparent'?'#ffffff':v;changeSigBg(v)}
+function saveSig(){if(!sc)return;const sigs=gs('signatures');sigs.push({id:Date.now(),data:sc.toDataURL('image/png'),date:new Date().toLocaleDateString()});ss('signatures',sigs);alert('✅ Signature saved!');setSigTab('saved');}
+function dlSig(){if(!sc)return;const a=document.createElement('a');a.href=sc.toDataURL('image/png');a.download='signature.png';a.click()}
 function dlSigTransparent(){
+  if(!sc)return;
   const tmp=document.createElement('canvas');tmp.width=sc.width;tmp.height=sc.height;
   const ctx=tmp.getContext('2d');ctx.drawImage(sc,0,0);
   if(sbg==='transparent'){const a=document.createElement('a');a.href=tmp.toDataURL('image/png');a.download='sig_transparent.png';a.click();return}
@@ -2087,65 +2833,130 @@ function dlSigTransparent(){
 const hRgb=h=>{const r=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(h);return r?{r:parseInt(r[1],16),g:parseInt(r[2],16),b:parseInt(r[3],16)}:null};
 function renderSigs(){
   const sigs=gs('signatures'),el=document.getElementById('saved_sigs');
-  if(!sigs.length){el.innerHTML='<div style="text-align:center;color:var(--text2);padding:12px;font-size:12px">No saved signatures</div>';return}
-  el.innerHTML='<div style="display:flex;flex-wrap:wrap;gap:7px">'+sigs.map(s=>`<div style="position:relative"><img src="${s.data}" style="width:100px;height:50px;object-fit:contain;border-radius:7px;background:#fff;border:1px solid var(--border);display:block" onclick="copySignatureToClipboard('${s.id}')"><div style="font-size:9px;color:var(--text2);text-align:center">${s.date}</div><button onclick="delSig(${s.id})" style="position:absolute;top:1px;right:1px;background:var(--red);border:none;border-radius:50%;width:16px;height:16px;cursor:pointer;color:#fff;font-size:10px;line-height:1;display:flex;align-items:center;justify-content:center">×</button></div>`).join('')+'</div>';
+  if(!el)return;
+  if(!sigs.length){el.innerHTML='<div style="text-align:center;color:var(--text2);padding:14px;font-size:12px">No saved signatures yet</div>';return}
+  el.innerHTML='<div style="display:flex;flex-wrap:wrap;gap:8px">'+sigs.map(s=>`
+    <div style="position:relative;border:1px solid var(--border);border-radius:9px;overflow:hidden;background:#fff">
+      <img src="${s.data}" style="width:120px;height:60px;object-fit:contain;display:block;padding:4px" onclick="copySignatureToClipboard('${s.id}')">
+      <div style="font-size:9px;color:var(--text2);text-align:center;padding:2px 4px;background:var(--surface2)">${s.date}</div>
+      <button onclick="delSig(${s.id})" style="position:absolute;top:2px;right:2px;background:var(--red);border:none;border-radius:50%;width:18px;height:18px;cursor:pointer;color:#fff;font-size:11px;line-height:1;display:flex;align-items:center;justify-content:center">×</button>
+    </div>`).join('')+'</div>';
 }
-const delSig=id=>{ss('signatures',gs('signatures').filter(s=>s.id!==id));renderSigs()};
-// FIX 4: Signature paste/copy to clipboard
+const delSig=id=>{if(!confirm('Delete this signature?'))return;ss('signatures',gs('signatures').filter(s=>s.id!==id));renderSigs()};
 async function copySignatureToClipboard(id){
   const sig=gs('signatures').find(s=>s.id==id);if(!sig)return;
   try{
     const r=await fetch(sig.data);const b=await r.blob();
     await navigator.clipboard.write([new ClipboardItem({'image/png':b})]);
-    alert('Signature copied to clipboard! Paste in any app.');
+    alert('✅ Signature copied! Paste in any app.');
   }catch(e){
-    // Fallback: download
     const a=document.createElement('a');a.href=sig.data;a.download='signature.png';a.click();
-    alert('Copied to downloads. Some browsers require direct download.');
+    alert('Downloaded! (Clipboard not supported in this browser)');
   }
 }
 
-// EXTRACTOR
-let extOrig=null,bgMode2='light';
+// ── SCAN EXTRACTOR ──
+let extOrig=null,bgMode2='light',enhanceContrast=true;
 function loadExtImg(e){
   const f=e.target.files[0];if(!f)return;
   const reader=new FileReader();reader.onload=ev=>{
     const img=new Image();img.onload=()=>{
       const oc=document.getElementById('extOrigC'),ec=document.getElementById('extC');
-      // Keep original size but cap for display
       const maxW=400,sc2=Math.min(1,maxW/img.naturalWidth);
       oc.width=Math.round(img.naturalWidth*sc2);oc.height=Math.round(img.naturalHeight*sc2);
       const octx=oc.getContext('2d');octx.drawImage(img,0,0,oc.width,oc.height);
       extOrig=octx.getImageData(0,0,oc.width,oc.height);
       ec.width=oc.width;ec.height=oc.height;
-      document.getElementById('ex_s1').style.display='none';document.getElementById('ex_s2').style.display='block';
-      document.getElementById('estep1').className='schip ds';document.getElementById('estep2').className='schip as';document.getElementById('estep3').className='schip';
+      document.getElementById('ex_s1').style.display='none';
+      document.getElementById('ex_s2').style.display='block';
+      ['estep1','estep2','estep3','estep4'].forEach((id2,i)=>document.getElementById(id2).className='schip'+(i===0?' ds':i===1?' as':''));
       applyExt();
     };img.src=ev.target.result;
   };reader.readAsDataURL(f);
 }
 function setBgMode(m){
   bgMode2=m;
-  document.getElementById('bgLBtn').className=m==='light'?'btn bp':'btn bs';document.getElementById('bgLBtn').style.flex='1';document.getElementById('bgLBtn').style.fontSize='11px';
-  document.getElementById('bgDBtn').className=m==='dark'?'btn bp':'btn bs';document.getElementById('bgDBtn').style.flex='1';document.getElementById('bgDBtn').style.fontSize='11px';
+  const lb=document.getElementById('bgLBtn'),db=document.getElementById('bgDBtn');
+  if(lb){lb.className=m==='light'?'btn bp':'btn bs';lb.style.flex='1';lb.style.fontSize='11px';}
+  if(db){db.className=m==='dark'?'btn bp':'btn bs';db.style.flex='1';db.style.fontSize='11px';}
   applyExt();
 }
 function thrChange(){document.getElementById('thrVal').textContent=document.getElementById('extThr').value;applyExt()}
+function toggleEnhanceContrast(){
+  enhanceContrast=!enhanceContrast;
+  const tog=document.getElementById('enhanceContrastToggle');
+  const knob=document.getElementById('enhanceContrastKnob');
+  if(tog)tog.style.background=enhanceContrast?'var(--accent)':'var(--surface2)';
+  if(knob)knob.style.transform=enhanceContrast?'translateX(0)':'translateX(-20px)';
+  applyExt();
+}
+function setExtColor(c){document.getElementById('extColor').value=c;applyExt();}
 function applyExt(){
   if(!extOrig)return;
-  const ec=document.getElementById('extC'),ctx=ec.getContext('2d');
+  const ec=document.getElementById('extC');if(!ec)return;
+  const ctx=ec.getContext('2d');
   const thr=parseInt(document.getElementById('extThr').value);
+  const edgeSmooth=parseInt(document.getElementById('edgeSmoothR')?.value||3);
+  const noiseReduce=parseInt(document.getElementById('noiseReduceR')?.value||2);
   const rgb=hRgb(document.getElementById('extColor').value)||{r:0,g:0,b:0};
   const id2=new ImageData(new Uint8ClampedArray(extOrig.data),extOrig.width,extOrig.height);const d=id2.data;
+  const W=extOrig.width,H=extOrig.height;
+
+  // Apply enhance contrast first
+  if(enhanceContrast){
+    for(let i=0;i<d.length;i+=4){
+      const avg=(d[i]+d[i+1]+d[i+2])/3;
+      const factor=1.5;
+      d[i]=Math.min(255,128+(d[i]-128)*factor);
+      d[i+1]=Math.min(255,128+(d[i+1]-128)*factor);
+      d[i+2]=Math.min(255,128+(d[i+2]-128)*factor);
+    }
+  }
+  // Threshold
   for(let i=0;i<d.length;i+=4){
     const br=d[i]*.299+d[i+1]*.587+d[i+2]*.114;
     const isBg=bgMode2==='light'?(br>thr):(br<thr);
-    if(isBg)d[i+3]=0;else{d[i]=rgb.r;d[i+1]=rgb.g;d[i+2]=rgb.b;d[i+3]=255}
+    if(isBg)d[i+3]=0;else{d[i]=rgb.r;d[i+1]=rgb.g;d[i+2]=rgb.b;d[i+3]=255;}
   }
-  ctx.putImageData(id2,0,0);document.getElementById('estep3').className='schip as';
+  // Noise reduce — remove isolated pixels
+  if(noiseReduce>0){
+    const nr=noiseReduce;
+    for(let y=nr;y<H-nr;y++){for(let x=nr;x<W-nr;x++){
+      const idx=(y*W+x)*4;
+      if(d[idx+3]===0)continue;
+      let nbrs=0;
+      for(let dy=-1;dy<=1;dy++){for(let dx=-1;dx<=1;dx++){if(dx===0&&dy===0)continue;const ni=((y+dy)*W+(x+dx))*4;if(d[ni+3]>0)nbrs++;}}
+      if(nbrs<(nr<5?2:3))d[idx+3]=0;
+    }}
+  }
+  ctx.putImageData(id2,0,0);
+  // Edge smooth — slight blur on edges
+  if(edgeSmooth>0){
+    ctx.filter=`blur(${edgeSmooth*0.3}px)`;
+    ctx.drawImage(ec,0,0);ctx.filter='none';
+  }
+  ['estep3','estep4'].forEach(id2=>{const el=document.getElementById(id2);if(el)el.className='schip as';});
 }
-function resetExt(){extOrig=null;document.getElementById('ex_s1').style.display='block';document.getElementById('ex_s2').style.display='none';document.getElementById('sigExtIn').value='';['estep1','estep2','estep3'].forEach((id,i)=>document.getElementById(id).className='schip'+(i===0?' as':''))}
-function dlExtracted(){const ec=document.getElementById('extC');const a=document.createElement('a');a.href=ec.toDataURL('image/png');a.download='signature_extracted.png';a.click();document.getElementById('estep3').className='schip ds'}
+function resetExt(){
+  extOrig=null;
+  const s1=document.getElementById('ex_s1'),s2=document.getElementById('ex_s2');
+  if(s1)s1.style.display='block';if(s2)s2.style.display='none';
+  const si=document.getElementById('sigExtIn');if(si)si.value='';
+  ['estep1','estep2','estep3','estep4'].forEach((id2,i)=>{const el=document.getElementById(id2);if(el)el.className='schip'+(i===0?' as':'');});
+  ['crop_top','crop_bottom','crop_left','crop_right'].forEach(id2=>{const el=document.getElementById(id2);if(el)el.value='0';});
+}
+function dlExtracted(){
+  const ec=document.getElementById('extC');if(!ec)return;
+  const a=document.createElement('a');a.href=ec.toDataURL('image/png');a.download='signature_extracted.png';a.click();
+  ['estep4'].forEach(id2=>{const el=document.getElementById(id2);if(el)el.className='schip ds';});
+}
+function saveExtractedSig(){
+  const ec=document.getElementById('extC');if(!ec)return;
+  const sigs=gs('signatures');
+  sigs.push({id:Date.now(),data:ec.toDataURL('image/png'),date:new Date().toLocaleDateString()});
+  ss('signatures',sigs);
+  alert('✅ Saved to library!');setSigTab('saved');
+}
 
 // ═══════════ PDF COMPRESSOR (FIX 8: 500MB + always OCR) ═══════════
 let pdfFile=null,pdfCL='low',pdfDPI=120;
@@ -2271,6 +3082,59 @@ function clearCash(){dn.forEach(d=>{document.getElementById('nt_'+d).value='';do
 const cashTxt=()=>{const t=document.getElementById('cash_total').textContent,w=document.getElementById('cash_words').textContent;return`Cash: ₹${t}\n${w}\n\n`+dn.map(d=>{const n=parseInt(document.getElementById('nt_'+d).value)||0;return n>0?`₹${d}×${n}=₹${n*d}`:null}).filter(Boolean).join('\n')};
 const copyCash=()=>navigator.clipboard.writeText(cashTxt()).then(()=>alert('Copied!'));
 const shareCash=()=>{if(navigator.share)navigator.share({text:cashTxt()});else navigator.clipboard.writeText(cashTxt()).then(()=>alert('Copied!'))};
+
+// ── Cash History (max 10) ──
+function saveCashHistory(){
+  const total=document.getElementById('cash_total').textContent;
+  if(!total||total==='0'){alert('Koi amount nahi hai save karne ke liye');return;}
+  let hist=gs('cashHistory')||[];
+  const breakdown=dn.map(d=>{const n=parseInt(document.getElementById('nt_'+d).value)||0;return n>0?{den:d,qty:n,val:n*d}:null}).filter(Boolean);
+  if(!breakdown.length){alert('Pehle notes/coins daalo');return;}
+  const entry={id:Date.now(),total:parseInt(total.replace(/,/g,'')),totalFmt:total,date:new Date().toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),breakdown,words:document.getElementById('cash_words').textContent};
+  hist.unshift(entry);
+  if(hist.length>10)hist=hist.slice(0,10); // max 10
+  ss('cashHistory',hist);
+  renderCashHistory();
+  alert('✅ Cash history saved!');
+}
+function renderCashHistory(){
+  const hist=gs('cashHistory')||[];
+  const countEl=document.getElementById('cash_hist_count');
+  if(countEl)countEl.textContent=hist.length;
+  const el=document.getElementById('cash_history_list');if(!el)return;
+  if(!hist.length){el.innerHTML='<div style="text-align:center;color:var(--text2);padding:12px;font-size:12px">No history yet. Save karo 💾</div>';return;}
+  el.innerHTML=hist.map(h=>`
+    <div style="background:var(--surface2);border-radius:10px;padding:10px;margin-bottom:8px;border:1px solid var(--border)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+        <div>
+          <div style="font-size:15px;font-weight:800;color:var(--green);font-family:'Baloo 2',sans-serif">₹${h.totalFmt}</div>
+          <div style="font-size:10px;color:var(--text2)">${h.date}</div>
+        </div>
+        <div style="display:flex;gap:5px;align-items:center">
+          <button onclick="shareCashEntry(${h.id})" style="padding:4px 8px;border-radius:7px;border:1px solid var(--accent);background:none;color:var(--accent);font-size:10px;cursor:pointer">📤</button>
+          <button onclick="delCashEntry(${h.id})" style="padding:4px 8px;border-radius:7px;border:1px solid var(--red);background:none;color:var(--red);font-size:10px;cursor:pointer">🗑️</button>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text2);word-break:break-word">${h.words}</div>
+      <div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:4px">
+        ${h.breakdown.map(b=>`<span style="background:rgba(37,99,235,.08);color:var(--accent);border-radius:6px;padding:2px 7px;font-size:10px;font-weight:700">₹${b.den}×${b.qty}=₹${fmt(b.val)}</span>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function delCashEntry(id){
+  if(!confirm('Delete this entry?'))return;
+  const hist=(gs('cashHistory')||[]).filter(h=>h.id!==id);
+  ss('cashHistory',hist);renderCashHistory();
+}
+function shareCashEntry(id){
+  const h=(gs('cashHistory')||[]).find(x=>x.id===id);if(!h)return;
+  const txt=`Cash Count\n₹${h.totalFmt}\n${h.words}\n${h.date}\n\n`+h.breakdown.map(b=>`₹${b.den}×${b.qty}=₹${fmt(b.val)}`).join('\n');
+  if(navigator.share)navigator.share({text:txt});else navigator.clipboard.writeText(txt).then(()=>alert('Copied!'));
+}
+function clearAllCashHistory(){
+  if(!confirm('Sab history delete karein?'))return;
+  ss('cashHistory',[]);renderCashHistory();
+}
 
 // ═══════════ AMOUNT TO WORD — FIX 1 (multi-country with INR conversion) ═══════════
 // Approximate exchange rates from INR
@@ -3424,7 +4288,9 @@ const _origRenderCmpHistory=renderCmpHistory;
 // ═══════════ INIT ═══════════
 renderNav();showSection('sec_'+tabs[0].id);setEmiSolve('emi');
 renderProfiles();renderSigs();renderWAList();startWAScheduler();initCash();buildA2WUI();convA2W();setCL('low');setPPMode('tenure');
-renderCmpHistory();renderMileageHistory();
+renderCmpHistory();renderMileageHistory();renderCashHistory();
+// Init signature pad after DOM ready
+setTimeout(()=>{initSigPad();updatePenPreview();},100);
 const nw=new Date();nw.setMinutes(nw.getMinutes()+30);document.getElementById('wa_time').value=nw.toISOString().slice(0,16);
 // ── Clear any leftover session on every page load — always ask login ──
 (()=>{
