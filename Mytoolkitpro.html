@@ -1858,7 +1858,15 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
     <label>SIP Account / Folio No.</label><input class="inp" id="sip_edit_folio" placeholder="Optional">
     <label>Monthly SIP Amount (₹)</label><input class="inp" type="number" id="sip_edit_monthly" placeholder="Ex: 5000">
     <label>Annual Return (%)</label><input class="inp" type="number" id="sip_edit_rate" placeholder="Ex: 12">
-    <label>Tenure (months)</label><input class="inp" type="number" id="sip_edit_months" placeholder="Ex: 120">
+    <label>Tenure (Years / Months)</label>
+    <div style="display:flex;gap:6px;margin-bottom:8px;align-items:center">
+      <input class="inp" type="number" id="sip_edit_tenure_val" placeholder="Ex: 10" style="margin-bottom:0;flex:1">
+      <div style="display:flex;border-radius:9px;overflow:hidden;border:1px solid var(--border);flex-shrink:0">
+        <button id="sip_edit_pt_y" class="ptbtn active" style="padding:10px 14px;border:none;cursor:pointer;font-size:12px;font-weight:700;background:var(--accent);color:#fff;font-family:'Inter',sans-serif" onclick="setSipEditPT('years')">Yrs</button>
+        <button id="sip_edit_pt_m" class="ptbtn" style="padding:10px 14px;border:none;cursor:pointer;font-size:12px;font-weight:700;background:var(--surface2);color:var(--text2);font-family:'Inter',sans-serif" onclick="setSipEditPT('months')">Months</button>
+      </div>
+    </div>
+    <input type="hidden" id="sip_edit_months">
     <label>Notes</label><input class="inp" id="sip_edit_notes" placeholder="Optional notes">
     <div class="btn-row">
       <button class="btn bs" onclick="closeM('sipEditModal')">Cancel</button>
@@ -5531,7 +5539,16 @@ function renderSipProfiles(){
   // Render in SIP overview section
   const el=document.getElementById('sip_profiles_list');
   if(!el) return;
-  if(!ps.length){el.innerHTML='<div style="text-align:center;color:var(--text2);padding:15px;font-size:12px">No SIP profiles yet. Calculate karein aur Save karein.</div>';return}
+  if(!ps.length){
+    el.innerHTML='<div style="text-align:center;color:var(--text2);padding:15px;font-size:12px">No SIP profiles yet. Calculate karein aur Save karein.</div>';
+    // Reset all summary cells to —
+    const resetEl=(id)=>{const e=document.getElementById(id);if(e)e.textContent='—'};
+    resetEl('sip_ov_badge');
+    ['sip_ov_invested','sip_ov_maturity','sip_ov_gains','sip_ov_rate',
+     'sip_ov_td_maturity','sip_ov_td_invested','sip_ov_td_gains','sip_ov_td_rate']
+      .forEach(resetEl);
+    return;
+  }
 
   // Summary totals (maturity)
   const totInv=ps.reduce((s,p)=>s+(p.totalInvested||0),0);
@@ -5626,6 +5643,15 @@ function viewSipProfile(idx){
   openM('sipProfileDetailModal');
 }
 
+let sipEditPeriodT='years';
+function setSipEditPT(t){
+  sipEditPeriodT=t;
+  const yBtn=document.getElementById('sip_edit_pt_y');
+  const mBtn=document.getElementById('sip_edit_pt_m');
+  if(yBtn){yBtn.style.background=t==='years'?'var(--accent)':'var(--surface2)';yBtn.style.color=t==='years'?'#fff':'var(--text2)';}
+  if(mBtn){mBtn.style.background=t==='months'?'var(--accent)':'var(--surface2)';mBtn.style.color=t==='months'?'#fff':'var(--text2)';}
+}
+
 function openSipEditModal(idx){
   const ps=gs('sipProfiles')||[];
   const p=ps[idx];if(!p)return;
@@ -5636,8 +5662,17 @@ function openSipEditModal(idx){
   document.getElementById('sip_edit_folio').value=p.folio||'';
   document.getElementById('sip_edit_monthly').value=p.monthly||((p.totalInvested||0)/(p.months||1));
   document.getElementById('sip_edit_rate').value=p.rateA||'';
-  document.getElementById('sip_edit_months').value=p.months||'';
   document.getElementById('sip_edit_notes').value=p.notes||'';
+  // Tenure: show in years if divisible by 12, else months
+  const months=p.months||0;
+  if(months%12===0&&months>0){
+    sipEditPeriodT='years';
+    document.getElementById('sip_edit_tenure_val').value=months/12;
+  } else {
+    sipEditPeriodT='months';
+    document.getElementById('sip_edit_tenure_val').value=months;
+  }
+  setSipEditPT(sipEditPeriodT);
   openM('sipEditModal');
 }
 
@@ -5649,7 +5684,8 @@ function saveSipEditProfile(){
   if(!name){alert('Profile name daalo');return}
   const monthly=parseFloat(document.getElementById('sip_edit_monthly').value)||ps[idx].monthly||0;
   const rateA=parseFloat(document.getElementById('sip_edit_rate').value)||ps[idx].rateA||0;
-  const months=parseInt(document.getElementById('sip_edit_months').value)||ps[idx].months||0;
+  const tenureVal=parseFloat(document.getElementById('sip_edit_tenure_val').value)||0;
+  const months=tenureVal?(sipEditPeriodT==='years'?Math.round(tenureVal*12):Math.round(tenureVal)):(ps[idx].months||0);
   // Recalculate
   let maturity=ps[idx].maturity,totalInvested=ps[idx].totalInvested,gains=ps[idx].gains;
   if(monthly&&rateA&&months){
