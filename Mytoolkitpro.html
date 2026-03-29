@@ -22,7 +22,7 @@ body.dark{--bg:#0d0f1a;--surface:#161925;--surface2:#1e2235;--accent:#4f8ef7;--a
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
 /* HEADER */
-.app-header{background:var(--hbg);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.app-header{background:linear-gradient(135deg,#0f172a,#1e3a8a,#2563eb);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.25)}
 .logo{font-family:'Baloo 2',sans-serif;font-size:19px;font-weight:800;color:#fff!important;display:flex;align-items:center;gap:8px}
 .logo span{color:#fff!important;text-shadow:0 1px 4px rgba(0,0,0,.4)}
 .logo-icon{font-size:22px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
@@ -35,20 +35,20 @@ body.dark .dm-tog::after{content:'🌙';transform:translateX(17px)}
 /* NAV */
 .nav-bar{display:flex;gap:5px;padding:8px 10px;overflow-x:auto;scrollbar-width:none;background:var(--nav);border-bottom:1px solid var(--border);position:sticky;top:48px;z-index:190}
 .nav-bar::-webkit-scrollbar{display:none}
-.nav-btn{flex-shrink:0;padding:6px 11px;border-radius:18px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;font-size:11px;font-weight:600;transition:all .2s;white-space:nowrap;font-family:'Inter',sans-serif}
-.nav-btn.active{background:#2563eb;color:#fff;border-color:#2563eb;box-shadow:0 2px 8px rgba(37,99,235,.35)}
+.nav-btn{flex-shrink:0;padding:7px 13px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;font-size:11px;font-weight:700;transition:all .2s;white-space:nowrap;font-family:'Inter',sans-serif;letter-spacing:0.2px}
+.nav-btn.active{background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;border-color:transparent;box-shadow:0 3px 10px rgba(37,99,235,.45)}
 body.dark .nav-btn.active{background:#3b82f6;border-color:#3b82f6}
 .nav-btn.drag-over{border-color:var(--accent);transform:scale(1.05)}
 .edit-bar{display:none;background:var(--surface);padding:6px 12px;border-bottom:1px solid var(--border);font-size:11px;color:var(--text2);gap:8px;align-items:center}
 .edit-bar.show{display:flex}
 /* SECTIONS */
-.section{display:none;padding:13px 12px;animation:fi .2s ease}.section.active{display:block}
+.section{display:none;padding:12px 12px 24px;animation:fi .2s ease}.section.active{display:block}
 @keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 /* CARDS */
 .card{background:var(--surface);border-radius:var(--radius);padding:14px;margin-bottom:11px;border:1px solid var(--border);box-shadow:var(--shadow)}
 .card-title{font-family:'Baloo 2',sans-serif;font-size:15px;font-weight:700;color:var(--accent);margin-bottom:11px;display:flex;align-items:center;gap:7px}
 /* INPUTS */
-.inp{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:10px 12px;color:var(--text);font-size:13px;margin-bottom:8px;outline:none;transition:border-color .2s;font-family:'Inter',sans-serif}
+.inp{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;padding:11px 13px;color:var(--text);font-size:13px;margin-bottom:8px;outline:none;transition:all .2s;font-family:'Inter',sans-serif;font-weight:500}
 .inp:focus{border-color:var(--accent)} textarea.inp{resize:vertical}
 label{font-size:11px;color:var(--text2);margin-bottom:3px;display:block;font-weight:500}
 /* BUTTONS */
@@ -56,7 +56,7 @@ label{font-size:11px;color:var(--text2);margin-bottom:3px;display:block;font-wei
 .bp{background:var(--accent);color:#fff}.bs{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}.bg{background:var(--green);color:#fff}.br{background:var(--red);color:#fff}.bo{background:var(--accent2);color:#fff}.by{background:var(--yellow);color:#fff}
 .btn-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.bfull{width:100%;justify-content:center}
 /* RESULT */
-.rbox{background:var(--surface2);border-radius:9px;padding:12px;margin-top:10px;border-left:3px solid var(--accent)}
+.rbox{background:var(--surface2);border-radius:12px;padding:12px;margin-top:10px;border-left:3px solid var(--accent);box-shadow:0 2px 8px rgba(37,99,235,0.06)}
 .rrow{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px}.rrow:last-child{border-bottom:none}
 .rv{font-weight:700;color:var(--accent)}.rv.red{color:var(--red)}.rv.grn{color:var(--green)}
 /* EMI RADIO FIELDS */
@@ -138,8 +138,9 @@ tr:nth-child(even) td{background:var(--surface2)}
 /* MODAL */
 .mov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center;padding:12px}
 .mov.open{display:flex}
-.modal{background:var(--surface);border-radius:16px;padding:17px;width:100%;max-width:460px;max-height:92vh;overflow-y:auto;border:1px solid var(--border);box-shadow:0 20px 60px rgba(0,0,0,.3)}
-.modal-title{font-family:'Baloo 2',sans-serif;font-size:15px;font-weight:800;color:var(--accent);margin-bottom:12px}
+.modal{background:var(--surface);border-radius:20px;padding:17px;width:100%;max-width:460px;max-height:92vh;overflow-y:auto;border:1px solid var(--border);box-shadow:0 20px 60px rgba(0,0,0,.35);position:relative;overflow:hidden}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),#10b981,var(--accent));background-size:200% 100%;animation:prem-shimmer 3s linear infinite;z-index:1}
+.modal-title{font-family:'Baloo 2',sans-serif;font-size:15px;font-weight:800;color:var(--accent);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px}
 .mc{float:right;background:none;border:none;color:var(--text2);font-size:22px;cursor:pointer}
 .bdg{display:inline-block;padding:2px 8px;border-radius:18px;font-size:11px;font-weight:700;background:rgba(37,99,235,.1);color:var(--accent);border:1px solid rgba(37,99,235,.2)}
 body.dark .bdg{background:rgba(79,142,247,.15)}
@@ -149,6 +150,298 @@ body.dark .ig{background:rgba(79,202,122,.07)}.io{background:rgba(247,160,79,.07
 input[type=range]{width:100%;accent-color:var(--accent);margin:4px 0}
 ::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-thumb{background:rgba(37,99,235,.2);border-radius:3px}
 body.dark ::-webkit-scrollbar-thumb{background:rgba(79,142,247,.3)}
+
+/* ═══════════════════════════════════════
+   PREMIUM SIP SECTION STYLES
+═══════════════════════════════════════ */
+
+/* SIP Hero Card */
+.sip-hero-card{
+  background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 50%,#1d4ed8 100%);
+  border-radius:20px;
+  padding:0;
+  margin-bottom:14px;
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 8px 32px rgba(37,99,235,0.35);
+  border:1px solid rgba(99,179,237,0.2);
+}
+body.dark .sip-hero-card{
+  background:linear-gradient(135deg,#060b18 0%,#0f2a5c 50%,#1a3fa0 100%);
+  box-shadow:0 8px 40px rgba(0,0,0,0.6);
+}
+.sip-hero-card::before{
+  content:'';position:absolute;top:-40px;right:-40px;
+  width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(147,197,253,0.15),transparent 70%);
+  pointer-events:none;
+}
+.sip-hero-card::after{
+  content:'';position:absolute;bottom:-30px;left:-20px;
+  width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle,rgba(34,197,94,0.12),transparent 70%);
+  pointer-events:none;
+}
+.sip-hero-inner{padding:18px 16px 16px;position:relative;z-index:1}
+.sip-hero-label{font-size:10px;font-weight:700;color:rgba(147,197,253,0.8);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px}
+.sip-hero-title{font-family:'Baloo 2',sans-serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:2px;line-height:1.1}
+.sip-hero-sub{font-size:11px;color:rgba(255,255,255,0.55);margin-bottom:14px}
+
+/* Premium Mode Toggle */
+.sip-mode-toggle{
+  display:flex;
+  background:rgba(0,0,0,0.3);
+  border-radius:12px;
+  padding:3px;
+  margin-bottom:0;
+  border:1px solid rgba(255,255,255,0.1);
+  gap:2px;
+}
+.sip-mode-btn{
+  flex:1;padding:8px 4px;border-radius:9px;border:none;
+  font-size:11px;font-weight:700;cursor:pointer;transition:all .25s;
+  color:rgba(255,255,255,0.5);background:transparent;
+  font-family:'Inter',sans-serif;white-space:nowrap;
+}
+.sip-mode-btn.active{
+  background:linear-gradient(135deg,#3b82f6,#1d4ed8);
+  color:#fff;
+  box-shadow:0 3px 12px rgba(37,99,235,0.5);
+}
+
+/* Premium Input Section */
+.sip-inputs-section{
+  background:var(--surface);
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:12px;
+  border:1px solid var(--border);
+  box-shadow:0 2px 16px rgba(37,99,235,0.07);
+  position:relative;
+  overflow:hidden;
+}
+.sip-inputs-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,#3b82f6,#10b981,#3b82f6);
+  background-size:200% 100%;
+  animation:sip-shimmer 3s linear infinite;
+}
+@keyframes sip-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.sip-section-label{
+  font-size:10px;font-weight:800;color:var(--accent);
+  text-transform:uppercase;letter-spacing:1.2px;
+  margin-bottom:12px;display:flex;align-items:center;gap:6px;
+}
+.sip-section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* Premium Input Fields */
+.sip-inp-wrap{margin-bottom:12px}
+.sip-inp-label{
+  font-size:10px;font-weight:700;color:var(--text2);
+  text-transform:uppercase;letter-spacing:0.8px;
+  margin-bottom:5px;display:block;
+}
+.sip-inp-field{
+  width:100%;
+  background:var(--surface2);
+  border:1.5px solid var(--border);
+  border-radius:11px;
+  padding:12px 14px;
+  color:var(--text);
+  font-size:15px;
+  font-weight:600;
+  outline:none;
+  transition:all .2s;
+  font-family:'Baloo 2',sans-serif;
+  position:relative;
+}
+.sip-inp-field:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(37,99,235,0.12);
+  background:var(--surface);
+}
+.sip-inp-field::placeholder{font-family:'Inter',sans-serif;font-size:12px;font-weight:400;color:var(--text2);opacity:0.6}
+.sip-inp-with-prefix{display:flex;align-items:center;gap:0}
+.sip-inp-prefix{
+  background:linear-gradient(135deg,var(--accent),#1d4ed8);
+  color:#fff;font-weight:800;font-size:14px;
+  padding:12px 14px;border-radius:11px 0 0 11px;
+  flex-shrink:0;font-family:'Baloo 2',sans-serif;
+  border:1.5px solid var(--accent);border-right:none;
+}
+.sip-inp-with-prefix .sip-inp-field{border-radius:0 11px 11px 0}
+.sip-inp-suffix-wrap{position:relative}
+.sip-inp-suffix{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  font-size:11px;font-weight:700;color:var(--text2);pointer-events:none;
+}
+
+/* Period Toggle (Years/Months) */
+.sip-period-row{display:flex;gap:8px;align-items:stretch}
+.sip-period-row .sip-inp-field{border-radius:11px 0 0 11px;border-right:none}
+.sip-pt-toggle{
+  display:flex;border-radius:0 11px 11px 0;overflow:hidden;
+  border:1.5px solid var(--border);border-left:none;flex-shrink:0;
+}
+.sip-pt-btn{
+  padding:10px 12px;border:none;cursor:pointer;font-size:11px;font-weight:700;
+  background:var(--surface2);color:var(--text2);transition:all .2s;
+  font-family:'Inter',sans-serif;
+}
+.sip-pt-btn.active{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff}
+
+/* Premium Calculate Button */
+.sip-calc-btn{
+  width:100%;padding:14px;border-radius:13px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,#1d4ed8,#2563eb,#3b82f6);
+  color:#fff;font-size:14px;font-weight:800;
+  font-family:'Baloo 2',sans-serif;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 4px 20px rgba(37,99,235,0.4);
+  transition:all .25s;letter-spacing:0.3px;
+  position:relative;overflow:hidden;
+}
+.sip-calc-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);
+}
+.sip-calc-btn:active{transform:scale(0.98);box-shadow:0 2px 10px rgba(37,99,235,0.3)}
+
+/* ─── PREMIUM RESULT ─── */
+.sip-result-hero{
+  background:linear-gradient(135deg,#0c1445 0%,#0f2167 40%,#064e3b 100%);
+  border-radius:20px;padding:20px 16px 16px;
+  margin-bottom:12px;position:relative;overflow:hidden;
+  border:1px solid rgba(16,185,129,0.2);
+  box-shadow:0 8px 32px rgba(0,0,0,0.25);
+  animation:sip-res-pop .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes sip-res-pop{from{opacity:0;transform:scale(0.95) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+body.dark .sip-result-hero{
+  background:linear-gradient(135deg,#060b25 0%,#0a1744 40%,#022c22 100%);
+}
+.sip-result-hero::before{
+  content:'💹';position:absolute;right:12px;top:12px;
+  font-size:42px;opacity:0.12;
+}
+.sip-res-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.3);
+  border-radius:20px;padding:3px 10px;
+  font-size:9px;font-weight:800;color:#6ee7b7;
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;
+}
+.sip-res-maturity-label{font-size:11px;color:rgba(255,255,255,0.5);font-weight:600;margin-bottom:4px}
+.sip-res-maturity-amt{
+  font-family:'Baloo 2',sans-serif;font-size:38px;font-weight:900;
+  color:#fff;line-height:1;margin-bottom:3px;
+}
+.sip-res-maturity-words{font-size:10px;color:rgba(255,255,255,0.45);margin-bottom:16px}
+
+/* Result Stats Grid */
+.sip-res-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.sip-res-cell{
+  border-radius:13px;padding:12px;
+  backdrop-filter:blur(10px);
+  position:relative;overflow:hidden;
+}
+.sip-res-cell-invested{
+  background:rgba(59,130,246,0.2);border:1px solid rgba(59,130,246,0.3);
+}
+.sip-res-cell-gains{
+  background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.3);
+}
+.sip-res-cell-label{font-size:9px;color:rgba(255,255,255,0.5);font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+.sip-res-cell-val{font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:#fff;line-height:1}
+.sip-res-cell-icon{position:absolute;right:8px;bottom:6px;font-size:22px;opacity:0.2}
+
+/* Premium Progress Bar */
+.sip-progress-wrap{margin-bottom:0}
+.sip-progress-labels{display:flex;justify-content:space-between;font-size:10px;margin-bottom:5px}
+.sip-progress-labels span{display:flex;align-items:center;gap:4px;font-weight:700}
+.sip-progress-labels .inv-lbl{color:rgba(147,197,253,0.8)}
+.sip-progress-labels .ret-lbl{color:rgba(110,231,183,0.8)}
+.sip-progress-bar{height:8px;border-radius:6px;background:rgba(255,255,255,0.1);overflow:hidden}
+.sip-progress-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#3b82f6,#10b981);transition:width .8s cubic-bezier(.34,1.56,.64,1)}
+.sip-progress-pcts{display:flex;justify-content:space-between;font-size:9px;margin-top:4px;font-weight:700}
+.sip-progress-pcts .inv-pct{color:rgba(147,197,253,0.7)}
+.sip-progress-pcts .ret-pct{color:rgba(110,231,183,0.7)}
+
+/* Premium Stats Rows (rbox replacement) */
+.sip-stats-card{
+  background:var(--surface);border-radius:14px;
+  border:1px solid var(--border);overflow:hidden;
+  margin-bottom:10px;
+  box-shadow:0 2px 12px rgba(37,99,235,0.06);
+}
+.sip-stats-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 14px;border-bottom:1px solid var(--border);
+  font-size:12px;transition:background .15s;
+}
+.sip-stats-row:last-child{border-bottom:none}
+.sip-stats-row:hover{background:var(--surface2)}
+.sip-stats-lbl{color:var(--text2);font-weight:500}
+.sip-stats-val{font-weight:800;color:var(--accent);font-family:'Baloo 2',sans-serif;font-size:13px}
+.sip-stats-val.grn{color:var(--green)}
+.sip-stats-val.red{color:var(--red)}
+
+/* Action Buttons */
+.sip-action-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:10px}
+.sip-act-btn{
+  padding:10px 6px;border-radius:11px;border:none;cursor:pointer;
+  font-size:11px;font-weight:700;font-family:'Inter',sans-serif;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  transition:all .2s;
+}
+.sip-act-copy{background:rgba(22,163,74,0.1);color:var(--green);border:1px solid rgba(22,163,74,0.25)}
+.sip-act-share{background:rgba(234,88,12,0.1);color:var(--accent2);border:1px solid rgba(234,88,12,0.25)}
+.sip-act-save{background:rgba(37,99,235,0.1);color:var(--accent);border:1px solid rgba(37,99,235,0.25)}
+.sip-act-btn:active{transform:scale(0.96)}
+.sip-act-icon{font-size:18px}
+
+/* Year-by-Year Breakdown Toggle */
+.sip-breakdown-toggle{
+  width:100%;padding:10px;border-radius:10px;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text2);font-size:11px;font-weight:700;
+  cursor:pointer;font-family:'Inter',sans-serif;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  margin-top:10px;transition:all .2s;
+}
+.sip-breakdown-toggle:hover{border-color:var(--accent);color:var(--accent)}
+
+/* SIP Compare Card Premium */
+.sip-cmp-card{
+  background:var(--surface);border-radius:16px;
+  border:1px solid var(--border);overflow:hidden;
+  margin-bottom:12px;
+  box-shadow:0 2px 16px rgba(37,99,235,0.07);
+}
+.sip-cmp-header{
+  background:linear-gradient(135deg,#7c3aed,#5b21b6);
+  padding:12px 16px;display:flex;align-items:center;gap:8px;
+}
+.sip-cmp-header-icon{font-size:18px}
+.sip-cmp-header-title{font-family:'Baloo 2',sans-serif;font-size:14px;font-weight:800;color:#fff}
+.sip-cmp-header-sub{font-size:10px;color:rgba(255,255,255,0.6);margin-top:1px}
+.sip-cmp-body{padding:14px}
+
+/* Step-up badge */
+.sip-optional-badge{
+  display:inline-block;
+  background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);
+  color:#d97706;border-radius:20px;padding:1px 7px;
+  font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;
+  margin-left:5px;vertical-align:middle;
+}
+
+/* Open animation for result */
+@keyframes sip-slide-in{
+  from{opacity:0;transform:translateY(15px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.sip-result-animated{animation:sip-slide-in .35s ease both}
 /* PDF EDITOR */
 .pdf-page-thumb{border:2px solid var(--border);border-radius:7px;cursor:pointer;transition:border-color .2s;max-width:100%;display:block;margin:0 auto}
 .pdf-page-thumb.selected{border-color:var(--accent)}
@@ -181,6 +474,220 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
 .hist-item{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--surface2);border-radius:8px;margin-bottom:5px;font-size:12px}
 .hist-paid{color:var(--green);font-weight:700}
 .hist-unpaid{color:var(--accent2);font-weight:700}
+
+/* ═══════════════════════════════════════════════════════════════
+   FULL APP PREMIUM UPGRADE — ALL SCREENS
+═══════════════════════════════════════════════════════════════ */
+
+/* ── PREMIUM HERO CARD (used across all screens) ── */
+.prem-hero{
+  background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 50%,#1d4ed8 100%);
+  border-radius:20px;padding:0;margin-bottom:14px;overflow:hidden;
+  position:relative;box-shadow:0 8px 32px rgba(37,99,235,0.35);
+  border:1px solid rgba(99,179,237,0.2);
+}
+body.dark .prem-hero{
+  background:linear-gradient(135deg,#060b18 0%,#0f2a5c 50%,#1a3fa0 100%);
+  box-shadow:0 8px 40px rgba(0,0,0,0.6);
+}
+.prem-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(147,197,253,0.15),transparent 70%);pointer-events:none;}
+.prem-hero::after{content:'';position:absolute;bottom:-30px;left:-20px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(34,197,94,0.12),transparent 70%);pointer-events:none;}
+.prem-hero-inner{padding:18px 16px 16px;position:relative;z-index:1}
+.prem-hero-label{font-size:10px;font-weight:700;color:rgba(147,197,253,0.8);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px}
+.prem-hero-title{font-family:'Baloo 2',sans-serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:2px;line-height:1.1}
+.prem-hero-sub{font-size:11px;color:rgba(255,255,255,0.55);margin-bottom:0}
+
+/* ── PREMIUM CARD (replaces .card) ── */
+.prem-card{
+  background:var(--surface);border-radius:16px;padding:16px;
+  margin-bottom:12px;border:1px solid var(--border);
+  box-shadow:0 2px 16px rgba(37,99,235,0.07);
+  position:relative;overflow:hidden;
+}
+.prem-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),#10b981,var(--accent));
+  background-size:200% 100%;animation:prem-shimmer 3s linear infinite;
+}
+@keyframes prem-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── PREMIUM CARD TITLE ── */
+.prem-card-title{
+  font-family:'Baloo 2',sans-serif;font-size:13px;font-weight:800;
+  color:var(--accent);margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;
+  text-transform:uppercase;letter-spacing:0.8px;
+}
+.prem-card-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── PREMIUM INPUT FIELD ── */
+.prem-inp-wrap{margin-bottom:12px}
+.prem-inp-label{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:5px;display:block;}
+.prem-inp{
+  width:100%;background:var(--surface2);border:1.5px solid var(--border);
+  border-radius:11px;padding:12px 14px;color:var(--text);
+  font-size:15px;font-weight:600;outline:none;transition:all .2s;
+  font-family:'Baloo 2',sans-serif;
+}
+.prem-inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,0.12);background:var(--surface);}
+.prem-inp::placeholder{font-family:'Inter',sans-serif;font-size:12px;font-weight:400;color:var(--text2);opacity:0.6}
+.prem-inp-with-prefix{display:flex;align-items:center}
+.prem-inp-prefix{
+  background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;
+  font-weight:800;font-size:14px;padding:12px 14px;
+  border-radius:11px 0 0 11px;flex-shrink:0;font-family:'Baloo 2',sans-serif;
+  border:1.5px solid var(--accent);border-right:none;
+}
+.prem-inp-with-prefix .prem-inp{border-radius:0 11px 11px 0}
+.prem-inp-suffix-wrap{position:relative}
+.prem-inp-suffix{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:var(--text2);pointer-events:none;}
+
+/* ── PREMIUM CALCULATE BUTTON ── */
+.prem-calc-btn{
+  width:100%;padding:14px;border-radius:13px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,#1d4ed8,#2563eb,#3b82f6);
+  color:#fff;font-size:14px;font-weight:800;font-family:'Baloo 2',sans-serif;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 4px 20px rgba(37,99,235,0.4);transition:all .25s;letter-spacing:0.3px;
+  position:relative;overflow:hidden;
+}
+.prem-calc-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);}
+.prem-calc-btn:active{transform:scale(0.98);box-shadow:0 2px 10px rgba(37,99,235,0.3)}
+
+/* ── PREMIUM RESULT BOX ── */
+.prem-result-hero{
+  background:linear-gradient(135deg,#0c1445 0%,#0f2167 40%,#064e3b 100%);
+  border-radius:20px;padding:20px 16px 16px;margin-bottom:12px;
+  position:relative;overflow:hidden;border:1px solid rgba(16,185,129,0.2);
+  box-shadow:0 8px 32px rgba(0,0,0,0.25);
+  animation:prem-res-pop .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes prem-res-pop{from{opacity:0;transform:scale(0.95) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+body.dark .prem-result-hero{background:linear-gradient(135deg,#060b25 0%,#0a1744 40%,#022c22 100%);}
+.prem-res-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.3);
+  border-radius:20px;padding:3px 10px;font-size:9px;font-weight:800;
+  color:#6ee7b7;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;
+}
+.prem-res-big-label{font-size:11px;color:rgba(255,255,255,0.5);font-weight:600;margin-bottom:4px}
+.prem-res-big-amt{font-family:'Baloo 2',sans-serif;font-size:36px;font-weight:900;color:#fff;line-height:1;margin-bottom:3px}
+.prem-res-words{font-size:10px;color:rgba(255,255,255,0.45);margin-bottom:14px}
+.prem-res-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.prem-res-cell{border-radius:13px;padding:12px;backdrop-filter:blur(10px);position:relative;overflow:hidden;}
+.prem-res-cell-blue{background:rgba(59,130,246,0.2);border:1px solid rgba(59,130,246,0.3);}
+.prem-res-cell-green{background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.3);}
+.prem-res-cell-orange{background:rgba(234,88,12,0.18);border:1px solid rgba(234,88,12,0.3);}
+.prem-res-cell-purple{background:rgba(124,58,237,0.18);border:1px solid rgba(124,58,237,0.3);}
+.prem-res-cell-label{font-size:9px;color:rgba(255,255,255,0.5);font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+.prem-res-cell-val{font-family:'Baloo 2',sans-serif;font-size:18px;font-weight:800;color:#fff;line-height:1}
+.prem-res-cell-icon{position:absolute;right:8px;bottom:6px;font-size:22px;opacity:0.15}
+
+/* ── PREMIUM STATS CARD (rows inside) ── */
+.prem-stats-card{background:var(--surface);border-radius:14px;border:1px solid var(--border);overflow:hidden;margin-bottom:10px;box-shadow:0 2px 12px rgba(37,99,235,0.06);}
+.prem-stats-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;transition:background .15s;}
+.prem-stats-row:last-child{border-bottom:none}
+.prem-stats-row:hover{background:var(--surface2)}
+.prem-stats-lbl{color:var(--text2);font-weight:500}
+.prem-stats-val{font-weight:800;color:var(--accent);font-family:'Baloo 2',sans-serif;font-size:13px}
+.prem-stats-val.grn{color:var(--green)}
+.prem-stats-val.red{color:var(--red)}
+.prem-stats-val.org{color:var(--accent2)}
+
+/* ── PREMIUM ACTION BUTTONS ROW ── */
+.prem-action-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
+.prem-act-btn{padding:10px 6px;border-radius:11px;border:none;cursor:pointer;font-size:11px;font-weight:700;font-family:'Inter',sans-serif;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all .2s;}
+.prem-act-btn:active{transform:scale(0.96)}
+.prem-act-green{background:rgba(22,163,74,0.1);color:var(--green);border:1px solid rgba(22,163,74,0.25)}
+.prem-act-orange{background:rgba(234,88,12,0.1);color:var(--accent2);border:1px solid rgba(234,88,12,0.25)}
+.prem-act-blue{background:rgba(37,99,235,0.1);color:var(--accent);border:1px solid rgba(37,99,235,0.25)}
+.prem-act-red{background:rgba(220,38,38,0.1);color:var(--red);border:1px solid rgba(220,38,38,0.25)}
+.prem-act-icon{font-size:18px}
+
+/* ── PREMIUM PROGRESS BAR ── */
+.prem-prog-wrap{margin-bottom:8px}
+.prem-prog-labels{display:flex;justify-content:space-between;font-size:10px;margin-bottom:5px}
+.prem-prog-labels span{display:flex;align-items:center;gap:4px;font-weight:700}
+.prem-prog-bar{height:8px;border-radius:6px;background:rgba(255,255,255,0.1);overflow:hidden}
+.prem-prog-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#3b82f6,#10b981);transition:width .8s cubic-bezier(.34,1.56,.64,1)}
+
+/* ── PREMIUM TABLE (replaces .scrbox table) ── */
+.prem-table-wrap{border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-top:10px}
+.prem-table{width:100%;border-collapse:collapse;font-size:12px}
+.prem-table th{background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;padding:8px 10px;text-align:left;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:0.5px}
+.prem-table td{padding:7px 10px;border-bottom:1px solid var(--border);color:var(--text)}
+.prem-table tr:nth-child(even) td{background:var(--surface2)}
+.prem-table tr:last-child td{border-bottom:none}
+.prem-table .prem-td-val{font-weight:700;color:var(--accent);text-align:right}
+.prem-table .prem-td-grn{color:var(--green);font-weight:700;text-align:right}
+.prem-table .prem-td-red{color:var(--red);font-weight:700;text-align:right}
+
+/* ── PREMIUM LOAN PROFILE CARD ── */
+.prem-lc{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:13px;padding:12px;margin-bottom:8px;
+  cursor:pointer;transition:all .2s;
+  box-shadow:0 2px 8px rgba(37,99,235,0.05);
+}
+.prem-lc:hover{border-color:var(--accent);box-shadow:0 4px 16px rgba(37,99,235,0.15);transform:translateY(-1px)}
+.prem-lc-name{font-weight:800;color:var(--accent2);font-size:13px;margin-bottom:3px;font-family:'Baloo 2',sans-serif}
+.prem-lc-meta{font-size:11px;color:var(--text2)}
+
+/* ── PREMIUM BADGE CHIP ── */
+.prem-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;border:1px solid;white-space:nowrap}
+.prem-chip-blue{background:rgba(37,99,235,0.1);color:var(--accent);border-color:rgba(37,99,235,0.25)}
+.prem-chip-green{background:rgba(22,163,74,0.1);color:var(--green);border-color:rgba(22,163,74,0.25)}
+.prem-chip-orange{background:rgba(234,88,12,0.1);color:var(--accent2);border-color:rgba(234,88,12,0.25)}
+
+/* ── PREMIUM SECTION HERO VARIANTS ── */
+.prem-hero-emi{background:linear-gradient(135deg,#0f172a,#1e3a8a,#1d4ed8)}
+.prem-hero-compare{background:linear-gradient(135deg,#1a0533,#3b1270,#5b21b6)}
+.prem-hero-cash{background:linear-gradient(135deg,#052e16,#14532d,#16a34a)}
+.prem-hero-wa{background:linear-gradient(135deg,#052e16,#065f46,#059669)}
+.prem-hero-sig{background:linear-gradient(135deg,#1c1917,#44403c,#78716c)}
+.prem-hero-pdf{background:linear-gradient(135deg,#450a0a,#7f1d1d,#dc2626)}
+.prem-hero-mileage{background:linear-gradient(135deg,#431407,#7c2d12,#ea580c)}
+.prem-hero-a2w{background:linear-gradient(135deg,#14143a,#1e1b4b,#3730a3)}
+
+/* ── PREMIUM TOGGLE PILL (replace ptbtn) ── */
+.prem-toggle-row{display:flex;background:var(--surface2);border-radius:11px;padding:3px;gap:2px;border:1px solid var(--border);margin-bottom:12px}
+.prem-toggle-btn{flex:1;padding:8px 4px;border-radius:8px;border:none;font-size:11px;font-weight:700;cursor:pointer;transition:all .25s;color:var(--text2);background:transparent;font-family:'Inter',sans-serif;white-space:nowrap}
+.prem-toggle-btn.active{background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,0.4)}
+
+/* ── WA LIST ITEM PREMIUM ── */
+.prem-wa-item{background:var(--surface);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid var(--border);border-left:3px solid var(--green);box-shadow:0 2px 8px rgba(22,163,74,0.07)}
+
+/* ── CASH ROW PREMIUM ── */
+.prem-n-row{display:flex;align-items:center;gap:6px;margin-bottom:7px;background:var(--surface);border-radius:10px;padding:8px 10px;border:1px solid var(--border);}
+.prem-n-den{width:48px;text-align:right;font-weight:800;font-size:14px;color:var(--accent2);flex-shrink:0;font-family:'Baloo 2',sans-serif}
+.prem-n-inp{flex:1;background:var(--surface2);border:1.5px solid var(--border);border-radius:9px;padding:9px 10px;color:var(--text);font-size:16px;text-align:center;outline:none;font-family:'Baloo 2',sans-serif;font-weight:700;transition:border-color .2s}
+.prem-n-inp:focus{border-color:var(--accent)}
+.prem-n-val{width:72px;text-align:right;font-weight:800;color:var(--green);font-size:12px;flex-shrink:0;font-family:'Baloo 2',sans-serif}
+
+/* ── COUNTRY BLOCK PREMIUM ── */
+.prem-cblock{margin-bottom:10px;border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(37,99,235,0.04)}
+.prem-chdr{background:linear-gradient(90deg,var(--surface2),var(--surface));padding:10px 14px;display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;border-bottom:1px solid var(--border)}
+.prem-cbody{padding:12px 14px}
+
+/* ── COMPARE TABLE PREMIUM ── */
+.prem-cmp-hdr{background:linear-gradient(135deg,#7c3aed,#5b21b6);padding:12px 16px;border-radius:14px 14px 0 0;display:flex;align-items:center;gap:8px}
+.prem-cmp-hdr-title{font-family:'Baloo 2',sans-serif;font-size:14px;font-weight:800;color:#fff}
+
+/* ── PDF DROPZONE PREMIUM ── */
+.prem-drop-zone{
+  border:2px dashed rgba(37,99,235,0.3);border-radius:14px;
+  padding:24px;text-align:center;cursor:pointer;transition:all .2s;
+  margin-bottom:12px;background:rgba(37,99,235,0.02);
+}
+.prem-drop-zone:hover{border-color:var(--accent);background:rgba(37,99,235,0.05)}
+body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
+
+/* ── MILEAGE ENTRY CARD ── */
+.prem-mil-entry{background:var(--surface);border-radius:12px;padding:11px 13px;margin-bottom:8px;border:1px solid var(--border);box-shadow:0 2px 6px rgba(234,88,12,0.05);border-left:3px solid var(--accent2)}
+
+/* Ensure old .card also gets a subtle shimmer top border */
+.card{position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),#10b981,var(--accent));background-size:200% 100%;animation:prem-shimmer 4s linear infinite;opacity:0.6}
 </style>
 </head>
 <body>
@@ -313,6 +820,7 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
 <div class="dot-drawer" id="dotDrawer">
   <div style="padding:10px 14px 6px;font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px">Tools</div>
   <div class="dot-item" id="dm_emi" onclick="dotNav('emi')">💰 EMI Calculator</div>
+  <div class="dot-item" id="dm_sip" onclick="dotNav('sip')">📈 SIP Calculator</div>
   <div class="dot-item" id="dm_compare" onclick="dotNav('compare')">⚖️ Compare Loans</div>
   <div class="dot-item" id="dm_cash" onclick="dotNav('cash')">🏦 Cash Counter</div>
   <div class="dot-item" id="dm_a2w" onclick="dotNav('a2w')">🔤 Amount to Word</div>
@@ -331,45 +839,344 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
 <div class="edit-bar" id="editBar"><span>↔️ Drag to reorder tabs</span><button class="btn bp" style="padding:3px 9px;font-size:10px;margin-left:auto" onclick="toggleEdit()">✅ Done</button></div>
 <nav class="nav-bar" id="navBar"></nav>
 
-<!-- ═══ EMI ═══ -->
+<!-- EMI SECTION PREMIUM -->
 <section class="section" id="sec_emi">
-<div class="card">
-  <div class="card-title">💰 EMI Calculator <span style="font-size:10px;color:var(--text2);font-weight:400">Select radio for what to calculate</span></div>
+
+<div class="prem-hero prem-hero-emi">
+  <div class="prem-hero-inner">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px">
+      <div>
+        <div class="prem-hero-label">Loan Planner</div>
+        <div class="prem-hero-title">💰 EMI Calculator</div>
+        <div class="prem-hero-sub">Har loan ka EMI turant calculate karein</div>
+      </div>
+      <button class="btn" style="padding:4px 10px;font-size:10px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;flex-shrink:0;margin-top:4px" onclick="showSection('sec_loan_overview')">👁️ All Loans</button>
+    </div>
+  </div>
+</div>
+
+<div class="prem-card">
+  <div class="prem-card-title">📋 Loan Details</div>
   <div class="efr"><div class="eradio" id="radio_amount" onclick="setEmiSolve('amount')"></div><div class="elbl">Amount (₹)</div><input class="einp" type="number" id="emi_amount" placeholder="Ex: 500000"></div>
   <div class="efr"><div class="eradio" id="radio_rate" onclick="setEmiSolve('rate')"></div><div class="elbl">Interest %</div><input class="einp" type="number" id="emi_rate" placeholder="Ex: 8.5"></div>
   <div class="efr"><div class="eradio" id="radio_period" onclick="setEmiSolve('period')"></div><div class="elbl">Period</div><div class="prow"><input class="einp" type="number" id="emi_period" placeholder="Ex: 12"><div class="ptog"><button class="ptbtn active" id="ptY" onclick="setPT('years')">Yrs</button><button class="ptbtn" id="ptM" onclick="setPT('months')">Months</button></div></div></div>
   <div class="efr"><div class="eradio sel" id="radio_emi" onclick="setEmiSolve('emi')"></div><div class="elbl">EMI</div><input class="einp solve" type="number" id="emi_emi" placeholder="Will calculate" readonly></div>
-  <div class="efr" style="padding-left:31px">
-    <div class="elbl">Processing Fee (₹)</div>
-    <input class="einp" type="number" id="emi_fee" placeholder="Ex: 500" style="margin:0">
+  <div class="efr" style="padding-left:31px"><div class="elbl">Processing Fee (₹)</div><input class="einp" type="number" id="emi_fee" placeholder="Ex: 500" style="margin:0"></div>
+  <div class="btn-row" style="margin-top:12px">
+    <button class="prem-calc-btn" onclick="calcEMI()" style="flex:1">⚡ Calculate EMI</button>
+    <button class="btn bs" onclick="resetEmi()" style="padding:9px 14px">↺ Reset</button>
   </div>
-  <div class="btn-row"><button class="btn bp" onclick="calcEMI()">Calculate</button><button class="btn bs" onclick="resetEmi()">Reset</button></div>
-  <div id="emi_result" style="display:none">
+  <div id="emi_result" style="display:none;margin-top:14px">
     <div class="rbox" id="emi_rb"></div>
-    <div class="btn-row">
-      <button class="btn bg" onclick="openSavePModal()">💾 Save Profile</button>
-      <button class="btn bo" onclick="exportSchedPDF()">📄 PDF</button>
-      <button class="btn bs" onclick="exportSchedXLS()">📊 Excel</button>
+    <div class="prem-action-row">
+      <button class="prem-act-btn prem-act-green" onclick="openSavePModal()"><span class="prem-act-icon">💾</span>Save</button>
+      <button class="prem-act-btn prem-act-orange" onclick="exportSchedPDF()"><span class="prem-act-icon">📄</span>PDF</button>
+      <button class="prem-act-btn prem-act-blue" onclick="exportSchedXLS()"><span class="prem-act-icon">📊</span>Excel</button>
     </div>
-    <div style="font-family:'Baloo 2',sans-serif;font-size:13px;font-weight:700;color:var(--accent);margin:13px 0 6px">📅 Repayment Schedule</div>
-    <div class="scrbox"><table><thead><tr><th>#</th><th>EMI</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody id="emi_sched"></tbody></table></div>
+    <div style="font-family:'Baloo 2',sans-serif;font-size:12px;font-weight:800;color:var(--accent);margin:14px 0 8px;text-transform:uppercase;letter-spacing:0.8px">📅 Repayment Schedule</div>
+    <div class="prem-table-wrap"><div class="scrbox" style="max-height:280px;overflow-y:auto"><table class="prem-table"><thead><tr><th>#</th><th>EMI</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody id="emi_sched"></tbody></table></div></div>
   </div>
 </div>
-<!-- LOAN PROFILES - overview screenshot style -->
-<div class="card">
-  <div class="card-title">📁 My Loan Profiles
-    <button class="btn bp" style="padding:3px 10px;font-size:10px;margin-left:auto" onclick="showSection('sec_loan_overview')">👁️ All Loans</button>
-    <button class="btn bg" style="padding:3px 10px;font-size:10px;margin-left:4px" onclick="openSavePModal()">+ New</button>
+
+<div class="prem-card">
+  <div class="prem-card-title">
+    📁 My Loan Profiles
+    <button class="btn bp" style="padding:3px 10px;font-size:10px;margin-left:auto;border-radius:18px" onclick="showSection('sec_loan_overview')">👁️ All</button>
+    <button class="btn bg" style="padding:3px 10px;font-size:10px;margin-left:4px;border-radius:18px" onclick="openSavePModal()">+ New</button>
   </div>
   <div id="loan_profiles_list"><div style="text-align:center;color:var(--text2);padding:15px;font-size:12px">No profiles yet</div></div>
 </div>
 
 </section>
 
+<!-- ═══ SIP CALCULATOR — PREMIUM ═══ -->
+<section class="section" id="sec_sip">
+
+<!-- ── Hero Card with Mode Toggle ── -->
+<div class="sip-hero-card">
+  <div class="sip-hero-inner">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">
+      <div>
+        <div class="sip-hero-label">Investment Planner</div>
+        <div class="sip-hero-title">📈 SIP Calculator</div>
+        <div class="sip-hero-sub">Wealth banana start karein aaj se</div>
+      </div>
+      <button class="btn" style="padding:4px 10px;font-size:10px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;flex-shrink:0;margin-top:4px" onclick="showSection('sec_sip_overview')">👁️ My SIPs</button>
+    </div>
+    <!-- Premium Mode Toggle -->
+    <div class="sip-mode-toggle">
+      <button id="sip_mode_sip" class="sip-mode-btn active" onclick="setSipMode('sip')">📈 SIP</button>
+      <button id="sip_mode_lump" class="sip-mode-btn" onclick="setSipMode('lump')">💰 Lump Sum</button>
+      <button id="sip_mode_target" class="sip-mode-btn" onclick="setSipMode('target')">🎯 Target</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── SIP Mode Inputs ── -->
+<div id="sip_panel_sip" class="sip-inputs-section">
+  <div class="sip-section-label">📊 SIP Details</div>
+
+  <div class="sip-inp-wrap">
+    <span class="sip-inp-label">Monthly Investment</span>
+    <div class="sip-inp-with-prefix">
+      <div class="sip-inp-prefix">₹</div>
+      <input class="sip-inp-field" type="number" id="sip_monthly" placeholder="5,000" oninput="calcSIP()">
+    </div>
+  </div>
+
+  <div class="sip-inp-wrap">
+    <span class="sip-inp-label">Expected Annual Return</span>
+    <div style="position:relative">
+      <input class="sip-inp-field" type="number" id="sip_rate" placeholder="12" oninput="calcSIP()" style="padding-right:36px">
+      <span class="sip-inp-suffix">% p.a.</span>
+    </div>
+  </div>
+
+  <div class="sip-inp-wrap">
+    <span class="sip-inp-label">Investment Period</span>
+    <div class="sip-period-row">
+      <input class="sip-inp-field" type="number" id="sip_years" placeholder="10" oninput="calcSIP()">
+      <div class="sip-pt-toggle">
+        <button class="sip-pt-btn active" id="sip_ptY" onclick="setSipPT('years')">Yrs</button>
+        <button class="sip-pt-btn" id="sip_ptM" onclick="setSipPT('months')">Months</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sip-inp-wrap" style="margin-bottom:0">
+    <span class="sip-inp-label">Step-Up % <span class="sip-optional-badge">Optional</span></span>
+    <div style="position:relative">
+      <input class="sip-inp-field" type="number" id="sip_stepup" placeholder="Ex: 10 (10% annual increase)" oninput="calcSIP()" style="padding-right:36px">
+      <span class="sip-inp-suffix">% /yr</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Lump Sum Mode Inputs ── -->
+<div id="sip_panel_lump" style="display:none" class="sip-inputs-section">
+  <div class="sip-section-label">💰 Lump Sum Details</div>
+
+  <div class="sip-inp-wrap">
+    <span class="sip-inp-label">One-time Investment</span>
+    <div class="sip-inp-with-prefix">
+      <div class="sip-inp-prefix">₹</div>
+      <input class="sip-inp-field" type="number" id="sip_lump_amt" placeholder="1,00,000" oninput="calcSIPLump()">
+    </div>
+  </div>
+
+  <div class="sip-inp-wrap">
+    <span class="sip-inp-label">Expected Annual Return</span>
+    <div style="position:relative">
+      <input class="sip-inp-field" type="number" id="sip_lump_rate" placeholder="12" oninput="calcSIPLump()" style="padding-right:36px">
+      <span class="sip-inp-suffix">% p.a.</span>
+    </div>
+  </div>
+
+  <div class="sip-inp-wrap" style="margin-bottom:0">
+    <span class="sip-inp-label">Investment Period</span>
+    <div class="sip-period-row">
+      <input class="sip-inp-field" type="number" id="sip_lump_years" placeholder="10" oninput="calcSIPLump()">
+      <div class="sip-pt-toggle">
+        <button class="sip-pt-btn active" id="lump_ptY" onclick="setLumpPT('years')">Yrs</button>
+        <button class="sip-pt-btn" id="lump_ptM" onclick="setLumpPT('months')">Months</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Target Mode Inputs ── -->
+<div id="sip_panel_target" style="display:none" class="sip-inputs-section">
+  <div class="sip-section-label">🎯 Target Goal Details</div>
+
+  <div class="sip-inp-wrap">
+    <span class="sip-inp-label">Target Amount</span>
+    <div class="sip-inp-with-prefix">
+      <div class="sip-inp-prefix">₹</div>
+      <input class="sip-inp-field" type="number" id="sip_target_amt" placeholder="50,00,000" oninput="calcSIPTarget()">
+    </div>
+  </div>
+
+  <div class="sip-inp-wrap">
+    <span class="sip-inp-label">Expected Annual Return</span>
+    <div style="position:relative">
+      <input class="sip-inp-field" type="number" id="sip_target_rate" placeholder="12" oninput="calcSIPTarget()" style="padding-right:36px">
+      <span class="sip-inp-suffix">% p.a.</span>
+    </div>
+  </div>
+
+  <div class="sip-inp-wrap" style="margin-bottom:0">
+    <span class="sip-inp-label">Investment Period</span>
+    <div class="sip-period-row">
+      <input class="sip-inp-field" type="number" id="sip_target_years" placeholder="10" oninput="calcSIPTarget()">
+      <div class="sip-pt-toggle">
+        <button class="sip-pt-btn active" id="target_ptY" onclick="setTargetPT('years')">Yrs</button>
+        <button class="sip-pt-btn" id="target_ptM" onclick="setTargetPT('months')">Months</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Premium Calculate Button -->
+<button class="sip-calc-btn" onclick="calcSIPMain()" style="margin-bottom:14px">
+  <span style="font-size:18px">📊</span> Calculate Returns
+</button>
+
+<!-- ── PREMIUM RESULT ── -->
+<div id="sip_result" style="display:none">
+
+  <!-- Hero Result Card -->
+  <div class="sip-result-hero sip-result-animated">
+    <div class="sip-res-tag">✨ Your Wealth Projection</div>
+    <div class="sip-res-maturity-label">Total Maturity Value</div>
+    <div id="sip_maturity_big" class="sip-res-maturity-amt">₹0</div>
+    <div id="sip_maturity_words" class="sip-res-maturity-words"></div>
+
+    <div class="sip-res-grid">
+      <div class="sip-res-cell sip-res-cell-invested">
+        <div class="sip-res-cell-label">Total Invested</div>
+        <div id="sip_invested" class="sip-res-cell-val">₹0</div>
+        <div class="sip-res-cell-icon">📦</div>
+      </div>
+      <div class="sip-res-cell sip-res-cell-gains">
+        <div class="sip-res-cell-label">Wealth Gained</div>
+        <div id="sip_gains" class="sip-res-cell-val">₹0</div>
+        <div class="sip-res-cell-icon">💹</div>
+      </div>
+    </div>
+
+    <!-- Premium Progress Bar -->
+    <div class="sip-progress-wrap">
+      <div class="sip-progress-labels">
+        <span class="inv-lbl">📦 Invested</span>
+        <span class="ret-lbl">💹 Returns</span>
+      </div>
+      <div class="sip-progress-bar">
+        <div id="sip_prog_bar" class="sip-progress-fill" style="width:0%"></div>
+      </div>
+      <div class="sip-progress-pcts">
+        <span id="sip_prog_inv_pct" class="inv-pct">0%</span>
+        <span id="sip_prog_ret_pct" class="ret-pct">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Details Card -->
+  <div class="sip-stats-card sip-result-animated" style="animation-delay:.1s">
+    <div id="sip_rb"></div>
+  </div>
+
+  <!-- Year-by-Year Breakdown -->
+  <button class="sip-breakdown-toggle" onclick="toggleSipBreakdown()">
+    📅 Year-by-Year Breakdown <span id="sip_breakdown_arrow">▼</span>
+  </button>
+  <div id="sip_breakdown" style="display:none;margin-top:8px;max-height:300px;overflow-y:auto;border-radius:12px;border:1px solid var(--border);box-shadow:0 2px 12px rgba(37,99,235,.06)">
+    <table style="width:100%;border-collapse:collapse;font-size:11px">
+      <thead><tr>
+        <th style="background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;padding:8px 8px;text-align:left">Year</th>
+        <th style="background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;padding:8px 8px;text-align:right">Invested</th>
+        <th style="background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;padding:8px 8px;text-align:right">Returns</th>
+        <th style="background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;padding:8px 8px;text-align:right">Value</th>
+      </tr></thead>
+      <tbody id="sip_breakdown_body"></tbody>
+    </table>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="sip-action-row sip-result-animated" style="animation-delay:.18s">
+    <button class="sip-act-btn sip-act-copy" onclick="copySipResult()">
+      <span class="sip-act-icon">📋</span> Copy
+    </button>
+    <button class="sip-act-btn sip-act-share" onclick="shareSipResult()">
+      <span class="sip-act-icon">📤</span> Share
+    </button>
+    <button class="sip-act-btn sip-act-save" onclick="openSipSaveModal()">
+      <span class="sip-act-icon">💾</span> Save
+    </button>
+  </div>
+</div>
+
+<!-- ── SIP vs Lump Sum Comparison ── Premium Card ── -->
+<div class="sip-cmp-card" style="margin-top:4px">
+  <div class="sip-cmp-header">
+    <span class="sip-cmp-header-icon">⚖️</span>
+    <div>
+      <div class="sip-cmp-header-title">SIP vs Lump Sum</div>
+      <div class="sip-cmp-header-sub">Same amount — kaunsa strategy better hai?</div>
+    </div>
+  </div>
+  <div class="sip-cmp-body">
+    <div class="sip-inp-wrap">
+      <span class="sip-inp-label">Total Amount to Invest</span>
+      <div class="sip-inp-with-prefix">
+        <div class="sip-inp-prefix" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);border-color:#7c3aed">₹</div>
+        <input class="sip-inp-field" type="number" id="sip_cmp_amt" placeholder="6,00,000" style="border-radius:0 11px 11px 0">
+      </div>
+    </div>
+    <div class="sip-inp-wrap">
+      <span class="sip-inp-label">Annual Return</span>
+      <div style="position:relative">
+        <input class="sip-inp-field" type="number" id="sip_cmp_rate" placeholder="12" style="padding-right:36px">
+        <span class="sip-inp-suffix">% p.a.</span>
+      </div>
+    </div>
+    <div class="sip-inp-wrap" style="margin-bottom:12px">
+      <span class="sip-inp-label">Period</span>
+      <div style="position:relative">
+        <input class="sip-inp-field" type="number" id="sip_cmp_years" placeholder="10" style="padding-right:52px">
+        <span class="sip-inp-suffix">Years</span>
+      </div>
+    </div>
+    <button class="sip-calc-btn" onclick="cmpSipLump()" style="background:linear-gradient(135deg,#5b21b6,#7c3aed,#8b5cf6);box-shadow:0 4px 20px rgba(124,58,237,0.4)">
+      <span style="font-size:18px">⚖️</span> Compare Now
+    </button>
+    <div id="sip_cmp_res" style="display:none;margin-top:12px"></div>
+  </div>
+</div>
+
+</section>
+
+<!-- ═══ SIP OVERVIEW ═══ -->
+<section class="section" id="sec_sip_overview">
+<div class="prem-hero" style="background:linear-gradient(135deg,#052e16,#14532d,#059669);margin-bottom:10px">
+  <div class="prem-hero-inner">
+    <div class="prem-hero-label">Investment Portfolio</div>
+    <div class="prem-hero-title">📈 My SIP Portfolio</div>
+    <div class="prem-hero-sub">Saare SIP investments ek jagah</div>
+  </div>
+</div>
+<div class="prem-card">
+  <div class="prem-card-title">📊 My SIP Profiles
+    <div style="display:flex;gap:4px;margin-left:auto;align-items:center">
+      <button class="btn bs" style="padding:3px 9px;font-size:10px" onclick="showSection('sec_sip')">← Back</button>
+    </div>
+  </div>
+
+  <!-- Summary grid -->
+  <div style="font-size:10px;color:var(--text2);margin-bottom:4px;font-weight:600;display:flex;align-items:center;gap:6px">
+    📊 Total SIP Summary &nbsp;<span id="sip_ov_badge" style="background:rgba(37,99,235,.1);color:var(--accent);border-radius:9px;padding:1px 8px;font-size:10px;font-weight:700"></span>
+  </div>
+  <div class="lo-grid" id="sip_ov_summary_grid">
+    <div class="lo-cell"><div class="lo-label">Total Invested</div><div class="lo-val" id="sip_ov_invested">—</div></div>
+    <div class="lo-cell"><div class="lo-label">Total Maturity</div><div class="lo-val grn" id="sip_ov_maturity">—</div></div>
+    <div class="lo-cell"><div class="lo-label">Total Gains</div><div class="lo-val grn" id="sip_ov_gains">—</div></div>
+    <div class="lo-cell"><div class="lo-label">Avg Return</div><div class="lo-val" id="sip_ov_rate">—</div></div>
+  </div>
+
+  <div id="sip_profiles_list"><div style="text-align:center;color:var(--text2);padding:15px;font-size:12px">No SIP profiles yet. Calculate karein aur Save karein.</div></div>
+</div>
+</section>
+
 <!-- ═══ LOAN OVERVIEW (screenshot-style) ═══ -->
 <section class="section" id="sec_loan_overview">
-<div class="card">
-  <div class="card-title">📊 My Loan Profile
+<div class="prem-hero prem-hero-emi" style="margin-bottom:10px">
+  <div class="prem-hero-inner">
+    <div class="prem-hero-label">Portfolio Overview</div>
+    <div class="prem-hero-title">📁 All My Loans</div>
+    <div class="prem-hero-sub">Saare loan profiles ek jagah dekhein</div>
+  </div>
+</div>
+<div class="prem-card">
+  <div class="prem-card-title">📊 My Loan Profile
     <div style="display:flex;gap:4px;margin-left:auto;align-items:center">
       <!-- Filter/Sort button -->
       <button class="btn bs" style="padding:3px 9px;font-size:10px;display:flex;align-items:center;gap:4px" onclick="toggleFilterBar()">
@@ -437,7 +1244,7 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
 
 <!-- ── DRAW TAB ── -->
 <div id="sig_panel_draw">
-<div class="card" style="padding:10px">
+<div class="prem-card" style="padding:10px">
   <!-- Toolbar row 1: color + bg + undo/clear -->
   <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
     <div style="font-size:10px;color:var(--text2);font-weight:600;flex-shrink:0">Color:</div>
@@ -524,7 +1331,7 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
 
 <!-- ── SCAN TAB ── -->
 <div id="sig_panel_scan" style="display:none">
-<div class="card" style="padding:10px">
+<div class="prem-card" style="padding:10px">
   <div class="card-title" style="margin-bottom:8px">📷 Scan & Extract Signature</div>
   <div class="ibox io" style="margin-bottom:10px">📸 Photo upload karo → background hatao → adjust karo → save karo</div>
   <div style="display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap">
@@ -535,7 +1342,7 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
   </div>
 
   <div id="ex_s1">
-    <div class="uarea" onclick="document.getElementById('sigExtIn').click()">
+    <div class="uarea prem-drop-zone" onclick="document.getElementById('sigExtIn').click()">
       <div style="font-size:28px;margin-bottom:5px">📷</div>
       <div style="font-size:12px;color:var(--text2)">Tap to upload photo with signature</div>
     </div>
@@ -631,8 +1438,8 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
 
 <!-- ── SAVED TAB ── -->
 <div id="sig_panel_saved" style="display:none">
-<div class="card">
-  <div class="card-title">📚 Saved Signatures</div>
+<div class="prem-card">
+  <div class="prem-card-title">📚 Saved Signatures</div>
   <div id="saved_sigs"></div>
 </div>
 </div>
@@ -640,9 +1447,16 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
 
 <!-- ═══ PDF ═══ -->
 <section class="section" id="sec_pdf">
+<div class="prem-hero prem-hero-pdf">
+  <div class="prem-hero-inner">
+    <div class="prem-hero-label">PDF Tools</div>
+    <div class="prem-hero-title">📄 PDF Toolkit</div>
+    <div class="prem-hero-sub">Compress, Edit, Sign — sab kuch ek jagah</div>
+  </div>
+</div>
 <!-- PDF COMPRESSOR -->
-<div class="card" id="pdf_comp_card">
-  <div class="card-title">📄 PDF Compressor
+<div class="prem-card" id="pdf_comp_card">
+  <div class="prem-card-title">📄 PDF Compressor
     <button class="btn bs" style="padding:3px 9px;font-size:10px;margin-left:auto" onclick="showPdfTab('edit')">✏️ PDF Editor</button>
   </div>
   <div class="ibox ig">✅ <strong style="color:var(--green)">Real compression:</strong> PDF.js renders each page → JPEG compress → OCR text preserved as invisible overlay (searchable). All modes output searchable PDF.</div>
@@ -660,7 +1474,7 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
     <button class="btn bs" style="flex:1;font-size:10px" id="dpi150" onclick="setDPI(150,this)">150<br><span style="font-size:9px">Better</span></button>
     <button class="btn bs" style="flex:1;font-size:10px" id="dpi200" onclick="setDPI(200,this)">200<br><span style="font-size:9px">Sharp</span></button>
   </div>
-  <div class="uarea" onclick="document.getElementById('pdfInput').click()">
+  <div class="uarea prem-drop-zone" onclick="document.getElementById('pdfInput').click()">
     <div style="font-size:24px;margin-bottom:4px">📄</div>
     <!-- FIX 8: 500MB limit -->
     <div style="font-size:12px;color:var(--text2)">Select PDF (up to 500MB)<br><strong style="color:var(--text)">Extreme+72DPI: 100MB → ~3MB | Always OCR searchable</strong></div>
@@ -681,12 +1495,12 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
   <button class="btn bp bfull" id="pdf_btn" onclick="compressPDF()" disabled style="margin-top:9px">🗜️ Compress &amp; Download (OCR Searchable)</button>
 </div>
 <!-- PDF EDITOR -->
-<div class="card" id="pdf_edit_card" style="display:none">
-  <div class="card-title">✏️ PDF Editor
+<div class="prem-card" id="pdf_edit_card" style="display:none">
+  <div class="prem-card-title">✏️ PDF Editor
     <button class="btn bs" style="padding:3px 9px;font-size:10px;margin-left:auto" onclick="showPdfTab('compress')">← Compressor</button>
   </div>
   <div class="ibox io">📝 Upload PDF → Select pages → Delete, reorder, rotate, merge, add/remove text, or sign PDF with your signature.</div>
-  <div class="uarea" onclick="document.getElementById('pdfEditInput').click()">
+  <div class="uarea prem-drop-zone" onclick="document.getElementById('pdfEditInput').click()">
     <div style="font-size:24px;margin-bottom:4px">📝</div>
     <div style="font-size:12px;color:var(--text2)">Upload PDF to edit<br><strong style="color:var(--text)">Delete pages, rotate, reorder, merge, add text, sign PDF</strong></div>
   </div>
@@ -798,8 +1612,15 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
 
 <!-- ═══ WHATSAPP ═══ -->
 <section class="section" id="sec_whatsapp">
-<div class="card">
-  <div class="card-title">💬 WhatsApp Scheduler</div>
+<div class="prem-hero prem-hero-wa">
+  <div class="prem-hero-inner">
+    <div class="prem-hero-label">Messaging Tool</div>
+    <div class="prem-hero-title">💬 WhatsApp Scheduler</div>
+    <div class="prem-hero-sub">Schedule karo, auto-send ho jaayega</div>
+  </div>
+</div>
+<div class="prem-card">
+  <div class="prem-card-title">📝 New Message</div>
   <div class="ibox ig">📌 At scheduled time, WhatsApp opens with pre-filled message. Keep this tab open.</div>
   <label>Recipient Name</label><input class="inp" type="text" id="wa_to" placeholder="Ex: Rahul, Mom">
   <label>WhatsApp Number (with country code, no +)</label><input class="inp" type="tel" id="wa_num" placeholder="Ex: 919876543210">
@@ -811,38 +1632,48 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
   <label>Schedule Time</label><input class="inp" type="datetime-local" id="wa_time">
   <label>Repeat</label>
   <select class="inp" id="wa_rep"><option value="none">No Repeat</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select>
-  <div class="btn-row"><button class="btn bp" style="flex:1" onclick="scheduleWA()">📅 Schedule</button><button class="btn bg" style="flex:1" onclick="sendWANow()">📤 Send Now</button></div>
+  <div class="btn-row"><button class="prem-calc-btn" style="flex:1" onclick="scheduleWA()">📅 Schedule</button><button class="btn bg" style="flex:1" onclick="sendWANow()">📤 Send Now</button></div>
 </div>
-<div class="card">
-  <div class="card-title">📋 Scheduled <span id="wa_badge" class="bdg">0</span></div>
+<div class="prem-card">
+  <div class="prem-card-title">📋 Scheduled Messages <span id="wa_badge" class="prem-chip prem-chip-green" style="margin-left:4px">0</span></div>
   <div id="wa_list"><div style="text-align:center;color:var(--text2);padding:14px;font-size:12px">No messages</div></div>
 </div>
 </section>
 
 <!-- ═══ CASH ═══ -->
 <section class="section" id="sec_cash">
-<div class="card">
-  <div class="card-title">🏦 Cash Note Counter</div>
+<div class="prem-hero prem-hero-cash">
+  <div class="prem-hero-inner">
+    <div class="prem-hero-label">Note Counter</div>
+    <div class="prem-hero-title">🏦 Cash Counter</div>
+    <div class="prem-hero-sub">Notes aur coins quickly count karein</div>
+  </div>
+</div>
+<div class="prem-card">
+  <div class="prem-card-title">💵 Enter Notes & Coins</div>
+  <div style="background:linear-gradient(135deg,rgba(22,163,74,0.12),rgba(37,99,235,0.08));border:1.5px solid rgba(22,163,74,0.25);border-radius:14px;padding:14px;text-align:center;margin-bottom:14px">
+    <div style="font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Total Amount</div>
+    <div style="font-family:'Baloo 2',sans-serif;font-size:36px;font-weight:900;color:var(--green)">₹<span id="cash_total">0</span></div>
+    <div id="cash_words" style="font-size:11px;color:var(--text2);margin-top:4px">Zero Rupees Only</div>
+    <div style="margin-top:8px;font-size:11px;color:var(--text2)">Total Notes/Coins: <span style="font-weight:800;color:var(--accent)" id="cash_cnt">0</span></div>
+  </div>
   <div style="text-align:center;margin-bottom:12px">
     <div style="font-size:11px;color:var(--text2)">Total Amount</div>
     <div style="font-family:'Baloo 2',sans-serif;font-size:32px;font-weight:800;color:var(--green)">₹<span id="cash_total">0</span></div>
     <div id="cash_words" style="font-size:11px;color:var(--text2);margin-top:2px">Zero Rupees Only</div>
   </div>
   <div id="cash_ui"></div>
-  <div style="background:var(--surface2);border-radius:7px;padding:8px;margin-top:5px;display:flex;justify-content:space-between;font-size:12px">
-    <span style="color:var(--text2)">Total Notes/Coins</span><span style="font-weight:700;color:var(--accent)" id="cash_cnt">0</span>
-  </div>
-  <div class="btn-row">
-    <button class="btn bs" onclick="clearCash()">🗑️ Clear</button>
-    <button class="btn bg" onclick="copyCash()">📋 Copy</button>
-    <button class="btn bo" onclick="shareCash()">📤 Share</button>
-    <button class="btn bp" onclick="saveCashHistory()">💾 Save</button>
+  <div class="prem-action-row" style="margin-top:12px">
+    <button class="prem-act-btn prem-act-red" onclick="clearCash()"><span class="prem-act-icon">🗑️</span>Clear</button>
+    <button class="prem-act-btn prem-act-green" onclick="copyCash()"><span class="prem-act-icon">📋</span>Copy</button>
+    <button class="prem-act-btn prem-act-orange" onclick="shareCash()"><span class="prem-act-icon">📤</span>Share</button>
+    <button class="prem-act-btn prem-act-blue" onclick="saveCashHistory()"><span class="prem-act-icon">💾</span>Save</button>
   </div>
 </div>
-<div class="card">
-  <div class="card-title">📋 Cash History
-    <span id="cash_hist_count" class="bdg" style="margin-left:4px">0</span>
-    <button class="btn br" style="padding:3px 9px;font-size:10px;margin-left:auto" onclick="clearAllCashHistory()">🗑️ Clear All</button>
+<div class="prem-card">
+  <div class="prem-card-title">📋 Cash History
+    <span id="cash_hist_count" class="prem-chip prem-chip-blue" style="margin-left:4px">0</span>
+    <button class="btn br" style="padding:3px 9px;font-size:10px;margin-left:auto;border-radius:18px" onclick="clearAllCashHistory()">🗑️ Clear All</button>
   </div>
   <div id="cash_history_list"><div style="text-align:center;color:var(--text2);padding:12px;font-size:12px">No history yet. Save karo 💾</div></div>
 </div>
@@ -850,44 +1681,61 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
 
 <!-- ═══ AMOUNT TO WORD ═══ -->
 <section class="section" id="sec_a2w">
-<div class="card">
-  <!-- FIX 1: Two-panel layout - left=INR input+words, right=converted currencies -->
-  <div class="card-title">🔤 Amount to Word + Currency</div>
-  <input class="inp" type="number" id="a2w_in" placeholder="Enter amount (e.g. 1500000.50)" oninput="convA2W()" style="font-size:16px;font-weight:700">
-  <!-- Live INR exchange rate note -->
-  <div style="font-size:10px;color:var(--text2);margin-bottom:10px">💡 Amounts on right show equivalent value in each currency (approx. rates). Copy button copies both number + words together.</div>
+<div class="prem-hero prem-hero-a2w">
+  <div class="prem-hero-inner">
+    <div class="prem-hero-label">Currency Converter</div>
+    <div class="prem-hero-title">🔤 Amount to Word</div>
+    <div class="prem-hero-sub">18+ currencies mein words mein convert karein</div>
+  </div>
+</div>
+<div class="prem-card">
+  <div class="prem-card-title">💱 Enter Amount</div>
+  <div class="sip-inp-with-prefix" style="margin-bottom:8px">
+    <div class="sip-inp-prefix" style="border-radius:11px 0 0 11px">₹</div>
+    <input class="sip-inp-field" type="number" id="a2w_in" placeholder="1500000.50" oninput="convA2W()" style="border-radius:0 11px 11px 0">
+  </div>
+  <div style="font-size:10px;color:var(--text2);margin-bottom:10px">💡 Right side: equivalent INR value. Copy button: number + words dono copy hote hain.</div>
   <div id="a2w_countries"></div>
 </div>
 </section>
 
 <!-- ═══ COMPARE ═══ -->
 <section class="section" id="sec_compare">
-<div class="card">
-  <div class="card-title">⚖️ Compare Loans</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-    <div><div style="text-align:center;color:var(--accent);font-weight:700;font-size:12px;margin-bottom:7px">LOAN 1</div>
+<div class="prem-hero prem-hero-compare">
+  <div class="prem-hero-inner">
+    <div class="prem-hero-label">Loan Comparison</div>
+    <div class="prem-hero-title">⚖️ Compare Loans</div>
+    <div class="prem-hero-sub">Do loans mein se sabse best choose karein</div>
+  </div>
+</div>
+<div class="prem-card">
+  <div class="prem-card-title">📊 Enter Loan Details</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <div>
+      <div style="text-align:center;background:rgba(37,99,235,0.1);border:1.5px solid rgba(37,99,235,0.3);border-radius:10px;padding:6px;color:var(--accent);font-weight:800;font-size:11px;margin-bottom:9px;font-family:'Baloo 2',sans-serif">LOAN 1</div>
       <label>Amount (₹)</label><input class="inp" type="number" id="c1a" placeholder="100000">
       <label>Interest %</label><input class="inp" type="number" id="c1r" placeholder="8.5">
       <label>Tenure (months)</label><input class="inp" type="number" id="c1n" placeholder="60">
     </div>
-    <div><div style="text-align:center;color:var(--accent2);font-weight:700;font-size:12px;margin-bottom:7px">LOAN 2</div>
+    <div>
+      <div style="text-align:center;background:rgba(234,88,12,0.1);border:1.5px solid rgba(234,88,12,0.3);border-radius:10px;padding:6px;color:var(--accent2);font-weight:800;font-size:11px;margin-bottom:9px;font-family:'Baloo 2',sans-serif">LOAN 2</div>
       <label>Amount (₹)</label><input class="inp" type="number" id="c2a" placeholder="100000">
       <label>Interest %</label><input class="inp" type="number" id="c2r" placeholder="9.5">
       <label>Tenure (months)</label><input class="inp" type="number" id="c2n" placeholder="60">
     </div>
   </div>
-  <button class="btn bp bfull" style="margin-top:8px" onclick="cmpLoans()">⚖️ Compare Now</button>
-  <div id="cmp_res" style="display:none;margin-top:12px">
-    <table><thead><tr><th>Parameter</th><th>Loan 1</th><th>Loan 2</th></tr></thead><tbody id="cmp_body"></tbody></table>
-    <div id="cmp_verdict" class="rbox" style="margin-top:8px"></div>
+  <button class="prem-calc-btn" style="margin-top:12px" onclick="cmpLoans()">⚖️ Compare Now</button>
+  <div id="cmp_res" style="display:none;margin-top:14px;animation:prem-res-pop .4s cubic-bezier(.34,1.56,.64,1)">
+    <div class="prem-table-wrap"><table class="prem-table"><thead><tr><th>Parameter</th><th>Loan 1</th><th>Loan 2</th></tr></thead><tbody id="cmp_body"></tbody></table></div>
+    <div id="cmp_verdict" class="prem-stats-card" style="margin-top:10px;padding:12px 14px;font-size:13px;font-weight:700"></div>
   </div>
 </div>
 <!-- Compare History -->
-<div class="card">
-  <div class="card-title">📋 Compare History
-    <span id="cmp_hist_count" class="bdg" style="margin-left:6px">0</span>
-    <button class="btn br" style="padding:3px 9px;font-size:10px;margin-left:auto" onclick="cmpDelSelected()">🗑️ Delete Selected</button>
-    <button class="btn bs" style="padding:3px 9px;font-size:10px;margin-left:4px" onclick="cmpSelectAll()">☑️ All</button>
+<div class="prem-card">
+  <div class="prem-card-title">📋 Compare History
+    <span id="cmp_hist_count" class="prem-chip prem-chip-purple" style="margin-left:6px;background:rgba(124,58,237,0.1);color:#7c3aed;border-color:rgba(124,58,237,0.3)">0</span>
+    <button class="btn br" style="padding:3px 9px;font-size:10px;margin-left:auto;border-radius:18px" onclick="cmpDelSelected()">🗑️ Delete</button>
+    <button class="btn bs" style="padding:3px 9px;font-size:10px;margin-left:4px;border-radius:18px" onclick="cmpSelectAll()">☑️ All</button>
   </div>
   <div id="cmp_hist_list"><div style="text-align:center;color:var(--text2);padding:12px;font-size:12px">No history yet</div></div>
 </div>
@@ -895,33 +1743,51 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
 
 <!-- ═══ MILEAGE CALCULATOR ═══ -->
 <section class="section" id="sec_mileage">
-<div class="card">
-  <div class="card-title">⛽ Mileage Calculator</div>
-  <div class="ibox ig">📌 Apni gaadi ki mileage calculate karein — fuel fill karte waqt odometer reading daalein.</div>
-  <label>Starting Odometer (km)</label>
-  <input class="inp" type="number" id="mil_start" placeholder="Ex: 12000">
-  <label>Ending Odometer (km)</label>
-  <input class="inp" type="number" id="mil_end" placeholder="Ex: 12350">
-  <label>Fuel Added (Litres)</label>
-  <input class="inp" type="number" id="mil_fuel" placeholder="Ex: 20">
-  <label>Fuel Price per Litre (₹)</label>
-  <input class="inp" type="number" id="mil_price" placeholder="Ex: 106.50">
-  <div class="btn-row">
-    <button class="btn bp" onclick="calcMileage()">⛽ Calculate</button>
-    <button class="btn bs" onclick="saveMileageEntry()">💾 Save Entry</button>
-    <button class="btn br" onclick="resetMileage()">Reset</button>
+<div class="prem-hero prem-hero-mileage">
+  <div class="prem-hero-inner">
+    <div class="prem-hero-label">Vehicle Tracker</div>
+    <div class="prem-hero-title">⛽ Mileage Calculator</div>
+    <div class="prem-hero-sub">Gaadi ki fuel efficiency track karein</div>
   </div>
-  <div id="mil_result" style="display:none;margin-top:10px"></div>
 </div>
-<div class="card">
-  <div class="card-title">📊 Mileage History
-    <button class="btn br" style="padding:3px 9px;font-size:10px;margin-left:auto" onclick="clearMileageHistory()">🗑️ Clear All</button>
+<div class="prem-card">
+  <div class="prem-card-title">🚗 Odometer Readings</div>
+  <div class="ibox ig" style="margin-bottom:12px">📌 Fuel fill karte waqt readings daalein. Price optional hai.</div>
+  <div class="sip-inp-wrap">
+    <span class="sip-inp-label">Starting Odometer (km)</span>
+    <input class="sip-inp-field" type="number" id="mil_start" placeholder="Ex: 12000">
+  </div>
+  <div class="sip-inp-wrap">
+    <span class="sip-inp-label">Ending Odometer (km)</span>
+    <input class="sip-inp-field" type="number" id="mil_end" placeholder="Ex: 12350">
+  </div>
+  <div class="sip-inp-wrap">
+    <span class="sip-inp-label">Fuel Added (Litres)</span>
+    <input class="sip-inp-field" type="number" id="mil_fuel" placeholder="Ex: 20">
+  </div>
+  <div class="sip-inp-wrap">
+    <span class="sip-inp-label">Fuel Price per Litre (₹) — Optional</span>
+    <div class="sip-inp-with-prefix">
+      <div class="sip-inp-prefix">₹</div>
+      <input class="sip-inp-field" type="number" id="mil_price" placeholder="Ex: 106.50" style="border-radius:0 11px 11px 0">
+    </div>
+  </div>
+  <div class="btn-row" style="margin-top:4px">
+    <button class="prem-calc-btn" onclick="calcMileage()" style="flex:1">⛽ Calculate Mileage</button>
+    <button class="btn bg" onclick="saveMileageEntry()" style="padding:9px 12px">💾</button>
+    <button class="btn bs" onclick="resetMileage()" style="padding:9px 12px">↺</button>
+  </div>
+  <div id="mil_result" style="display:none;margin-top:12px;animation:prem-res-pop .4s cubic-bezier(.34,1.56,.64,1)"></div>
+</div>
+<div class="prem-card">
+  <div class="prem-card-title">📊 Mileage History
+    <button class="btn br" style="padding:3px 9px;font-size:10px;margin-left:auto;border-radius:18px" onclick="clearMileageHistory()">🗑️ Clear All</button>
   </div>
   <div id="mil_history"><div style="text-align:center;color:var(--text2);padding:12px;font-size:12px">No entries yet</div></div>
 </div>
-<div class="card">
-  <div class="card-title">📈 Summary</div>
-  <div id="mil_summary"><div style="text-align:center;color:var(--text2);padding:12px;font-size:12px">Save entries to see summary</div></div>
+<div class="prem-card">
+  <div class="prem-card-title">📈 Summary</div>
+  <div id="mil_summary"><div style="text-align:center;color:var(--text2);padding:12px;font-size:12px">Entries save karein to summary dikhega</div></div>
 </div>
 </section>
 
@@ -937,6 +1803,18 @@ body.dark .dot-item.active-tool{background:rgba(79,142,247,.15)}
     <label>First EMI Date</label><input class="inp" type="date" id="pfirstemi">
     <label>Processing Fees (₹)</label><input class="inp" type="number" id="pfees" placeholder="0">
     <button class="btn bp bfull" onclick="saveProfile()">💾 Save Profile</button>
+  </div>
+</div>
+
+<!-- SIP Save Modal -->
+<div class="mov" id="sipSaveModal">
+  <div class="modal">
+    <button class="mc" onclick="closeM('sipSaveModal')">✕</button>
+    <div class="modal-title">💾 Save SIP Profile</div>
+    <label>Profile Name *</label><input class="inp" id="sip_pname" placeholder="Ex: HDFC Midcap Fund">
+    <label>Fund/Plan Name</label><input class="inp" id="sip_pfund" placeholder="Ex: Mirae Asset">
+    <label>Notes</label><input class="inp" id="sip_pnotes" placeholder="Optional notes">
+    <button class="btn bp bfull" onclick="saveSipProfile()">💾 Save Profile</button>
   </div>
 </div>
 
@@ -1887,7 +2765,7 @@ function logoutUser(){
 
 // ═══════════ NAV TABS ═══════════
 const DEFAULT_TABS=[
-  {id:'emi',label:'💰 EMI'},{id:'compare',label:'⚖️ Compare'},
+  {id:'emi',label:'💰 EMI'},{id:'sip',label:'📈 SIP'},{id:'compare',label:'⚖️ Compare'},
   {id:'cash',label:'🏦 Cash'},{id:'a2w',label:'🔤 Amt→Word'},
   {id:'whatsapp',label:'💬 WA'},{id:'signature',label:'✍️ Signature'},{id:'pdf',label:'📄 PDF'},
   {id:'mileage',label:'⛽ Mileage'}
@@ -1922,6 +2800,8 @@ function showSection(id){
     const ind=document.getElementById('sort_indicator');
     if(ind){ind.style.display='block';document.getElementById('sort_indicator_text').textContent='📅 Remaining Tenure (Low→High)'}
   }
+  // Update SIP overview if shown
+  if(id==='sec_sip_overview') renderSipProfiles();
   renderNav();
 }
 function openM(id){document.getElementById(id).classList.add('open')}
@@ -1998,22 +2878,32 @@ function calcEMI(){
   const pf = fee;
   emiData = {...res, pf};
   calcFeeAmount();
+  // Premium EMI result display
   document.getElementById('emi_rb').innerHTML=`
-    <div class="rrow"><span>Monthly EMI</span><span class="rv">₹${fmt(res.emi)}</span></div>
-    <div class="rrow"><span>Loan Amount</span><span class="rv">₹${fmt(res.P)}</span></div>
-    <div class="rrow"><span>Interest Rate</span><span class="rv">${Number(res.rA||0).toFixed(2)}% p.a.</span></div>
-    <div class="rrow"><span>Tenure</span><span class="rv">${res.n} months</span></div>
-    <div class="rrow"><span>Total Interest</span><span class="rv red">₹${fmt(res.interest)}</span></div>
-    <div class="rrow"><span>Total Payment</span><span class="rv">₹${fmt(res.total)}</span></div>
-    <div class="rrow"><span>Processing Fee</span><span class="rv">₹${fmt(pf)}</span></div>
-    <div class="rrow"><span>Net Disbursed</span><span class="rv grn">₹${fmt((res.P||0)-pf)}</span></div>`;
+    <div class="prem-result-hero" style="background:linear-gradient(135deg,#0c1445,#0f2167,#1e3a8a)">
+      <div class="prem-res-tag">✅ EMI Calculated</div>
+      <div class="prem-res-big-label">Monthly EMI</div>
+      <div class="prem-res-big-amt">₹${fmt(res.emi)}</div>
+      <div class="prem-res-grid" style="margin-top:14px">
+        <div class="prem-res-cell prem-res-cell-blue"><div class="prem-res-cell-label">Loan Amount</div><div class="prem-res-cell-val" style="font-size:15px">₹${fmt(res.P)}</div><div class="prem-res-cell-icon">🏦</div></div>
+        <div class="prem-res-cell prem-res-cell-orange"><div class="prem-res-cell-label">Interest Rate</div><div class="prem-res-cell-val">${Number(res.rA||0).toFixed(2)}%</div><div class="prem-res-cell-icon">📊</div></div>
+        <div class="prem-res-cell prem-res-cell-green" style="background:rgba(220,38,38,0.18);border-color:rgba(220,38,38,0.3)"><div class="prem-res-cell-label">Total Interest</div><div class="prem-res-cell-val" style="font-size:15px">₹${fmt(res.interest)}</div><div class="prem-res-cell-icon">💸</div></div>
+        <div class="prem-res-cell prem-res-cell-purple"><div class="prem-res-cell-label">Total Payment</div><div class="prem-res-cell-val" style="font-size:15px">₹${fmt(res.total)}</div><div class="prem-res-cell-icon">💰</div></div>
+      </div>
+    </div>
+    <div class="prem-stats-card">
+      <div class="prem-stats-row"><span class="prem-stats-lbl">Tenure</span><span class="prem-stats-val">${res.n} months</span></div>
+      <div class="prem-stats-row"><span class="prem-stats-lbl">Processing Fee</span><span class="prem-stats-val">₹${fmt(pf)}</span></div>
+      <div class="prem-stats-row"><span class="prem-stats-lbl">Net Disbursed</span><span class="prem-stats-val grn">₹${fmt((res.P||0)-pf)}</span></div>
+      <div class="prem-stats-row"><span class="prem-stats-lbl">Interest %</span><span class="prem-stats-val red">${((res.interest/(res.total||1))*100).toFixed(1)}% of total</span></div>
+    </div>`;
   genSched(res.P,res.r,res.n,res.emi);
   document.getElementById('emi_result').style.display='block';
 }
 
 function genSched(P,r,n,emi){
   let bal=P,html='';
-  for(let i=1;i<=n;i++){const int=bal*r,pri=emi-int;bal-=pri;html+=`<tr><td>${i}</td><td>₹${fmt(emi)}</td><td>₹${fmt(pri)}</td><td>₹${fmt(int)}</td><td>₹${fmt(Math.max(0,bal))}</td></tr>`}
+  for(let i=1;i<=n;i++){const int=bal*r,pri=emi-int;bal-=pri;html+=`<tr><td>${i}</td><td class='prem-td-val'>₹${fmt(emi)}</td><td class='prem-td-grn'>₹${fmt(pri)}</td><td class='prem-td-red'>₹${fmt(int)}</td><td style='font-weight:700;text-align:right'>₹${fmt(Math.max(0,bal))}</td></tr>`}
   document.getElementById('emi_sched').innerHTML=html;
 }
 
@@ -2060,7 +2950,7 @@ function renderProfiles(){
   const ps=gs('loanProfiles'),el=document.getElementById('loan_profiles_list');
   if(!ps.length){el.innerHTML='<div style="text-align:center;color:var(--text2);padding:14px;font-size:12px">No profiles yet</div>';return}
   el.innerHTML=ps.map((p,i)=>`
-    <div class="lc" onclick="showProfile(${p.id})" style="display:flex;align-items:center;gap:8px">
+    <div class="prem-lc" onclick="showProfile(${p.id})" style="display:flex;align-items:center;gap:8px">
       <div class="profile-num">${i+1}</div>
       <div style="flex:1;min-width:0">
         <div style="display:flex;justify-content:space-between;align-items:center">
@@ -3069,14 +3959,14 @@ function renderWAList(){
   const s=gs('waScheduled');document.getElementById('wa_badge').textContent=s.length;
   const el=document.getElementById('wa_list');
   if(!s.length){el.innerHTML='<div style="text-align:center;color:var(--text2);padding:13px;font-size:12px">No messages</div>';return}
-  el.innerHTML=s.map(m=>`<div class="wa-item"><div style="display:flex;justify-content:space-between"><div style="font-weight:700;color:var(--accent2);font-size:12px">${m.to}<span class="wa-st ${m.status}">${m.status}</span>${m.rep!=='none'?`<span style="font-size:9px;color:var(--text2)"> 🔄${m.rep}</span>`:''}</div><button onclick="delWA(${m.id})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:16px">×</button></div><div style="font-size:10px;color:var(--text2)">📅 ${new Date(m.time).toLocaleString()}</div><div style="font-size:11px;color:var(--text);margin-top:3px;word-break:break-word">${m.msg.length>70?m.msg.substr(0,67)+'...':m.msg}</div>${m.atts&&m.atts.length?`<div style="font-size:10px;color:var(--accent2);margin-top:2px">📎 ${m.atts.map(a=>a.name).join(', ')}</div>`:''}<button onclick="window.open('https://wa.me/${m.num}?text='+encodeURIComponent(decodeURIComponent('${encodeURIComponent(m.msg)}')),'_blank')" style="margin-top:5px;padding:2px 8px;border-radius:5px;border:1px solid var(--green);background:none;color:var(--green);font-size:10px;cursor:pointer">📤 Open WhatsApp</button></div>`).join('');
+  el.innerHTML=s.map(m=>`<div class="prem-wa-item"><div style="display:flex;justify-content:space-between"><div style="font-weight:700;color:var(--accent2);font-size:12px">${m.to}<span class="wa-st ${m.status}">${m.status}</span>${m.rep!=='none'?`<span style="font-size:9px;color:var(--text2)"> 🔄${m.rep}</span>`:''}</div><button onclick="delWA(${m.id})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:16px">×</button></div><div style="font-size:10px;color:var(--text2)">📅 ${new Date(m.time).toLocaleString()}</div><div style="font-size:11px;color:var(--text);margin-top:3px;word-break:break-word">${m.msg.length>70?m.msg.substr(0,67)+'...':m.msg}</div>${m.atts&&m.atts.length?`<div style="font-size:10px;color:var(--accent2);margin-top:2px">📎 ${m.atts.map(a=>a.name).join(', ')}</div>`:''}<button onclick="window.open('https://wa.me/${m.num}?text='+encodeURIComponent(decodeURIComponent('${encodeURIComponent(m.msg)}')),'_blank')" style="margin-top:5px;padding:2px 8px;border-radius:5px;border:1px solid var(--green);background:none;color:var(--green);font-size:10px;cursor:pointer">📤 Open WhatsApp</button></div>`).join('');
 }
 const delWA=id=>{ss('waScheduled',gs('waScheduled').filter(m=>m.id!==id));renderWAList()};
 function startWAScheduler(){setInterval(()=>{let s=gs('waScheduled');const now=new Date();let upd=false;s.forEach(m=>{if(m.status==='pending'&&new Date(m.time)<=now){const at=m.atts&&m.atts.length?m.atts[0]:null;if(at)shareWA(m.num,m.msg,at);else window.open(`https://wa.me/${m.num}?text=${encodeURIComponent(m.msg)}`,'_blank');if(m.rep==='none')m.status='sent';else{const nx=new Date(m.time);if(m.rep==='daily')nx.setDate(nx.getDate()+1);else if(m.rep==='weekly')nx.setDate(nx.getDate()+7);else nx.setMonth(nx.getMonth()+1);m.time=nx.toISOString().slice(0,16)}upd=true}});if(upd){ss('waScheduled',s);renderWAList()}},30000)}
 
 // ═══════════ CASH ═══════════
 const dn=[2000,500,200,100,50,20,10,5,2,1];
-function initCash(){document.getElementById('cash_ui').innerHTML=dn.map(d=>`<div class="n-row"><div class="n-den">₹${d}</div><span style="color:var(--text2);font-size:11px">×</span><input class="n-inp" type="number" min="0" id="nt_${d}" oninput="updCash()" placeholder="0"><span style="color:var(--text2);font-size:11px">=</span><div class="n-val" id="nv_${d}">₹0</div></div>`).join('')}
+function initCash(){document.getElementById('cash_ui').innerHTML=dn.map(d=>`<div class="prem-n-row"><div class="prem-n-den">₹${d}</div><span style="color:var(--text2);font-size:11px;font-weight:600">×</span><input class="prem-n-inp" type="number" min="0" id="nt_${d}" oninput="updCash()" placeholder="0"><span style="color:var(--text2);font-size:11px;font-weight:600">=</span><div class="prem-n-val" id="nv_${d}">₹0</div></div>`).join('')}
 function updCash(){let t=0,c=0;dn.forEach(d=>{const n=parseInt(document.getElementById('nt_'+d).value)||0;const v=n*d;document.getElementById('nv_'+d).textContent='₹'+v.toLocaleString('en-IN');t+=v;c+=n});document.getElementById('cash_total').textContent=t.toLocaleString('en-IN');document.getElementById('cash_cnt').textContent=c;document.getElementById('cash_words').textContent=n2in(t)+' Rupees Only'}
 function clearCash(){dn.forEach(d=>{document.getElementById('nt_'+d).value='';document.getElementById('nv_'+d).textContent='₹0'});document.getElementById('cash_total').textContent='0';document.getElementById('cash_cnt').textContent='0';document.getElementById('cash_words').textContent='Zero Rupees Only'}
 const cashTxt=()=>{const t=document.getElementById('cash_total').textContent,w=document.getElementById('cash_words').textContent;return`Cash: ₹${t}\n${w}\n\n`+dn.map(d=>{const n=parseInt(document.getElementById('nt_'+d).value)||0;return n>0?`₹${d}×${n}=₹${n*d}`:null}).filter(Boolean).join('\n')};
@@ -3104,7 +3994,7 @@ function renderCashHistory(){
   const el=document.getElementById('cash_history_list');if(!el)return;
   if(!hist.length){el.innerHTML='<div style="text-align:center;color:var(--text2);padding:12px;font-size:12px">No history yet. Save karo 💾</div>';return;}
   el.innerHTML=hist.map(h=>`
-    <div style="background:var(--surface2);border-radius:10px;padding:10px;margin-bottom:8px;border:1px solid var(--border)">
+    <div class="prem-card" style="padding:10px;margin-bottom:8px;margin-top:0">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
         <div>
           <div style="font-size:15px;font-weight:800;color:var(--green);font-family:'Baloo 2',sans-serif">₹${h.totalFmt}</div>
@@ -4024,12 +4914,15 @@ function calcMileage(){
   const cost=fuel*price;
   const costPerKm=price>0?cost/dist:0;
   document.getElementById('mil_result').innerHTML=`
-    <div class="rbox">
-      <div class="rrow"><span>Distance Covered</span><span class="rv">${dist.toFixed(1)} km</span></div>
-      <div class="rrow"><span>Fuel Consumed</span><span class="rv">${fuel} L</span></div>
-      <div class="rrow"><span>🏆 Mileage</span><span class="rv grn">${mileage.toFixed(2)} km/L</span></div>
-      ${price>0?`<div class="rrow"><span>Fuel Cost</span><span class="rv red">₹${fmt(cost)}</span></div>
-      <div class="rrow"><span>Cost per km</span><span class="rv">₹${costPerKm.toFixed(2)}/km</span></div>`:''}
+    <div class="prem-result-hero" style="background:linear-gradient(135deg,#1c0a00,#431407,#7c2d12)">
+      <div class="prem-res-tag">⛽ Mileage Result</div>
+      <div class="prem-res-big-label">Fuel Efficiency</div>
+      <div class="prem-res-big-amt">${mileage.toFixed(2)} <span style="font-size:18px">km/L</span></div>
+      <div class="prem-res-grid" style="margin-top:14px">
+        <div class="prem-res-cell prem-res-cell-blue"><div class="prem-res-cell-label">Distance</div><div class="prem-res-cell-val">${dist.toFixed(1)} km</div><div class="prem-res-cell-icon">🗺️</div></div>
+        <div class="prem-res-cell prem-res-cell-orange"><div class="prem-res-cell-label">Fuel Used</div><div class="prem-res-cell-val">${fuel} L</div><div class="prem-res-cell-icon">⛽</div></div>
+        ${price>0?`<div class="prem-res-cell prem-res-cell-green"><div class="prem-res-cell-label">Fuel Cost</div><div class="prem-res-cell-val">₹${fmt(cost)}</div><div class="prem-res-cell-icon">💸</div></div><div class="prem-res-cell prem-res-cell-purple"><div class="prem-res-cell-label">Cost/km</div><div class="prem-res-cell-val">₹${costPerKm.toFixed(2)}</div><div class="prem-res-cell-icon">📍</div></div>`:''}
+      </div>
     </div>`;
   document.getElementById('mil_result').style.display='block';
 }
@@ -4057,7 +4950,7 @@ function renderMileageHistory(){
   if(!el)return;
   if(!entries.length){el.innerHTML='<div style="text-align:center;color:var(--text2);padding:12px;font-size:12px">No entries yet</div>';return}
   el.innerHTML=entries.map(e=>`
-    <div style="background:var(--surface2);border-radius:9px;padding:10px;margin-bottom:7px;border:1px solid var(--border);display:flex;align-items:center;gap:8px">
+    <div class="prem-mil-entry" style="display:flex;align-items:center;gap:8px">
       <div style="flex:1;min-width:0">
         <div style="font-size:12px;font-weight:700;color:var(--accent)">${e.date} &nbsp; <span style="color:var(--green)">⛽ ${e.mileage} km/L</span></div>
         <div style="font-size:11px;color:var(--text2);margin-top:2px">${e.start}→${e.end} km &nbsp;|&nbsp; ${e.dist} km &nbsp;|&nbsp; ${e.fuel} L</div>
@@ -4276,6 +5169,382 @@ function _hexToRgbPdf(hex){
   return{r,g,b};
 }
 
+// ═══════════ SIP CALCULATOR ═══════════
+let sipMode='sip', sipPeriodT='years', lumpPeriodT='years', targetPeriodT='years';
+let sipResultData=null;
+
+function setSipMode(m){
+  sipMode=m;
+  ['sip','lump','target'].forEach(x=>{
+    document.getElementById('sip_panel_'+x).style.display=x===m?'block':'none';
+    const btn=document.getElementById('sip_mode_'+x);
+    btn.className=x===m?'sip-mode-btn active':'sip-mode-btn';
+  });
+  document.getElementById('sip_result').style.display='none';
+}
+
+function setSipPT(t){sipPeriodT=t;document.getElementById('sip_ptY').classList.toggle('active',t==='years');document.getElementById('sip_ptM').classList.toggle('active',t==='months');calcSIP();}
+function setLumpPT(t){lumpPeriodT=t;document.getElementById('lump_ptY').classList.toggle('active',t==='years');document.getElementById('lump_ptM').classList.toggle('active',t==='months');calcSIPLump();}
+function setTargetPT(t){targetPeriodT=t;document.getElementById('target_ptY').classList.toggle('active',t==='years');document.getElementById('target_ptM').classList.toggle('active',t==='months');calcSIPTarget();}
+
+function calcSIPMain(){
+  if(sipMode==='sip') calcSIP();
+  else if(sipMode==='lump') calcSIPLump();
+  else calcSIPTarget();
+}
+
+function _amtWords(n){
+  if(isNaN(n)||n<=0) return '';
+  const cr=n/10000000,lac=n/100000,k=n/1000;
+  if(cr>=1) return (cr).toFixed(2)+' Crore';
+  if(lac>=1) return (lac).toFixed(2)+' Lakh';
+  if(k>=1) return (k).toFixed(1)+'K';
+  return '';
+}
+
+function calcSIP(){
+  const monthly=parseFloat(document.getElementById('sip_monthly').value)||0;
+  const rateA=parseFloat(document.getElementById('sip_rate').value)||0;
+  const periodVal=parseFloat(document.getElementById('sip_years').value)||0;
+  const stepUp=parseFloat(document.getElementById('sip_stepup').value)||0;
+  if(!monthly||!rateA||!periodVal) return;
+
+  const months=sipPeriodT==='years'?periodVal*12:Math.round(periodVal);
+  const r=rateA/12/100;
+  let maturity=0, totalInvested=0;
+  const yearData=[];
+
+  if(stepUp===0){
+    // Standard SIP formula
+    maturity=monthly*(Math.pow(1+r,months)-1)/r*(1+r);
+    totalInvested=monthly*months;
+    // Year-by-year
+    const years=Math.ceil(months/12);
+    for(let y=1;y<=years;y++){
+      const m=Math.min(y*12,months);
+      const val=monthly*(Math.pow(1+r,m)-1)/r*(1+r);
+      const inv=monthly*m;
+      yearData.push({year:y,invested:inv,returns:val-inv,value:val});
+    }
+  } else {
+    // Step-up SIP: simulate month by month
+    let bal=0, curMonthly=monthly, inv=0;
+    let yearVal=0, yearInv=0;
+    for(let m=1;m<=months;m++){
+      if(m>1 && (m-1)%12===0){
+        curMonthly=curMonthly*(1+stepUp/100);
+      }
+      bal=(bal+curMonthly)*(1+r);
+      inv+=curMonthly;
+      if(m%12===0 || m===months){
+        yearData.push({year:Math.ceil(m/12),invested:inv,returns:bal-inv,value:bal});
+      }
+    }
+    maturity=bal;
+    totalInvested=inv;
+  }
+
+  _showSipResult({maturity,totalInvested,gains:maturity-totalInvested,yearData,rateA,months,monthly:stepUp?null:monthly,mode:'sip'});
+}
+
+function calcSIPLump(){
+  const P=parseFloat(document.getElementById('sip_lump_amt').value)||0;
+  const rateA=parseFloat(document.getElementById('sip_lump_rate').value)||0;
+  const periodVal=parseFloat(document.getElementById('sip_lump_years').value)||0;
+  if(!P||!rateA||!periodVal) return;
+
+  const months=lumpPeriodT==='years'?periodVal*12:Math.round(periodVal);
+  const r=rateA/12/100;
+  const maturity=P*Math.pow(1+r,months);
+  const yearData=[];
+  const yrs=Math.ceil(months/12);
+  for(let y=1;y<=yrs;y++){
+    const m=Math.min(y*12,months);
+    const val=P*Math.pow(1+r,m);
+    yearData.push({year:y,invested:P,returns:val-P,value:val});
+  }
+
+  _showSipResult({maturity,totalInvested:P,gains:maturity-P,yearData,rateA,months,monthly:null,mode:'lump'});
+}
+
+function calcSIPTarget(){
+  const target=parseFloat(document.getElementById('sip_target_amt').value)||0;
+  const rateA=parseFloat(document.getElementById('sip_target_rate').value)||0;
+  const periodVal=parseFloat(document.getElementById('sip_target_years').value)||0;
+  if(!target||!rateA||!periodVal) return;
+
+  const months=targetPeriodT==='years'?periodVal*12:Math.round(periodVal);
+  const r=rateA/12/100;
+  const monthly=target*r/((Math.pow(1+r,months)-1)*(1+r));
+  const totalInvested=monthly*months;
+  const gains=target-totalInvested;
+  const yearData=[];
+  const yrs=Math.ceil(months/12);
+  for(let y=1;y<=yrs;y++){
+    const m=Math.min(y*12,months);
+    const val=monthly*(Math.pow(1+r,m)-1)/r*(1+r);
+    const inv=monthly*m;
+    yearData.push({year:y,invested:inv,returns:val-inv,value:val});
+  }
+
+  _showSipResult({maturity:target,totalInvested,gains,yearData,rateA,months,monthly,isTarget:true,mode:'target'});
+}
+
+function _showSipResult({maturity,totalInvested,gains,yearData,rateA,months,monthly,isTarget,mode}){
+  sipResultData={maturity,totalInvested,gains,yearData,rateA,months,monthly,mode:mode||'sip'};
+
+  document.getElementById('sip_maturity_big').textContent='₹'+fmt(maturity);
+  document.getElementById('sip_maturity_words').textContent=_amtWords(maturity);
+  document.getElementById('sip_invested').textContent='₹'+fmt(totalInvested);
+  document.getElementById('sip_gains').textContent='₹'+fmt(gains);
+
+  const retPct=Math.round(gains/maturity*100);
+  const invPct=100-retPct;
+  document.getElementById('sip_prog_bar').style.width=invPct+'%';
+  document.getElementById('sip_prog_inv_pct').textContent=invPct+'%';
+  document.getElementById('sip_prog_ret_pct').textContent=retPct+'%';
+
+  const yrs=Math.floor(months/12), mos=months%12;
+  const tenureStr=yrs>0&&mos>0?yrs+'y '+mos+'m':yrs>0?yrs+' Years':months+' Months';
+
+  let rb=`
+    ${isTarget?`<div class="sip-stats-row"><span class="sip-stats-lbl">Required Monthly SIP</span><span class="sip-stats-val grn">₹${fmt(monthly)}</span></div>`
+    :typeof monthly==='number'?`<div class="sip-stats-row"><span class="sip-stats-lbl">Monthly SIP</span><span class="sip-stats-val">₹${fmt(monthly)}</span></div>`
+    :`<div class="sip-stats-row"><span class="sip-stats-lbl">Investment Type</span><span class="sip-stats-val">${monthly}</span></div>`}
+    <div class="sip-stats-row"><span class="sip-stats-lbl">Annual Return</span><span class="sip-stats-val">${Number(rateA).toFixed(1)}% p.a.</span></div>
+    <div class="sip-stats-row"><span class="sip-stats-lbl">Tenure</span><span class="sip-stats-val">${tenureStr}</span></div>
+    <div class="sip-stats-row"><span class="sip-stats-lbl">Total Invested</span><span class="sip-stats-val">₹${fmt(totalInvested)}</span></div>
+    <div class="sip-stats-row"><span class="sip-stats-lbl">Wealth Gained</span><span class="sip-stats-val grn">₹${fmt(gains)}</span></div>
+    <div class="sip-stats-row"><span class="sip-stats-lbl">Maturity Amount</span><span class="sip-stats-val grn" style="font-size:15px">₹${fmt(maturity)}</span></div>
+    <div class="sip-stats-row"><span class="sip-stats-lbl">CAGR Multiplier</span><span class="sip-stats-val">${(maturity/totalInvested).toFixed(2)}x 🚀</span></div>`;
+  document.getElementById('sip_rb').innerHTML=rb;
+
+  // Year-by-year
+  let bhtml='';
+  yearData.forEach(d=>{
+    bhtml+=`<tr style="${d.year%2===0?'background:var(--surface2)':''}">
+      <td style="padding:6px 8px;border-bottom:1px solid var(--border)">${d.year}</td>
+      <td style="padding:6px 8px;border-bottom:1px solid var(--border);text-align:right;color:var(--accent)">₹${fmt(d.invested)}</td>
+      <td style="padding:6px 8px;border-bottom:1px solid var(--border);text-align:right;color:var(--green)">₹${fmt(d.returns)}</td>
+      <td style="padding:6px 8px;border-bottom:1px solid var(--border);text-align:right;font-weight:700">₹${fmt(d.value)}</td>
+    </tr>`;
+  });
+  document.getElementById('sip_breakdown_body').innerHTML=bhtml;
+  document.getElementById('sip_breakdown').style.display='none';
+  document.getElementById('sip_result').style.display='block';
+}
+
+function toggleSipBreakdown(){
+  const el=document.getElementById('sip_breakdown');
+  el.style.display=el.style.display==='none'?'block':'none';
+}
+
+function copySipResult(){
+  if(!sipResultData) return;
+  const {maturity,totalInvested,gains,rateA,months,mode}=sipResultData;
+  const modeLabel = mode==='lump'?'Lump Sum':mode==='target'?'Target SIP':'SIP';
+  const text=`📈 ${modeLabel} Calculator Result\n━━━━━━━━━━━━━━━━━\n💰 Maturity Value: ₹${fmt(maturity)}\n📦 Total Invested: ₹${fmt(totalInvested)}\n💹 Wealth Gained: ₹${fmt(gains)}\n📊 Return: ${rateA}% p.a. | ${months} months\n━━━━━━━━━━━━━━━━━\n— MyToolkit Pro`;
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>alert('✅ Result copy ho gaya! Kahi bhi paste karein.')).catch(()=>{
+      const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('✅ Copied!');
+    });
+  } else {
+    const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('✅ Copied!');
+  }
+}
+
+function shareSipResult(){
+  if(!sipResultData) return;
+  const {maturity,totalInvested,gains,rateA,months,mode,monthly}=sipResultData;
+  const modeLabel = mode==='lump'?'Lump Sum':mode==='target'?'Target SIP':'SIP';
+  const sipLine = mode==='sip'&&monthly?`📅 Monthly SIP: ₹${fmt(monthly)}\n`:'';
+  const text=`📈 ${modeLabel} Calculator — MyToolkit Pro\n${sipLine}💰 Maturity: ₹${fmt(maturity)}\n📦 Invested: ₹${fmt(totalInvested)}\n💹 Gains: ₹${fmt(gains)}\n📊 ${rateA}% p.a. | ${months} months`;
+  if(navigator.share){
+    navigator.share({title:`${modeLabel} Result — MyToolkit Pro`,text}).catch(()=>{
+      navigator.clipboard.writeText(text).then(()=>alert('✅ Copied to clipboard!')).catch(()=>alert('Share failed'));
+    });
+  } else {
+    navigator.clipboard&&navigator.clipboard.writeText?
+      navigator.clipboard.writeText(text).then(()=>alert('✅ Copied to clipboard!')):
+      (()=>{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('✅ Copied!');})();
+  }
+}
+
+// ═══════════ SIP PROFILES ═══════════
+function openSipSaveModal(){
+  if(!sipResultData){alert('Pehle SIP calculate karein');return}
+  openM('sipSaveModal');
+  document.getElementById('sip_pname').value='';
+  document.getElementById('sip_pfund').value='';
+  document.getElementById('sip_pnotes').value='';
+}
+
+function saveSipProfile(){
+  const name=document.getElementById('sip_pname').value.trim();
+  if(!name){alert('Profile name daalo');return}
+  if(!sipResultData){alert('SIP data nahi mila. Dobara calculate karein.');return}
+  const ps=gs('sipProfiles')||[];
+  const {maturity,totalInvested,gains,rateA,months,mode,monthly}=sipResultData;
+  ps.push({
+    id:Date.now(),
+    name,
+    fund:document.getElementById('sip_pfund').value.trim(),
+    notes:document.getElementById('sip_pnotes').value.trim(),
+    mode,monthly,maturity,totalInvested,gains,rateA,months,
+    savedOn:new Date().toLocaleDateString('en-IN')
+  });
+  ss('sipProfiles',ps);
+  closeM('sipSaveModal');
+  renderSipProfiles();
+  alert('✅ SIP Profile save ho gaya!');
+}
+
+function renderSipProfiles(){
+  const ps=gs('sipProfiles')||[];
+  // Render in SIP overview section
+  const el=document.getElementById('sip_profiles_list');
+  if(!el) return;
+  if(!ps.length){el.innerHTML='<div style="text-align:center;color:var(--text2);padding:15px;font-size:12px">No SIP profiles yet. Calculate karein aur Save karein.</div>';return}
+
+  // Summary
+  const totInv=ps.reduce((s,p)=>s+(p.totalInvested||0),0);
+  const totMat=ps.reduce((s,p)=>s+(p.maturity||0),0);
+  const totGains=ps.reduce((s,p)=>s+(p.gains||0),0);
+  const avgRate=ps.length?ps.reduce((s,p)=>s+(p.rateA||0),0)/ps.length:0;
+  const badge=document.getElementById('sip_ov_badge');
+  if(badge) badge.textContent=ps.length+' Profile'+(ps.length>1?'s':'');
+  const setEl=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  setEl('sip_ov_invested','₹'+fmt(totInv));
+  setEl('sip_ov_maturity','₹'+fmt(totMat));
+  setEl('sip_ov_gains','₹'+fmt(totGains));
+  setEl('sip_ov_rate',avgRate.toFixed(1)+'%');
+
+  el.innerHTML=ps.map((p,i)=>`
+    <div class="prem-lc" onclick="viewSipProfile(${i})">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="profile-num">${i+1}</span>
+        <div style="flex:1;min-width:0">
+          <div class="lc-name">${p.name}</div>
+          <div class="lc-meta">${p.fund?p.fund+' • ':''}${p.mode==='lump'?'Lump Sum':p.mode==='target'?'Target':'SIP'} • ${p.rateA}% • ${p.months}mo</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-family:'Baloo 2',sans-serif;font-size:16px;font-weight:800;color:var(--green)">₹${fmt(p.maturity)}</div>
+          <div style="font-size:10px;color:var(--text2)">Maturity</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function viewSipProfile(idx){
+  const ps=gs('sipProfiles')||[];
+  const p=ps[idx];
+  if(!p) return;
+  const gains=p.gains||0,inv=p.totalInvested||0,mat=p.maturity||0;
+  const gainPct=inv>0?((gains/inv)*100).toFixed(1):0;
+  const html=`
+    <div style="font-family:'Baloo 2',sans-serif;font-size:16px;font-weight:800;color:var(--accent);margin-bottom:10px">${p.name}</div>
+    ${p.fund?`<div style="font-size:12px;color:var(--text2);margin-bottom:8px">🏦 ${p.fund}</div>`:''}
+    <div style="background:linear-gradient(135deg,rgba(37,99,235,.1),rgba(22,163,74,.07));border:1.5px solid rgba(37,99,235,.2);border-radius:11px;padding:12px;margin-bottom:10px;text-align:center">
+      <div style="font-size:10px;color:var(--text2)">Maturity Value</div>
+      <div style="font-family:'Baloo 2',sans-serif;font-size:28px;font-weight:800;color:var(--green)">₹${fmt(mat)}</div>
+    </div>
+    <div class="rbox">
+      <div class="rrow"><span>Total Invested</span><span class="rv">₹${fmt(inv)}</span></div>
+      <div class="rrow"><span>Wealth Gained</span><span class="rv grn">₹${fmt(gains)}</span></div>
+      <div class="rrow"><span>Gain %</span><span class="rv grn">${gainPct}%</span></div>
+      <div class="rrow"><span>Annual Return</span><span class="rv">${p.rateA}%</span></div>
+      <div class="rrow"><span>Period</span><span class="rv">${p.months} months</span></div>
+      ${p.mode==='sip'&&p.monthly?`<div class="rrow"><span>Monthly SIP</span><span class="rv">₹${fmt(p.monthly)}</span></div>`:''}
+      <div class="rrow"><span>Mode</span><span class="rv">${p.mode==='lump'?'Lump Sum':p.mode==='target'?'Target SIP':'SIP'}</span></div>
+      ${p.notes?`<div class="rrow"><span>Notes</span><span style="font-size:11px;color:var(--text2)">${p.notes}</span></div>`:''}
+      <div class="rrow"><span>Saved On</span><span style="font-size:11px;color:var(--text2)">${p.savedOn||''}</span></div>
+    </div>
+    <div class="btn-row" style="margin-top:10px">
+      <button class="btn bo" onclick="shareSipProfileById(${idx})">📤 Share</button>
+      <button class="btn br" onclick="delSipProfile(${idx})">🗑️ Delete</button>
+    </div>`;
+  // Show in a simple alert-style modal (reuse profile detail modal if available)
+  const m=document.getElementById('profileDetailModal');
+  const inner=document.getElementById('profile_detail_inner');
+  if(m&&inner){
+    inner.innerHTML=html;
+    // Hide EMI-specific buttons
+    m.querySelectorAll('.btn-row button:not([onclick*="delSipProfile"]):not([onclick*="shareSipProfile"])').forEach(b=>{
+      if(b.closest('#profile_detail_inner')) return;
+      // Keep only inner content
+    });
+    // Replace footer buttons
+    const footer=m.querySelector('.btn-row:not([style*="margin-top:6px"])');
+    if(footer) footer.style.display='none';
+    const footer2=m.querySelector('.btn-row[style*="margin-top:6px"]');
+    if(footer2) footer2.style.display='none';
+    const shareBtn=m.querySelector('button[onclick="shareProfile()"]');
+    if(shareBtn) shareBtn.style.display='none';
+    openM('profileDetailModal');
+  }
+}
+
+function delSipProfile(idx){
+  if(!confirm('Yeh SIP profile delete karein?')) return;
+  const ps=gs('sipProfiles')||[];
+  ps.splice(idx,1);
+  ss('sipProfiles',ps);
+  closeM('profileDetailModal');
+  renderSipProfiles();
+}
+
+function shareSipProfileById(idx){
+  const ps=gs('sipProfiles')||[];
+  const p=ps[idx];if(!p)return;
+  const text=`📈 SIP Profile — ${p.name}\n${p.fund?'🏦 '+p.fund+'\n':''}━━━━━━━━━━━━━━━━━\n💰 Maturity: ₹${fmt(p.maturity)}\n📦 Invested: ₹${fmt(p.totalInvested)}\n💹 Gains: ₹${fmt(p.gains)}\n📊 ${p.rateA}% p.a. | ${p.months} months\n${p.mode==='sip'&&p.monthly?'📅 Monthly SIP: ₹'+fmt(p.monthly)+'\n':''}━━━━━━━━━━━━━━━━━\n— MyToolkit Pro`;
+  if(navigator.share) navigator.share({title:'SIP Profile',text}).catch(()=>navigator.clipboard.writeText(text).then(()=>alert('✅ Copied!')));
+  else navigator.clipboard.writeText(text).then(()=>alert('✅ Copied!')).catch(()=>alert('Share failed'));
+}
+
+
+
+function cmpSipLump(){
+  const amt=parseFloat(document.getElementById('sip_cmp_amt').value)||0;
+  const rate=parseFloat(document.getElementById('sip_cmp_rate').value)||0;
+  const yrs=parseFloat(document.getElementById('sip_cmp_years').value)||0;
+  if(!amt||!rate||!yrs){alert('Sabhi fields fill karein');return}
+
+  const months=yrs*12;
+  const r=rate/12/100;
+  const monthly=amt/months;
+
+  // SIP maturity
+  const sipMat=monthly*(Math.pow(1+r,months)-1)/r*(1+r);
+  // Lump sum maturity
+  const lumpMat=amt*Math.pow(1+r*12,yrs); // approximate using annual
+  const lumpMat2=amt*Math.pow(1+r,months); // exact monthly
+
+  const sipWins=sipMat>lumpMat2;
+
+  document.getElementById('sip_cmp_res').style.display='block';
+  document.getElementById('sip_cmp_res').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <div style="background:${sipWins?'rgba(22,163,74,.1)':'rgba(37,99,235,.08)'};border:1.5px solid ${sipWins?'var(--green)':'var(--border)'};border-radius:11px;padding:12px;text-align:center">
+        <div style="font-size:10px;color:var(--text2);margin-bottom:4px">📈 SIP (₹${fmt(monthly)}/mo)</div>
+        <div style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:var(--green)">₹${fmt(sipMat)}</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:3px">Invested: ₹${fmt(amt)}</div>
+        ${sipWins?'<div style="font-size:11px;color:var(--green);font-weight:700;margin-top:5px">🏆 Better!</div>':''}
+      </div>
+      <div style="background:${!sipWins?'rgba(22,163,74,.1)':'rgba(37,99,235,.08)'};border:1.5px solid ${!sipWins?'var(--green)':'var(--border)'};border-radius:11px;padding:12px;text-align:center">
+        <div style="font-size:10px;color:var(--text2);margin-bottom:4px">💰 Lump Sum</div>
+        <div style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:var(--accent)">₹${fmt(lumpMat2)}</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:3px">Invested: ₹${fmt(amt)}</div>
+        ${!sipWins?'<div style="font-size:11px;color:var(--green);font-weight:700;margin-top:5px">🏆 Better!</div>':''}
+      </div>
+    </div>
+    <div class="rbox">
+      <div class="rrow"><span>Difference</span><span class="rv ${sipWins?'grn':'red'}">₹${fmt(Math.abs(sipMat-lumpMat2))}</span></div>
+      <div class="rrow"><span>Winner</span><span class="rv">${sipWins?'📈 SIP':'💰 Lump Sum'}</span></div>
+      <div class="rrow"><span>SIP Return %</span><span class="rv">${((sipMat-amt)/amt*100).toFixed(1)}%</span></div>
+      <div class="rrow"><span>Lump Return %</span><span class="rv">${((lumpMat2-amt)/amt*100).toFixed(1)}%</span></div>
+    </div>`;
+}
+
 // ═══════════ INIT (append to existing) ═══════════
 // Render compare history on load
 document.addEventListener('DOMContentLoaded',()=>{
@@ -4288,7 +5557,7 @@ const _origRenderCmpHistory=renderCmpHistory;
 // ═══════════ INIT ═══════════
 renderNav();showSection('sec_'+tabs[0].id);setEmiSolve('emi');
 renderProfiles();renderSigs();renderWAList();startWAScheduler();initCash();buildA2WUI();convA2W();setCL('low');setPPMode('tenure');
-renderCmpHistory();renderMileageHistory();renderCashHistory();
+renderCmpHistory();renderMileageHistory();renderCashHistory();renderSipProfiles();
 // Init signature pad after DOM ready
 setTimeout(()=>{initSigPad();updatePenPreview();},100);
 const nw=new Date();nw.setMinutes(nw.getMinutes()+30);document.getElementById('wa_time').value=nw.toISOString().slice(0,16);
