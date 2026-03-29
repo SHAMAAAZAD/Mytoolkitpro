@@ -908,6 +908,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
       <button id="sip_mode_sip" class="sip-mode-btn active" onclick="setSipMode('sip')">📈 SIP</button>
       <button id="sip_mode_lump" class="sip-mode-btn" onclick="setSipMode('lump')">💰 Lump Sum</button>
       <button id="sip_mode_target" class="sip-mode-btn" onclick="setSipMode('target')">🎯 Target</button>
+      <button class="sip-mode-btn" onclick="openM('swpModal')" style="background:linear-gradient(135deg,rgba(234,88,12,0.7),rgba(180,83,9,0.7));color:#fff">💸 SWP</button>
     </div>
   </div>
 </div>
@@ -1155,11 +1156,28 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
   <div style="font-size:10px;color:var(--text2);margin-bottom:4px;font-weight:600;display:flex;align-items:center;gap:6px">
     📊 Total SIP Summary &nbsp;<span id="sip_ov_badge" style="background:rgba(37,99,235,.1);color:var(--accent);border-radius:9px;padding:1px 8px;font-size:10px;font-weight:700"></span>
   </div>
-  <div class="lo-grid" id="sip_ov_summary_grid">
-    <div class="lo-cell"><div class="lo-label">Total Invested</div><div class="lo-val" id="sip_ov_invested">—</div></div>
-    <div class="lo-cell"><div class="lo-label">Total Maturity</div><div class="lo-val grn" id="sip_ov_maturity">—</div></div>
-    <div class="lo-cell"><div class="lo-label">Total Gains</div><div class="lo-val grn" id="sip_ov_gains">—</div></div>
-    <div class="lo-cell"><div class="lo-label">Avg Return</div><div class="lo-val" id="sip_ov_rate">—</div></div>
+  <!-- 4 summary cells — each showing maturity + till date -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--accent);border-radius:10px;overflow:hidden;margin-bottom:12px">
+    <div style="padding:10px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)">
+      <div class="lo-label">Total Maturity</div>
+      <div class="lo-val grn" id="sip_ov_maturity">—</div>
+      <div style="font-size:10px;color:var(--text2);margin-top:3px">Till Date: <span style="font-weight:700;color:var(--accent)" id="sip_ov_td_maturity">—</span></div>
+    </div>
+    <div style="padding:10px;border-bottom:1px solid var(--border)">
+      <div class="lo-label">Total Gains</div>
+      <div class="lo-val grn" id="sip_ov_gains">—</div>
+      <div style="font-size:10px;color:var(--text2);margin-top:3px">Till Date: <span style="font-weight:700;color:var(--green)" id="sip_ov_td_gains">—</span></div>
+    </div>
+    <div style="padding:10px;border-right:1px solid var(--border)">
+      <div class="lo-label">Total Invested</div>
+      <div class="lo-val" id="sip_ov_invested">—</div>
+      <div style="font-size:10px;color:var(--text2);margin-top:3px">Till Date: <span style="font-weight:700;color:var(--accent2)" id="sip_ov_td_invested">—</span></div>
+    </div>
+    <div style="padding:10px">
+      <div class="lo-label">Avg Return</div>
+      <div class="lo-val" id="sip_ov_rate">—</div>
+      <div style="font-size:10px;color:var(--text2);margin-top:3px">Till Date Avg: <span style="font-weight:700;color:var(--accent)" id="sip_ov_td_rate">—</span></div>
+    </div>
   </div>
 
   <div id="sip_profiles_list"><div style="text-align:center;color:var(--text2);padding:15px;font-size:12px">No SIP profiles yet. Calculate karein aur Save karein.</div></div>
@@ -1813,8 +1831,80 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
     <div class="modal-title">💾 Save SIP Profile</div>
     <label>Profile Name *</label><input class="inp" id="sip_pname" placeholder="Ex: HDFC Midcap Fund">
     <label>Fund/Plan Name</label><input class="inp" id="sip_pfund" placeholder="Ex: Mirae Asset">
+    <label>SIP Start Date (Pehli EMI Kab Se)</label><input class="inp" type="date" id="sip_startdate">
+    <label>SIP Account / Folio No.</label><input class="inp" id="sip_folio" placeholder="Optional">
     <label>Notes</label><input class="inp" id="sip_pnotes" placeholder="Optional notes">
     <button class="btn bp bfull" onclick="saveSipProfile()">💾 Save Profile</button>
+  </div>
+</div>
+
+<!-- SIP Profile Detail Modal (dedicated — separate from EMI profileDetailModal) -->
+<div class="mov" id="sipProfileDetailModal">
+  <div class="modal">
+    <button class="mc" onclick="closeM('sipProfileDetailModal')">✕</button>
+    <div id="sip_profile_detail_inner"></div>
+  </div>
+</div>
+
+<!-- SIP Edit Modal -->
+<div class="mov" id="sipEditModal">
+  <div class="modal">
+    <button class="mc" onclick="closeM('sipEditModal')">✕</button>
+    <div class="modal-title">✏️ Edit SIP Profile</div>
+    <input type="hidden" id="sip_edit_idx">
+    <label>Profile Name *</label><input class="inp" id="sip_edit_name" placeholder="Ex: HDFC Midcap Fund">
+    <label>Fund/Plan Name</label><input class="inp" id="sip_edit_fund" placeholder="Ex: Mirae Asset">
+    <label>SIP Start Date (Pehli EMI Kab Se)</label><input class="inp" type="date" id="sip_edit_startdate">
+    <label>SIP Account / Folio No.</label><input class="inp" id="sip_edit_folio" placeholder="Optional">
+    <label>Monthly SIP Amount (₹)</label><input class="inp" type="number" id="sip_edit_monthly" placeholder="Ex: 5000">
+    <label>Annual Return (%)</label><input class="inp" type="number" id="sip_edit_rate" placeholder="Ex: 12">
+    <label>Tenure (months)</label><input class="inp" type="number" id="sip_edit_months" placeholder="Ex: 120">
+    <label>Notes</label><input class="inp" id="sip_edit_notes" placeholder="Optional notes">
+    <div class="btn-row">
+      <button class="btn bs" onclick="closeM('sipEditModal')">Cancel</button>
+      <button class="btn bp" onclick="saveSipEditProfile()">💾 Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- SWP Calculator Modal -->
+<div class="mov" id="swpModal">
+  <div class="modal">
+    <button class="mc" onclick="closeM('swpModal')">✕</button>
+    <div class="modal-title">💸 SWP Calculator</div>
+    <div class="ibox ig" style="margin-bottom:10px">📌 Systematic Withdrawal Plan — invested corpus se regular withdrawal calculate karein</div>
+    <label>Total Corpus / Invested Amount (₹)</label>
+    <div style="position:relative;margin-bottom:8px">
+      <div style="display:flex;align-items:center">
+        <span style="background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;font-weight:800;font-size:14px;padding:11px 13px;border-radius:11px 0 0 11px;border:1.5px solid var(--accent);border-right:none">₹</span>
+        <input class="inp" type="number" id="swp_corpus" placeholder="Ex: 50,00,000" style="border-radius:0 11px 11px 0;margin:0" oninput="calcSWP()">
+      </div>
+    </div>
+    <label>Expected Annual Return (%)</label>
+    <input class="inp" type="number" id="swp_rate" placeholder="Ex: 12" oninput="calcSWP()">
+    <label>Monthly Withdrawal Amount (₹)</label>
+    <div style="display:flex;align-items:center;margin-bottom:8px">
+      <span style="background:linear-gradient(135deg,var(--accent2),#b45309);color:#fff;font-weight:800;font-size:14px;padding:11px 13px;border-radius:11px 0 0 11px;border:1.5px solid var(--accent2);border-right:none">₹</span>
+      <input class="inp" type="number" id="swp_monthly" placeholder="Ex: 30,000" style="border-radius:0 11px 11px 0;margin:0" oninput="calcSWP()">
+    </div>
+    <label>Withdrawal Period (Years)</label>
+    <input class="inp" type="number" id="swp_years" placeholder="Ex: 20" oninput="calcSWP()">
+    <button class="btn bp bfull" style="margin-bottom:10px" onclick="calcSWP()">📊 Calculate SWP</button>
+    <div id="swp_result" style="display:none"></div>
+    <div id="swp_save_row" style="display:none;margin-top:8px">
+      <button class="btn bg bfull" onclick="openSwpSaveModal()">💾 Save SWP Profile</button>
+    </div>
+  </div>
+</div>
+
+<!-- SWP Save Modal -->
+<div class="mov" id="swpSaveModal">
+  <div class="modal">
+    <button class="mc" onclick="closeM('swpSaveModal')">✕</button>
+    <div class="modal-title">💾 Save SWP Profile</div>
+    <label>Profile Name *</label><input class="inp" id="swp_pname" placeholder="Ex: Retirement Withdrawal">
+    <label>Notes</label><input class="inp" id="swp_pnotes" placeholder="Optional">
+    <button class="btn bp bfull" onclick="saveSwpProfile()">💾 Save Profile</button>
   </div>
 </div>
 
@@ -5377,6 +5467,8 @@ function openSipSaveModal(){
   document.getElementById('sip_pname').value='';
   document.getElementById('sip_pfund').value='';
   document.getElementById('sip_pnotes').value='';
+  document.getElementById('sip_startdate').value='';
+  document.getElementById('sip_folio').value='';
 }
 
 function saveSipProfile(){
@@ -5390,6 +5482,8 @@ function saveSipProfile(){
     name,
     fund:document.getElementById('sip_pfund').value.trim(),
     notes:document.getElementById('sip_pnotes').value.trim(),
+    startDate:document.getElementById('sip_startdate').value||'',
+    folio:document.getElementById('sip_folio').value.trim()||'',
     mode,monthly,maturity,totalInvested,gains,rateA,months,
     savedOn:new Date().toLocaleDateString('en-IN')
   });
@@ -5399,6 +5493,39 @@ function saveSipProfile(){
   alert('✅ SIP Profile save ho gaya!');
 }
 
+function _sipTillDate(p){
+  // Calculate current value of SIP based on startDate or savedOn
+  try{
+    const startStr=p.startDate||p.savedOn||'';
+    let startDate=null;
+    if(startStr){
+      // Try ISO date first (yyyy-mm-dd), then Indian format (dd/mm/yyyy)
+      if(startStr.includes('-')&&startStr.length===10){
+        startDate=new Date(startStr);
+      } else {
+        const parts=startStr.split('/');
+        if(parts.length===3) startDate=new Date(parts[2],parts[1]-1,parts[0]);
+      }
+    }
+    if(!startDate||isNaN(startDate.getTime())) return null;
+    const now=new Date();
+    const monthsElapsed=Math.max(0,Math.floor((now-startDate)/(1000*60*60*24*30.44)));
+    if(monthsElapsed<=0) return null;
+    const m=Math.min(monthsElapsed,p.months||0);
+    const r=(p.rateA||0)/12/100;
+    let tdMat=0,tdInv=0;
+    if(p.mode==='lump'){
+      tdMat=(p.totalInvested||0)*Math.pow(1+r,m);
+      tdInv=p.totalInvested||0;
+    } else {
+      const monthly=p.monthly||((p.totalInvested||0)/(p.months||1));
+      tdMat=monthly*(Math.pow(1+r,m)-1)/r*(1+r);
+      tdInv=monthly*m;
+    }
+    return{mat:tdMat,inv:tdInv,gains:tdMat-tdInv,months:m};
+  }catch{return null;}
+}
+
 function renderSipProfiles(){
   const ps=gs('sipProfiles')||[];
   // Render in SIP overview section
@@ -5406,11 +5533,19 @@ function renderSipProfiles(){
   if(!el) return;
   if(!ps.length){el.innerHTML='<div style="text-align:center;color:var(--text2);padding:15px;font-size:12px">No SIP profiles yet. Calculate karein aur Save karein.</div>';return}
 
-  // Summary
+  // Summary totals (maturity)
   const totInv=ps.reduce((s,p)=>s+(p.totalInvested||0),0);
   const totMat=ps.reduce((s,p)=>s+(p.maturity||0),0);
   const totGains=ps.reduce((s,p)=>s+(p.gains||0),0);
   const avgRate=ps.length?ps.reduce((s,p)=>s+(p.rateA||0),0)/ps.length:0;
+
+  // Till-date totals
+  let tdTotMat=0,tdTotInv=0,tdTotGains=0,tdCount=0;
+  ps.forEach(p=>{
+    const td=_sipTillDate(p);
+    if(td){tdTotMat+=td.mat;tdTotInv+=td.inv;tdTotGains+=td.gains;tdCount++;}
+  });
+
   const badge=document.getElementById('sip_ov_badge');
   if(badge) badge.textContent=ps.length+' Profile'+(ps.length>1?'s':'');
   const setEl=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
@@ -5418,21 +5553,30 @@ function renderSipProfiles(){
   setEl('sip_ov_maturity','₹'+fmt(totMat));
   setEl('sip_ov_gains','₹'+fmt(totGains));
   setEl('sip_ov_rate',avgRate.toFixed(1)+'%');
+  // Till date
+  setEl('sip_ov_td_maturity',tdCount>0?'₹'+fmt(tdTotMat):'—');
+  setEl('sip_ov_td_invested',tdCount>0?'₹'+fmt(tdTotInv):'—');
+  setEl('sip_ov_td_gains',tdCount>0?'₹'+fmt(tdTotGains):'—');
+  setEl('sip_ov_td_rate',tdCount>0?avgRate.toFixed(1)+'%':'—');
 
-  el.innerHTML=ps.map((p,i)=>`
+  el.innerHTML=ps.map((p,i)=>{
+    const td=_sipTillDate(p);
+    return`
     <div class="prem-lc" onclick="viewSipProfile(${i})">
       <div style="display:flex;align-items:center;gap:8px">
         <span class="profile-num">${i+1}</span>
         <div style="flex:1;min-width:0">
           <div class="lc-name">${p.name}</div>
-          <div class="lc-meta">${p.fund?p.fund+' • ':''}${p.mode==='lump'?'Lump Sum':p.mode==='target'?'Target':'SIP'} • ${p.rateA}% • ${p.months}mo</div>
+          <div class="lc-meta">${p.fund?p.fund+' • ':''}${p.mode==='lump'?'Lump Sum':p.mode==='target'?'Target':'SIP'} • ${p.rateA}% • ${p.months}mo${p.startDate?' • From '+p.startDate:''}</div>
+          ${td?`<div style="font-size:10px;color:var(--green);margin-top:2px">Till Date: ₹${fmt(td.mat)} (${td.months} mo invested)</div>`:''}
         </div>
         <div style="text-align:right;flex-shrink:0">
           <div style="font-family:'Baloo 2',sans-serif;font-size:16px;font-weight:800;color:var(--green)">₹${fmt(p.maturity)}</div>
           <div style="font-size:10px;color:var(--text2)">Maturity</div>
         </div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function viewSipProfile(idx){
@@ -5441,6 +5585,16 @@ function viewSipProfile(idx){
   if(!p) return;
   const gains=p.gains||0,inv=p.totalInvested||0,mat=p.maturity||0;
   const gainPct=inv>0?((gains/inv)*100).toFixed(1):0;
+  const td=_sipTillDate(p);
+  const tdSection=td?`
+    <div style="margin-top:10px">
+      <div style="font-size:11px;font-weight:800;color:var(--accent2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">📅 Till Date (${td.months} Months Elapsed)</div>
+      <div class="rbox" style="border-left-color:var(--accent2)">
+        <div class="rrow"><span>Value Till Date</span><span class="rv grn">₹${fmt(td.mat)}</span></div>
+        <div class="rrow"><span>Invested Till Date</span><span class="rv">₹${fmt(td.inv)}</span></div>
+        <div class="rrow"><span>Gains Till Date</span><span class="rv grn">₹${fmt(td.gains)}</span></div>
+      </div>
+    </div>`:'';
   const html=`
     <div style="font-family:'Baloo 2',sans-serif;font-size:16px;font-weight:800;color:var(--accent);margin-bottom:10px">${p.name}</div>
     ${p.fund?`<div style="font-size:12px;color:var(--text2);margin-bottom:8px">🏦 ${p.fund}</div>`:''}
@@ -5456,32 +5610,68 @@ function viewSipProfile(idx){
       <div class="rrow"><span>Period</span><span class="rv">${p.months} months</span></div>
       ${p.mode==='sip'&&p.monthly?`<div class="rrow"><span>Monthly SIP</span><span class="rv">₹${fmt(p.monthly)}</span></div>`:''}
       <div class="rrow"><span>Mode</span><span class="rv">${p.mode==='lump'?'Lump Sum':p.mode==='target'?'Target SIP':'SIP'}</span></div>
+      ${p.startDate?`<div class="rrow"><span>SIP Start Date</span><span class="rv">${p.startDate}</span></div>`:''}
+      ${p.folio?`<div class="rrow"><span>Folio/A/C No.</span><span style="font-size:11px;color:var(--text2)">${p.folio}</span></div>`:''}
       ${p.notes?`<div class="rrow"><span>Notes</span><span style="font-size:11px;color:var(--text2)">${p.notes}</span></div>`:''}
       <div class="rrow"><span>Saved On</span><span style="font-size:11px;color:var(--text2)">${p.savedOn||''}</span></div>
     </div>
+    ${tdSection}
     <div class="btn-row" style="margin-top:10px">
+      <button class="btn bs" onclick="openSipEditModal(${idx});closeM('sipProfileDetailModal')">✏️ Edit</button>
       <button class="btn bo" onclick="shareSipProfileById(${idx})">📤 Share</button>
       <button class="btn br" onclick="delSipProfile(${idx})">🗑️ Delete</button>
     </div>`;
-  // Show in a simple alert-style modal (reuse profile detail modal if available)
-  const m=document.getElementById('profileDetailModal');
-  const inner=document.getElementById('profile_detail_inner');
-  if(m&&inner){
-    inner.innerHTML=html;
-    // Hide EMI-specific buttons
-    m.querySelectorAll('.btn-row button:not([onclick*="delSipProfile"]):not([onclick*="shareSipProfile"])').forEach(b=>{
-      if(b.closest('#profile_detail_inner')) return;
-      // Keep only inner content
-    });
-    // Replace footer buttons
-    const footer=m.querySelector('.btn-row:not([style*="margin-top:6px"])');
-    if(footer) footer.style.display='none';
-    const footer2=m.querySelector('.btn-row[style*="margin-top:6px"]');
-    if(footer2) footer2.style.display='none';
-    const shareBtn=m.querySelector('button[onclick="shareProfile()"]');
-    if(shareBtn) shareBtn.style.display='none';
-    openM('profileDetailModal');
+  const inner=document.getElementById('sip_profile_detail_inner');
+  if(inner) inner.innerHTML=html;
+  openM('sipProfileDetailModal');
+}
+
+function openSipEditModal(idx){
+  const ps=gs('sipProfiles')||[];
+  const p=ps[idx];if(!p)return;
+  document.getElementById('sip_edit_idx').value=idx;
+  document.getElementById('sip_edit_name').value=p.name||'';
+  document.getElementById('sip_edit_fund').value=p.fund||'';
+  document.getElementById('sip_edit_startdate').value=p.startDate||'';
+  document.getElementById('sip_edit_folio').value=p.folio||'';
+  document.getElementById('sip_edit_monthly').value=p.monthly||((p.totalInvested||0)/(p.months||1));
+  document.getElementById('sip_edit_rate').value=p.rateA||'';
+  document.getElementById('sip_edit_months').value=p.months||'';
+  document.getElementById('sip_edit_notes').value=p.notes||'';
+  openM('sipEditModal');
+}
+
+function saveSipEditProfile(){
+  const idx=parseInt(document.getElementById('sip_edit_idx').value);
+  const ps=gs('sipProfiles')||[];
+  if(!ps[idx]){alert('Profile nahi mili');return}
+  const name=document.getElementById('sip_edit_name').value.trim();
+  if(!name){alert('Profile name daalo');return}
+  const monthly=parseFloat(document.getElementById('sip_edit_monthly').value)||ps[idx].monthly||0;
+  const rateA=parseFloat(document.getElementById('sip_edit_rate').value)||ps[idx].rateA||0;
+  const months=parseInt(document.getElementById('sip_edit_months').value)||ps[idx].months||0;
+  // Recalculate
+  let maturity=ps[idx].maturity,totalInvested=ps[idx].totalInvested,gains=ps[idx].gains;
+  if(monthly&&rateA&&months){
+    const r=rateA/12/100;
+    if(ps[idx].mode==='lump'){
+      maturity=monthly*Math.pow(1+r,months);
+      totalInvested=monthly;
+    } else {
+      maturity=monthly*(Math.pow(1+r,months)-1)/r*(1+r);
+      totalInvested=monthly*months;
+    }
+    gains=maturity-totalInvested;
   }
+  ps[idx]={...ps[idx],name,fund:document.getElementById('sip_edit_fund').value.trim(),
+    startDate:document.getElementById('sip_edit_startdate').value||'',
+    folio:document.getElementById('sip_edit_folio').value.trim()||'',
+    notes:document.getElementById('sip_edit_notes').value.trim(),
+    monthly,rateA,months,maturity,totalInvested,gains};
+  ss('sipProfiles',ps);
+  closeM('sipEditModal');
+  renderSipProfiles();
+  alert('✅ SIP Profile updated!');
 }
 
 function delSipProfile(idx){
@@ -5543,6 +5733,95 @@ function cmpSipLump(){
       <div class="rrow"><span>SIP Return %</span><span class="rv">${((sipMat-amt)/amt*100).toFixed(1)}%</span></div>
       <div class="rrow"><span>Lump Return %</span><span class="rv">${((lumpMat2-amt)/amt*100).toFixed(1)}%</span></div>
     </div>`;
+}
+
+// ═══════════ SWP CALCULATOR ═══════════
+let swpResultData=null;
+
+function calcSWP(){
+  const corpus=parseFloat(document.getElementById('swp_corpus').value)||0;
+  const rateA=parseFloat(document.getElementById('swp_rate').value)||0;
+  const monthly=parseFloat(document.getElementById('swp_monthly').value)||0;
+  const yrs=parseFloat(document.getElementById('swp_years').value)||0;
+  if(!corpus||!rateA||!monthly||!yrs){document.getElementById('swp_result').style.display='none';return}
+
+  const months=Math.round(yrs*12);
+  const r=rateA/12/100;
+  let bal=corpus;
+  let totalWithdrawn=0;
+  let alive=true;
+  let exhaustMonth=0;
+  const yearData=[];
+
+  for(let m=1;m<=months;m++){
+    bal=bal*(1+r)-monthly;
+    totalWithdrawn+=monthly;
+    if(bal<=0&&alive){alive=false;exhaustMonth=m;}
+    if(m%12===0||m===months){
+      yearData.push({year:Math.ceil(m/12),withdrawn:totalWithdrawn,balance:Math.max(0,bal)});
+    }
+  }
+
+  swpResultData={corpus,rateA,monthly,months,totalWithdrawn,finalBalance:Math.max(0,bal),alive,exhaustMonth};
+
+  const resEl=document.getElementById('swp_result');
+  resEl.style.display='block';
+  resEl.innerHTML=`
+    <div style="background:linear-gradient(135deg,#1a0533,#3b1270,#5b21b6);border-radius:16px;padding:16px;margin-bottom:10px;border:1px solid rgba(124,58,237,0.3)">
+      <div style="font-size:10px;font-weight:700;color:rgba(196,181,253,0.8);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px">💸 SWP Result</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:3px">Corpus</div>
+      <div style="font-family:'Baloo 2',sans-serif;font-size:28px;font-weight:900;color:#fff;line-height:1;margin-bottom:12px">₹${fmt(corpus)}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:rgba(59,130,246,0.2);border:1px solid rgba(59,130,246,0.3);border-radius:11px;padding:10px">
+          <div style="font-size:9px;color:rgba(255,255,255,0.5);font-weight:700;text-transform:uppercase;margin-bottom:4px">Monthly Withdrawal</div>
+          <div style="font-family:'Baloo 2',sans-serif;font-size:18px;font-weight:800;color:#fff">₹${fmt(monthly)}</div>
+        </div>
+        <div style="background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.3);border-radius:11px;padding:10px">
+          <div style="font-size:9px;color:rgba(255,255,255,0.5);font-weight:700;text-transform:uppercase;margin-bottom:4px">Total Withdrawn</div>
+          <div style="font-family:'Baloo 2',sans-serif;font-size:18px;font-weight:800;color:#6ee7b7">₹${fmt(totalWithdrawn)}</div>
+        </div>
+        <div style="background:${alive?'rgba(22,163,74,0.2)':'rgba(220,38,38,0.2)'};border:1px solid ${alive?'rgba(22,163,74,0.3)':'rgba(220,38,38,0.3)'};border-radius:11px;padding:10px">
+          <div style="font-size:9px;color:rgba(255,255,255,0.5);font-weight:700;text-transform:uppercase;margin-bottom:4px">Remaining Balance</div>
+          <div style="font-family:'Baloo 2',sans-serif;font-size:18px;font-weight:800;color:${alive?'#6ee7b7':'#f87171'}">₹${fmt(Math.max(0,bal))}</div>
+        </div>
+        <div style="background:rgba(234,88,12,0.18);border:1px solid rgba(234,88,12,0.3);border-radius:11px;padding:10px">
+          <div style="font-size:9px;color:rgba(255,255,255,0.5);font-weight:700;text-transform:uppercase;margin-bottom:4px">Status</div>
+          <div style="font-family:'Baloo 2',sans-serif;font-size:14px;font-weight:800;color:${alive?'#6ee7b7':'#f87171'}">${alive?'✅ Corpus Intact':'⚠️ Exhausted in '+exhaustMonth+' mo'}</div>
+        </div>
+      </div>
+    </div>
+    <div class="rbox">
+      <div class="rrow"><span>Period</span><span class="rv">${months} months (${yrs} years)</span></div>
+      <div class="rrow"><span>Annual Return</span><span class="rv">${rateA}% p.a.</span></div>
+      <div class="rrow"><span>Total Withdrawn</span><span class="rv">₹${fmt(totalWithdrawn)}</span></div>
+      <div class="rrow"><span>Final Balance</span><span class="rv ${alive?'grn':'red'}">₹${fmt(Math.max(0,bal))}</span></div>
+      ${!alive?`<div class="rrow"><span>⚠️ Corpus Exhausted</span><span class="rv red">Month ${exhaustMonth}</span></div>`:''}
+    </div>`;
+  document.getElementById('swp_save_row').style.display='block';
+}
+
+function openSwpSaveModal(){
+  if(!swpResultData){alert('Pehle SWP calculate karein');return}
+  document.getElementById('swp_pname').value='';
+  document.getElementById('swp_pnotes').value='';
+  closeM('swpModal');
+  openM('swpSaveModal');
+}
+
+function saveSwpProfile(){
+  const name=document.getElementById('swp_pname').value.trim();
+  if(!name){alert('Profile name daalo');return}
+  if(!swpResultData){alert('SWP data nahi mila. Dobara calculate karein.');return}
+  const ps=gs('swpProfiles')||[];
+  ps.push({
+    id:Date.now(),name,
+    notes:document.getElementById('swp_pnotes').value.trim(),
+    ...swpResultData,
+    savedOn:new Date().toLocaleDateString('en-IN')
+  });
+  ss('swpProfiles',ps);
+  closeM('swpSaveModal');
+  alert('✅ SWP Profile save ho gaya!');
 }
 
 // ═══════════ INIT (append to existing) ═══════════
