@@ -1469,13 +1469,21 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
   <div class="prem-hero-inner">
     <div class="prem-hero-label">PDF Tools</div>
     <div class="prem-hero-title">📄 PDF Toolkit</div>
-    <div class="prem-hero-sub">Compress, Edit, Sign — sab kuch ek jagah</div>
+    <div class="prem-hero-sub">Compress, Edit, Word, PPT, ePub, OCR — sab ek jagah</div>
   </div>
 </div>
 <!-- PDF COMPRESSOR -->
 <div class="prem-card" id="pdf_comp_card">
   <div class="prem-card-title">📄 PDF Compressor
-    <button class="btn bs" style="padding:3px 9px;font-size:10px;margin-left:auto" onclick="showPdfTab('edit')">✏️ PDF Editor</button>
+    <div style="display:flex;gap:4px;margin-left:auto;flex-wrap:wrap">
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('edit')">✏️ Edit</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('convert')">🔄 Convert</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('word')">📝 Word</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('pptx')">📊 PPT</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('epub')">📖 ePub</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('ocr')">🔍 OCR</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('html')">🌐 HTML</button>
+    </div>
   </div>
   <div class="ibox ig">✅ <strong style="color:var(--green)">Real compression:</strong> PDF.js renders each page → JPEG compress → OCR text preserved as invisible overlay (searchable). All modes output searchable PDF.</div>
   <label>Compression Level:</label>
@@ -1515,7 +1523,15 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 <!-- PDF EDITOR -->
 <div class="prem-card" id="pdf_edit_card" style="display:none">
   <div class="prem-card-title">✏️ PDF Editor
-    <button class="btn bs" style="padding:3px 9px;font-size:10px;margin-left:auto" onclick="showPdfTab('compress')">← Compressor</button>
+    <div style="display:flex;gap:4px;margin-left:auto;flex-wrap:wrap">
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('compress')">🗜️ Compress</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('convert')">🔄 Convert</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('word')">📝 Word</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('pptx')">📊 PPT</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('epub')">📖 ePub</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('ocr')">🔍 OCR</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('html')">🌐 HTML</button>
+    </div>
   </div>
   <div class="ibox io">📝 Upload PDF → Select pages → Delete, reorder, rotate, merge, add/remove text, or sign PDF with your signature.</div>
   <div class="uarea prem-drop-zone" onclick="document.getElementById('pdfEditInput').click()">
@@ -1525,10 +1541,12 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
   <input type="file" id="pdfEditInput" accept=".pdf" multiple style="display:none" onchange="handleEditPDF(event)">
   <div id="pdf_edit_ui" style="display:none">
     <!-- Tab switcher -->
-    <div style="display:flex;gap:5px;margin-bottom:10px;background:var(--surface2);border-radius:9px;padding:4px">
-      <button id="pe_tab_pages" class="btn bp" style="flex:1;font-size:11px;padding:6px 4px" onclick="setPdfEditTab('pages')">📄 Pages</button>
-      <button id="pe_tab_text" class="btn bs" style="flex:1;font-size:11px;padding:6px 4px" onclick="setPdfEditTab('text')">✍️ Add Text</button>
-      <button id="pe_tab_sign" class="btn bs" style="flex:1;font-size:11px;padding:6px 4px" onclick="setPdfEditTab('sign')">🖊️ Sign PDF</button>
+    <div style="display:flex;gap:4px;margin-bottom:10px;background:var(--surface2);border-radius:9px;padding:4px;flex-wrap:wrap">
+      <button id="pe_tab_pages" class="btn bp" style="flex:1;min-width:60px;font-size:10px;padding:5px 2px" onclick="setPdfEditTab('pages')">📄 Pages</button>
+      <button id="pe_tab_text" class="btn bs" style="flex:1;min-width:60px;font-size:10px;padding:5px 2px" onclick="setPdfEditTab('text')">✍️ Add Text</button>
+      <button id="pe_tab_replace" class="btn bs" style="flex:1;min-width:60px;font-size:10px;padding:5px 2px" onclick="setPdfEditTab('replace')">🔁 Replace</button>
+      <button id="pe_tab_pen" class="btn bs" style="flex:1;min-width:60px;font-size:10px;padding:5px 2px" onclick="setPdfEditTab('pen')">🖊️ Pen Draw</button>
+      <button id="pe_tab_sign" class="btn bs" style="flex:1;min-width:60px;font-size:10px;padding:5px 2px" onclick="setPdfEditTab('sign')">✒️ Sign</button>
     </div>
 
     <!-- Pages panel -->
@@ -1587,6 +1605,90 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
       <div id="pe_text_list" style="margin-top:10px"></div>
     </div>
 
+    <!-- Replace Text panel -->
+    <div id="pe_panel_replace" style="display:none">
+      <div class="ibox io" style="font-size:11px">🔁 PDF ka text extract hoga → purana text replace karein new text se. Font, size, color automatically match hoga (white rectangle se pehla text cover, phir same position mein new text).</div>
+      <div id="pe_replace_extract_area" style="display:none">
+        <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px">📋 Extracted Text Blocks (page wise)</div>
+        <div id="pe_replace_blocks" style="max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:9px;padding:8px;background:var(--surface2);font-size:11px;margin-bottom:10px"></div>
+      </div>
+      <button class="btn bp bfull" style="margin-bottom:10px" onclick="extractPdfText()">📄 Extract Text from PDF</button>
+      <div id="pe_replace_form">
+        <label>Page Number</label>
+        <input class="inp" id="pe_rep_page" type="number" placeholder="1" value="1">
+        <label>Old Text (exact, jo PDF mein hai)</label>
+        <input class="inp" id="pe_rep_old" placeholder="Purana text yahan likhein...">
+        <label>New Text (replacement)</label>
+        <input class="inp" id="pe_rep_new" placeholder="Naya text yahan likhein...">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px">
+          <div>
+            <label>Font Size (original match karein)</label>
+            <input class="inp" id="pe_rep_size" type="number" placeholder="12" value="12" style="margin-bottom:0">
+          </div>
+          <div>
+            <label>Text Color</label>
+            <input type="color" id="pe_rep_color" value="#000000" style="width:100%;height:38px;border-radius:9px;border:1.5px solid var(--border);cursor:pointer;margin-top:2px">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px">
+          <div>
+            <label>X Position</label>
+            <input class="inp" id="pe_rep_x" type="number" placeholder="50" value="50" style="margin-bottom:0">
+          </div>
+          <div>
+            <label>Y Position (from bottom)</label>
+            <input class="inp" id="pe_rep_y" type="number" placeholder="700" value="700" style="margin-bottom:0">
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <input type="checkbox" id="pe_rep_whitebox" checked style="width:16px;height:16px;cursor:pointer">
+          <label style="margin:0;font-size:12px">White box se purana text cover karo (recommended)</label>
+        </div>
+        <div class="btn-row">
+          <button class="btn bp" onclick="addTextReplacement()">🔁 Add Replacement</button>
+          <button class="btn bg bfull" onclick="downloadEditedPDF()">💾 Download PDF</button>
+        </div>
+        <div id="pe_replace_list" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <!-- Pen Draw panel -->
+    <div id="pe_panel_pen" style="display:none">
+      <div class="ibox ig" style="font-size:11px">🖊️ PDF page ka preview canvas par free-hand pen se draw/write karein — handwriting, annotations, arrows, corrections sab kuch.</div>
+      <div style="display:flex;gap:7px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
+        <div>
+          <label style="font-size:10px">Page No.</label>
+          <input class="inp" id="pe_pen_page" type="number" placeholder="1" value="1" style="width:65px;margin-bottom:0;padding:7px 9px;font-size:12px" onchange="renderPenCanvas()">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <label style="font-size:10px">Pen Color</label>
+          <input type="color" id="pe_pen_color" value="#1a1a1a" style="width:46px;height:34px;border-radius:7px;border:1.5px solid var(--border);cursor:pointer">
+        </div>
+        <div>
+          <label style="font-size:10px">Size</label>
+          <input class="inp" id="pe_pen_size" type="number" placeholder="3" value="3" min="1" max="30" style="width:55px;margin-bottom:0;padding:7px 9px;font-size:12px">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <label style="font-size:10px">Highlighter</label>
+          <input type="color" id="pe_hl_color" value="#ffff00" style="width:46px;height:34px;border-radius:7px;border:1.5px solid var(--border);cursor:pointer">
+        </div>
+        <div style="display:flex;gap:5px;margin-top:14px;flex-wrap:wrap">
+          <button class="btn bp" id="pe_pen_mode_pen" style="font-size:10px;padding:5px 8px" onclick="setPenMode('pen')">🖊️ Pen</button>
+          <button class="btn bs" id="pe_pen_mode_hl" style="font-size:10px;padding:5px 8px" onclick="setPenMode('highlight')">🖍️ Highlight</button>
+          <button class="btn bs" id="pe_pen_mode_erase" style="font-size:10px;padding:5px 8px" onclick="setPenMode('erase')">🧹 Erase</button>
+        </div>
+      </div>
+      <div style="border:2px solid var(--border);border-radius:9px;overflow:hidden;position:relative;margin-bottom:8px;background:#f5f5f5">
+        <canvas id="pe_pen_canvas" style="display:block;width:100%;touch-action:none;cursor:crosshair"></canvas>
+        <div id="pe_pen_loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--surface2);font-size:12px;color:var(--text2)">⬆️ Pehle PDF upload karein aur page no. set karein</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn bs" onclick="clearPenCanvas()">🗑️ Clear Drawing</button>
+        <button class="btn bp" onclick="applyPenToPdf()">✅ Apply to PDF</button>
+        <button class="btn bg bfull" onclick="downloadEditedPDF()">💾 Download PDF</button>
+      </div>
+    </div>
+
     <!-- Sign PDF panel -->
     <div id="pe_panel_sign" style="display:none">
       <div class="ibox ig" style="font-size:11px">🖊️ Apna saved signature select karein ya nayi draw karein — PDF page par place karein.</div>
@@ -1626,9 +1728,469 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
     </div>
   </div>
 </div>
-</section>
 
-<!-- ═══ WHATSAPP ═══ -->
+<!-- ═══ PDF CONVERTER ═══ -->
+<div class="prem-card" id="pdf_conv_card" style="display:none">
+  <div class="prem-card-title">🔄 PDF Converter
+    <div style="display:flex;gap:4px;margin-left:auto;flex-wrap:wrap">
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('compress')">🗜️ Compress</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('edit')">✏️ Edit</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('word')">📝 Word</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('pptx')">📊 PPT</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('epub')">📖 ePub</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('ocr')">🔍 OCR</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('html')">🌐 HTML</button>
+    </div>
+  </div>
+
+  <!-- Mode Toggle: PDF→Other / Other→PDF -->
+  <div style="display:flex;background:var(--surface2);border-radius:12px;padding:3px;margin-bottom:14px;border:1px solid var(--border);gap:3px">
+    <button id="conv_btn_from" onclick="setConvMode('from')" style="flex:1;padding:9px 4px;border-radius:9px;border:none;font-size:12px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;font-family:'Inter',sans-serif">📄 PDF → Other Format</button>
+    <button id="conv_btn_to" onclick="setConvMode('to')" style="flex:1;padding:9px 4px;border-radius:9px;border:none;font-size:12px;font-weight:700;cursor:pointer;background:transparent;color:var(--text2);font-family:'Inter',sans-serif">📁 File → PDF</button>
+  </div>
+
+  <!-- PDF → Other Format Panel -->
+  <div id="conv_from_panel">
+    <div class="ibox ig" style="margin-bottom:12px">📄 PDF upload karein aur neeche se output format choose karein — Image (JPG/PNG/WebP), Text, Word-style HTML, ya Excel-style CSV.</div>
+
+    <div class="uarea prem-drop-zone" onclick="document.getElementById('convFromInput').click()" id="conv_from_drop">
+      <div style="font-size:28px;margin-bottom:4px">📄</div>
+      <div style="font-size:12px;color:var(--text2)">PDF select karein<br><strong style="color:var(--text)">Drag & drop or tap to browse</strong></div>
+    </div>
+    <input type="file" id="convFromInput" accept=".pdf,application/pdf" style="display:none" onchange="handleConvFromFile(event)">
+    <div id="conv_from_fileinfo" style="display:none;margin-bottom:10px" class="rbox">
+      <div class="rrow"><span>File</span><span class="rv" id="conv_from_fname">-</span></div>
+      <div class="rrow"><span>Size</span><span class="rv" id="conv_from_fsize">-</span></div>
+      <div class="rrow"><span>Pages</span><span class="rv" id="conv_from_fpages">-</span></div>
+    </div>
+
+    <!-- Format Grid -->
+    <div id="conv_from_formats" style="display:none">
+      <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Choose Output Format:</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <!-- Images -->
+        <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:10px">
+          <div style="font-size:10px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">🖼️ Images</div>
+          <button class="btn bp bfull" style="margin-bottom:5px;font-size:11px" onclick="convertPdfTo('jpg')">🟡 JPG (JPEG)</button>
+          <button class="btn bp bfull" style="margin-bottom:5px;font-size:11px" onclick="convertPdfTo('png')">🔵 PNG</button>
+          <button class="btn bp bfull" style="font-size:11px" onclick="convertPdfTo('webp')">🟢 WebP</button>
+        </div>
+        <!-- Documents -->
+        <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:10px">
+          <div style="font-size:10px;font-weight:800;color:var(--accent2);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">📝 Documents</div>
+          <button class="btn bo bfull" style="margin-bottom:5px;font-size:11px" onclick="convertPdfTo('txt')">📄 Plain Text (.txt)</button>
+          <button class="btn bo bfull" style="margin-bottom:5px;font-size:11px" onclick="convertPdfTo('html')">🌐 HTML / Word-style</button>
+          <button class="btn bo bfull" style="font-size:11px" onclick="convertPdfTo('csv')">📊 CSV / Excel-style</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px">
+        <!-- More formats -->
+        <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:10px">
+          <div style="font-size:10px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">📦 Archives</div>
+          <button class="btn bg bfull" style="margin-bottom:5px;font-size:11px" onclick="convertPdfTo('zip_jpg')">🗜️ ZIP (All pages JPG)</button>
+          <button class="btn bg bfull" style="font-size:11px" onclick="convertPdfTo('zip_png')">🗜️ ZIP (All pages PNG)</button>
+        </div>
+        <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:10px">
+          <div style="font-size:10px;font-weight:800;color:var(--yellow);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">⚙️ Settings</div>
+          <label style="font-size:10px">Image Quality (1–100)</label>
+          <input class="inp" type="number" id="conv_quality" value="85" min="10" max="100" style="margin-bottom:6px;font-size:13px">
+          <label style="font-size:10px">DPI (Image Resolution)</label>
+          <div style="display:flex;gap:4px">
+            <button class="btn bs" id="conv_dpi_96" onclick="setConvDPI(96,this)" style="flex:1;font-size:10px;padding:5px 2px">96</button>
+            <button class="btn bp" id="conv_dpi_150" onclick="setConvDPI(150,this)" style="flex:1;font-size:10px;padding:5px 2px">150</button>
+            <button class="btn bs" id="conv_dpi_200" onclick="setConvDPI(200,this)" style="flex:1;font-size:10px;padding:5px 2px">200</button>
+            <button class="btn bs" id="conv_dpi_300" onclick="setConvDPI(300,this)" style="flex:1;font-size:10px;padding:5px 2px">300</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress + Result -->
+    <div id="conv_from_prog" style="display:none;margin-top:10px">
+      <div style="font-size:11px;color:var(--text2);margin-bottom:4px" id="conv_prog_txt">Converting...</div>
+      <div class="pbar"><div class="pfill" id="conv_prog_fill"></div></div>
+    </div>
+  </div>
+
+  <!-- File → PDF Panel -->
+  <div id="conv_to_panel" style="display:none">
+    <div class="ibox ig" style="margin-bottom:12px">📁 Koi bhi file select karein — Image (JPG/PNG/WebP/BMP/GIF/TIFF), Text, HTML — aur PDF mein convert ho jaayega.</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+      <div style="background:var(--surface2);border:1.5px solid rgba(37,99,235,.3);border-radius:12px;padding:10px;text-align:center;cursor:pointer" onclick="document.getElementById('convToImgInput').click()">
+        <div style="font-size:24px;margin-bottom:4px">🖼️</div>
+        <div style="font-size:11px;font-weight:700;color:var(--accent)">Images → PDF</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:2px">JPG, PNG, WebP, BMP, GIF, TIFF</div>
+        <input type="file" id="convToImgInput" accept="image/*" multiple style="display:none" onchange="handleConvToImg(event)">
+      </div>
+      <div style="background:var(--surface2);border:1.5px solid rgba(234,88,12,.3);border-radius:12px;padding:10px;text-align:center;cursor:pointer" onclick="document.getElementById('convToTxtInput').click()">
+        <div style="font-size:24px;margin-bottom:4px">📝</div>
+        <div style="font-size:11px;font-weight:700;color:var(--accent2)">Text / HTML → PDF</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:2px">.txt, .html, .htm files</div>
+        <input type="file" id="convToTxtInput" accept=".txt,.html,.htm,text/plain,text/html" style="display:none" onchange="handleConvToText(event)">
+      </div>
+      <div style="background:var(--surface2);border:1.5px solid rgba(22,163,74,.3);border-radius:12px;padding:10px;text-align:center;cursor:pointer" onclick="document.getElementById('convToCsvInput').click()">
+        <div style="font-size:24px;margin-bottom:4px">📊</div>
+        <div style="font-size:11px;font-weight:700;color:var(--green)">CSV / Excel → PDF</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:2px">.csv, .tsv files</div>
+        <input type="file" id="convToCsvInput" accept=".csv,.tsv,text/csv" style="display:none" onchange="handleConvToCsv(event)">
+      </div>
+      <div style="background:var(--surface2);border:1.5px solid rgba(124,58,237,.3);border-radius:12px;padding:10px;text-align:center;cursor:pointer" onclick="triggerConvMultiImg()">
+        <div style="font-size:24px;margin-bottom:4px">🗂️</div>
+        <div style="font-size:11px;font-weight:700;color:#7c3aed">Multiple Images → 1 PDF</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:2px">Combine multiple images into one PDF</div>
+      </div>
+    </div>
+
+    <!-- Paste / Type Text to PDF -->
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px">
+      <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:7px">✍️ Type / Paste Text → PDF</div>
+      <textarea class="inp" id="conv_paste_text" placeholder="Yahan text type ya paste karein..." rows="4" style="margin-bottom:7px;resize:vertical"></textarea>
+      <input class="inp" id="conv_paste_title" placeholder="PDF Title (optional)" style="margin-bottom:7px">
+      <button class="btn bp bfull" onclick="textToPdf()" style="font-size:12px">📄 Convert to PDF & Download</button>
+    </div>
+
+    <!-- Progress -->
+    <div id="conv_to_prog" style="display:none;margin-top:10px">
+      <div style="font-size:11px;color:var(--text2);margin-bottom:4px" id="conv_to_prog_txt">Converting...</div>
+      <div class="pbar"><div class="pfill" id="conv_to_prog_fill"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PDF TO WORD ═══ -->
+<div class="prem-card" id="pdf_word_card" style="display:none">
+  <div class="prem-card-title">📝 PDF → Word (.docx)
+    <div style="display:flex;gap:4px;margin-left:auto;flex-wrap:wrap">
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('compress')">🗜️ Compress</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('edit')">✏️ Edit</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('convert')">🔄 Convert</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('pptx')">📊 PPT</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('epub')">📖 ePub</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('ocr')">🔍 OCR</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('html')">🌐 HTML</button>
+    </div>
+  </div>
+  <div class="ibox ig">📝 PDF upload karein → text extract hoga → Word-compatible <strong>.docx</strong> file download hogi. Formatting preserve hoti hai.</div>
+  <div class="uarea prem-drop-zone" onclick="document.getElementById('wordPdfInput').click()">
+    <div style="font-size:28px;margin-bottom:4px">📝</div>
+    <div style="font-size:12px;color:var(--text2)">PDF select karein (Word mein convert hoga)<br><strong style="color:var(--text)">Tap to browse or drag & drop</strong></div>
+  </div>
+  <input type="file" id="wordPdfInput" accept=".pdf,application/pdf" style="display:none" onchange="handleWordPdf(event)">
+  <div id="word_file_info" style="display:none;margin-bottom:10px" class="rbox">
+    <div class="rrow"><span>File</span><span class="rv" id="word_fname">-</span></div>
+    <div class="rrow"><span>Pages</span><span class="rv" id="word_pages">-</span></div>
+    <div class="rrow"><span>Size</span><span class="rv" id="word_size">-</span></div>
+  </div>
+  <div id="word_options" style="display:none;margin-bottom:10px">
+    <label>Output Style</label>
+    <div style="display:flex;gap:6px;margin-bottom:10px">
+      <button id="word_style_para" class="btn bp" style="flex:1;font-size:11px" onclick="setWordStyle('para')">📄 Paragraphs</button>
+      <button id="word_style_table" class="btn bs" style="flex:1;font-size:11px" onclick="setWordStyle('table')">📊 Table Layout</button>
+    </div>
+    <label>Page Range (optional)</label>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px">
+      <div><label style="font-size:10px">From Page</label><input class="inp" type="number" id="word_pg_from" placeholder="1" min="1" style="margin-bottom:0"></div>
+      <div><label style="font-size:10px">To Page</label><input class="inp" type="number" id="word_pg_to" placeholder="All" min="1" style="margin-bottom:0"></div>
+    </div>
+  </div>
+  <div id="word_prog" style="display:none;margin-bottom:8px">
+    <div style="font-size:11px;color:var(--text2);margin-bottom:4px" id="word_prog_txt">Extracting text...</div>
+    <div class="pbar"><div class="pfill" id="word_prog_fill"></div></div>
+  </div>
+  <button class="btn bp bfull" id="word_btn" onclick="pdfToWord()" disabled style="margin-top:4px">📝 Convert to Word &amp; Download</button>
+</div>
+
+<!-- ═══ PDF TO POWERPOINT ═══ -->
+<div class="prem-card" id="pdf_pptx_card" style="display:none">
+  <div class="prem-card-title">📊 PDF → PowerPoint (.pptx)
+    <div style="display:flex;gap:4px;margin-left:auto;flex-wrap:wrap">
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('compress')">🗜️ Compress</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('edit')">✏️ Edit</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('word')">📝 Word</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('epub')">📖 ePub</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('ocr')">🔍 OCR</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('html')">🌐 HTML</button>
+    </div>
+  </div>
+  <div class="ibox ig">📊 Har PDF page ek PowerPoint slide ban jaata hai. Image-based slides (page ka screenshot) + optional text overlay.</div>
+  <div class="uarea prem-drop-zone" onclick="document.getElementById('pptxPdfInput').click()">
+    <div style="font-size:28px;margin-bottom:4px">📊</div>
+    <div style="font-size:12px;color:var(--text2)">PDF select karein (PowerPoint slides banengi)<br><strong style="color:var(--text)">Tap to browse or drag & drop</strong></div>
+  </div>
+  <input type="file" id="pptxPdfInput" accept=".pdf,application/pdf" style="display:none" onchange="handlePptxPdf(event)">
+  <div id="pptx_file_info" style="display:none;margin-bottom:10px" class="rbox">
+    <div class="rrow"><span>File</span><span class="rv" id="pptx_fname">-</span></div>
+    <div class="rrow"><span>Pages</span><span class="rv" id="pptx_pages">-</span></div>
+    <div class="rrow"><span>Size</span><span class="rv" id="pptx_size">-</span></div>
+  </div>
+  <div id="pptx_options" style="display:none;margin-bottom:10px">
+    <label>Slide Size</label>
+    <div style="display:flex;gap:6px;margin-bottom:10px">
+      <button id="pptx_sz_wide" class="btn bp" style="flex:1;font-size:11px" onclick="setPptxSize('wide')">🖥️ Widescreen (16:9)</button>
+      <button id="pptx_sz_std" class="btn bs" style="flex:1;font-size:11px" onclick="setPptxSize('std')">📺 Standard (4:3)</button>
+    </div>
+    <label>DPI / Image Quality</label>
+    <div style="display:flex;gap:5px;margin-bottom:10px">
+      <button class="btn bs" id="pptx_dpi_96" onclick="setPptxDPI(96,this)" style="flex:1;font-size:10px;padding:6px 2px">96<br><span style="font-size:9px">Fast</span></button>
+      <button class="btn bp" id="pptx_dpi_150" onclick="setPptxDPI(150,this)" style="flex:1;font-size:10px;padding:6px 2px">150<br><span style="font-size:9px">Good</span></button>
+      <button class="btn bs" id="pptx_dpi_200" onclick="setPptxDPI(200,this)" style="flex:1;font-size:10px;padding:6px 2px">200<br><span style="font-size:9px">Sharp</span></button>
+    </div>
+    <label>Page Range (optional)</label>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px">
+      <div><label style="font-size:10px">From Page</label><input class="inp" type="number" id="pptx_pg_from" placeholder="1" min="1" style="margin-bottom:0"></div>
+      <div><label style="font-size:10px">To Page</label><input class="inp" type="number" id="pptx_pg_to" placeholder="All" min="1" style="margin-bottom:0"></div>
+    </div>
+  </div>
+  <div id="pptx_prog" style="display:none;margin-bottom:8px">
+    <div style="font-size:11px;color:var(--text2);margin-bottom:4px" id="pptx_prog_txt">Processing slides...</div>
+    <div class="pbar"><div class="pfill" id="pptx_prog_fill"></div></div>
+  </div>
+  <button class="btn bp bfull" id="pptx_btn" onclick="pdfToPptx()" disabled style="margin-top:4px">📊 Convert to PowerPoint &amp; Download</button>
+</div>
+
+<!-- ═══ PDF TO EPUB ═══ -->
+<div class="prem-card" id="pdf_epub_card" style="display:none">
+  <div class="prem-card-title">📖 PDF → ePub (eBook)
+    <div style="display:flex;gap:4px;margin-left:auto;flex-wrap:wrap">
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('compress')">🗜️ Compress</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('edit')">✏️ Edit</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('word')">📝 Word</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('pptx')">📊 PPT</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('ocr')">🔍 OCR</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('html')">🌐 HTML</button>
+    </div>
+  </div>
+  <div class="ibox ig">📖 PDF text extract karke <strong>.epub</strong> eBook format mein convert karein. Kindle, Apple Books, aur sabhi readers pe read karo.</div>
+  <div class="uarea prem-drop-zone" onclick="document.getElementById('epubPdfInput').click()">
+    <div style="font-size:28px;margin-bottom:4px">📖</div>
+    <div style="font-size:12px;color:var(--text2)">PDF select karein (ePub eBook banega)<br><strong style="color:var(--text)">Tap to browse or drag & drop</strong></div>
+  </div>
+  <input type="file" id="epubPdfInput" accept=".pdf,application/pdf" style="display:none" onchange="handleEpubPdf(event)">
+  <div id="epub_file_info" style="display:none;margin-bottom:10px" class="rbox">
+    <div class="rrow"><span>File</span><span class="rv" id="epub_fname">-</span></div>
+    <div class="rrow"><span>Pages</span><span class="rv" id="epub_pages">-</span></div>
+    <div class="rrow"><span>Size</span><span class="rv" id="epub_size">-</span></div>
+  </div>
+  <div id="epub_options" style="display:none;margin-bottom:10px">
+    <label>Book Title</label>
+    <input class="inp" id="epub_title" placeholder="Ex: My Document" style="margin-bottom:8px">
+    <label>Author Name</label>
+    <input class="inp" id="epub_author" placeholder="Ex: John Doe" style="margin-bottom:8px">
+    <label>Language</label>
+    <select class="inp" id="epub_lang" style="margin-bottom:10px">
+      <option value="en">English</option>
+      <option value="hi">Hindi</option>
+      <option value="mr">Marathi</option>
+      <option value="gu">Gujarati</option>
+      <option value="ta">Tamil</option>
+      <option value="te">Telugu</option>
+      <option value="bn">Bengali</option>
+    </select>
+    <label>Chapter Split</label>
+    <div style="display:flex;gap:6px;margin-bottom:10px">
+      <button id="epub_ch_page" class="btn bp" style="flex:1;font-size:11px" onclick="setEpubChapter('page')">📄 Per Page</button>
+      <button id="epub_ch_all" class="btn bs" style="flex:1;font-size:11px" onclick="setEpubChapter('all')">📚 Single Chapter</button>
+    </div>
+  </div>
+  <div id="epub_prog" style="display:none;margin-bottom:8px">
+    <div style="font-size:11px;color:var(--text2);margin-bottom:4px" id="epub_prog_txt">Creating ePub...</div>
+    <div class="pbar"><div class="pfill" id="epub_prog_fill"></div></div>
+  </div>
+  <button class="btn bp bfull" id="epub_btn" onclick="pdfToEpub()" disabled style="margin-top:4px">📖 Convert to ePub &amp; Download</button>
+</div>
+
+<!-- ═══ PDF SEARCHABLE OCR ═══ -->
+<div class="prem-card" id="pdf_ocr_card" style="display:none">
+  <div class="prem-card-title">🔍 PDF → Searchable OCR
+    <div style="display:flex;gap:4px;margin-left:auto;flex-wrap:wrap">
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('compress')">🗜️ Compress</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('edit')">✏️ Edit</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('word')">📝 Word</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('pptx')">📊 PPT</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('epub')">📖 ePub</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('html')">🌐 HTML</button>
+    </div>
+  </div>
+  <div class="ibox ig">🔍 Scanned ya image-based PDF upload karein → OCR se text extract hoga → <strong>Searchable PDF</strong> ya plain text download karein.</div>
+
+  <div class="uarea prem-drop-zone" onclick="document.getElementById('ocrPdfInput').click()">
+    <div style="font-size:28px;margin-bottom:4px">🔍</div>
+    <div style="font-size:12px;color:var(--text2)">Scanned PDF ya Image-based PDF select karein<br><strong style="color:var(--text)">Tap to browse or drag & drop</strong></div>
+  </div>
+  <input type="file" id="ocrPdfInput" accept=".pdf,application/pdf" style="display:none" onchange="handleOcrPdf(event)">
+
+  <div id="ocr_file_info" style="display:none;margin-bottom:10px" class="rbox">
+    <div class="rrow"><span>File</span><span class="rv" id="ocr_fname">-</span></div>
+    <div class="rrow"><span>Pages</span><span class="rv" id="ocr_pages">-</span></div>
+    <div class="rrow"><span>Size</span><span class="rv" id="ocr_size">-</span></div>
+  </div>
+
+  <div id="ocr_options" style="display:none;margin-bottom:10px">
+    <label>OCR Language</label>
+    <select class="inp" id="ocr_lang" style="margin-bottom:10px">
+      <option value="eng">English</option>
+      <option value="hin">Hindi</option>
+      <option value="eng+hin">English + Hindi</option>
+      <option value="mar">Marathi</option>
+      <option value="guj">Gujarati</option>
+      <option value="tam">Tamil</option>
+      <option value="tel">Telugu</option>
+      <option value="ben">Bengali</option>
+    </select>
+    <label>DPI (Scan Quality)</label>
+    <div style="display:flex;gap:5px;margin-bottom:10px">
+      <button class="btn bs" id="ocr_dpi_150" onclick="setOcrDPI(150,this)" style="flex:1;font-size:10px;padding:6px 2px">150<br><span style="font-size:9px">Fast</span></button>
+      <button class="btn bp" id="ocr_dpi_200" onclick="setOcrDPI(200,this)" style="flex:1;font-size:10px;padding:6px 2px">200<br><span style="font-size:9px">Good</span></button>
+      <button class="btn bs" id="ocr_dpi_300" onclick="setOcrDPI(300,this)" style="flex:1;font-size:10px;padding:6px 2px">300<br><span style="font-size:9px">Best</span></button>
+    </div>
+    <label>Output Format</label>
+    <div style="display:flex;gap:6px;margin-bottom:10px">
+      <button id="ocr_out_pdf" class="btn bp" style="flex:1;font-size:11px" onclick="setOcrOutput('pdf')">📄 Searchable PDF</button>
+      <button id="ocr_out_txt" class="btn bs" style="flex:1;font-size:11px" onclick="setOcrOutput('txt')">📝 Plain Text (.txt)</button>
+    </div>
+    <label>Page Range (optional)</label>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px">
+      <div><label style="font-size:10px">From Page</label><input class="inp" type="number" id="ocr_pg_from" placeholder="1" min="1" style="margin-bottom:0"></div>
+      <div><label style="font-size:10px">To Page</label><input class="inp" type="number" id="ocr_pg_to" placeholder="All" min="1" style="margin-bottom:0"></div>
+    </div>
+  </div>
+
+  <div id="ocr_prog" style="display:none;margin-bottom:8px">
+    <div style="font-size:11px;color:var(--text2);margin-bottom:4px" id="ocr_prog_txt">Initializing OCR engine...</div>
+    <div class="pbar"><div class="pfill" id="ocr_prog_fill"></div></div>
+    <div style="font-size:10px;color:var(--text2);margin-top:4px" id="ocr_prog_page">Page 0 of 0</div>
+  </div>
+
+  <div id="ocr_result_box" style="display:none;margin-top:10px">
+    <div class="ibox ig" style="margin-bottom:8px">✅ OCR complete! Text extracted successfully.</div>
+    <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:6px">📋 Extracted Text Preview:</div>
+    <textarea id="ocr_text_preview" class="inp" rows="6" readonly style="font-size:11px;resize:vertical"></textarea>
+    <div class="btn-row" style="margin-top:8px">
+      <button class="btn bg" onclick="copyOcrText()">📋 Copy Text</button>
+      <button class="btn bp" onclick="downloadOcrOutput()">⬇️ Download</button>
+    </div>
+  </div>
+
+  <button class="btn bp bfull" id="ocr_btn" onclick="runOcrPdf()" disabled style="margin-top:4px">🔍 Run OCR &amp; Extract Text</button>
+  <div class="ibox io" style="margin-top:8px;font-size:10px">ℹ️ OCR browser-based hai (Tesseract.js). Pehli baar thoda time lagega language model download hone mein. Internet connection zaroori hai first run ke liye.</div>
+</div>
+
+<!-- ═══ HTML RENDERER / LIVE APP ═══ -->
+<div class="prem-card" id="pdf_html_card" style="display:none;padding:0;overflow:hidden">
+  <!-- Top bar -->
+  <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:linear-gradient(135deg,#064e3b,#065f46,#059669);flex-wrap:wrap">
+    <div style="font-family:'Baloo 2',sans-serif;font-size:14px;font-weight:800;color:#fff;display:flex;align-items:center;gap:6px;flex:1;min-width:120px">
+      <span>🌐</span><span>HTML Renderer</span>
+    </div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap">
+      <button class="btn bs" style="padding:3px 7px;font-size:10px;background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4);color:#fff" onclick="showPdfTab('compress')">🗜️</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px;background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4);color:#fff" onclick="showPdfTab('edit')">✏️</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px;background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4);color:#fff" onclick="showPdfTab('word')">📝</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px;background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4);color:#fff" onclick="showPdfTab('pptx')">📊</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px;background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4);color:#fff" onclick="showPdfTab('epub')">📖</button>
+      <button class="btn bs" style="padding:3px 7px;font-size:10px;background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4);color:#fff" onclick="showPdfTab('ocr')">🔍</button>
+    </div>
+  </div>
+
+  <!-- Mode toggle: Code Editor vs Rendered App -->
+  <div id="html_view_mode_bar" style="display:flex;background:var(--surface2);border-bottom:1px solid var(--border)">
+    <button id="html_vm_code" onclick="setHtmlViewMode('code')" style="flex:1;padding:9px 6px;border:none;font-size:12px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#059669,#065f46);color:#fff;font-family:'Inter',sans-serif;border-right:1px solid var(--border)">✍️ Code Editor</button>
+    <button id="html_vm_app" onclick="setHtmlViewMode('app')" style="flex:1;padding:9px 6px;border:none;font-size:12px;font-weight:700;cursor:pointer;background:transparent;color:var(--text2);font-family:'Inter',sans-serif">📱 Live App</button>
+    <button id="html_vm_split" onclick="setHtmlViewMode('split')" style="flex:1;padding:9px 6px;border:none;font-size:12px;font-weight:700;cursor:pointer;background:transparent;color:var(--text2);font-family:'Inter',sans-serif;border-left:1px solid var(--border)">⚡ Split View</button>
+  </div>
+
+  <!-- CODE EDITOR PANEL -->
+  <div id="html_code_panel" style="padding:12px">
+    <div style="font-size:11px;color:var(--text2);margin-bottom:6px;display:flex;align-items:center;gap:6px">
+      <span>📋 HTML code paste karein — phir <strong style="color:var(--accent)">▶ Run</strong> dabao</span>
+    </div>
+    <textarea id="html_code_input" spellcheck="false"
+      style="width:100%;height:260px;background:#0d0f1a;color:#a8ff78;border:1.5px solid #059669;border-radius:11px;padding:12px;font-family:'Courier New',monospace;font-size:12px;line-height:1.6;resize:vertical;outline:none;box-sizing:border-box;tab-size:2"
+      placeholder="<!-- Yahan HTML code paste karein -->&#10;<!DOCTYPE html>&#10;<html>&#10;<head>&#10;  <title>My App</title>&#10;</head>&#10;<body>&#10;  <h1>Hello World!</h1>&#10;</body>&#10;</html>"></textarea>
+
+    <!-- Quick file upload -->
+    <div style="display:flex;gap:7px;margin-top:8px;flex-wrap:wrap">
+      <button class="btn bs" style="flex:1;font-size:11px" onclick="document.getElementById('html_file_inp').click()">📂 Upload .html File</button>
+      <button class="btn bs" style="flex:1;font-size:11px" onclick="clearHtmlCode()">🗑️ Clear</button>
+      <button class="btn bs" style="flex:1;font-size:11px" onclick="htmlLoadSample()">💡 Sample</button>
+      <input type="file" id="html_file_inp" accept=".html,.htm,text/html" style="display:none" onchange="loadHtmlFile(event)">
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+      <button class="btn bp bfull" onclick="runHtmlCode()" style="font-size:13px;font-weight:800;padding:11px;background:linear-gradient(135deg,#059669,#2563eb)">▶ Run / Render</button>
+      <button class="btn bs bfull" onclick="openHtmlFullscreen()" style="font-size:13px;padding:11px">⛶ Fullscreen</button>
+    </div>
+    <button class="btn bg bfull" onclick="downloadRenderedHtml()" style="margin-top:7px;font-size:12px">⬇️ Download .html File</button>
+  </div>
+
+  <!-- APP / RENDERED OUTPUT PANEL -->
+  <div id="html_app_panel" style="display:none">
+    <!-- Browser-style address bar -->
+    <div style="display:flex;align-items:center;gap:7px;padding:7px 10px;background:var(--surface2);border-bottom:1px solid var(--border)">
+      <div style="display:flex;gap:5px">
+        <div style="width:11px;height:11px;border-radius:50%;background:#ff5f57"></div>
+        <div style="width:11px;height:11px;border-radius:50%;background:#febc2e"></div>
+        <div style="width:11px;height:11px;border-radius:50%;background:#28c840"></div>
+      </div>
+      <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--text2);font-family:monospace">🔒 local-app • MyToolkit Renderer</div>
+      <button onclick="setHtmlViewMode('code')" style="background:none;border:none;color:var(--text2);cursor:pointer;font-size:18px;padding:2px 5px" title="Back to code">←</button>
+      <button onclick="openHtmlFullscreen()" style="background:none;border:none;color:var(--text2);cursor:pointer;font-size:16px;padding:2px 5px" title="Fullscreen">⛶</button>
+    </div>
+    <!-- The iframe that renders HTML as a live app -->
+    <iframe id="html_render_frame"
+      style="width:100%;height:520px;border:none;display:block;background:#fff"
+      sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
+      title="HTML App Renderer"></iframe>
+    <div style="padding:8px 12px;background:var(--surface2);border-top:1px solid var(--border);display:flex;gap:7px;flex-wrap:wrap">
+      <button class="btn bs" style="flex:1;font-size:11px" onclick="setHtmlViewMode('code')">✍️ Edit Code</button>
+      <button class="btn bp" style="flex:1;font-size:11px" onclick="downloadRenderedHtml()">⬇️ Download</button>
+      <button class="btn bg" style="flex:1;font-size:11px" onclick="openHtmlFullscreen()">⛶ Fullscreen</button>
+    </div>
+  </div>
+
+  <!-- SPLIT VIEW PANEL -->
+  <div id="html_split_panel" style="display:none">
+    <div style="display:grid;grid-template-rows:1fr 1fr;height:600px">
+      <!-- Code half -->
+      <div style="border-bottom:2px solid var(--accent);position:relative">
+        <div style="position:absolute;top:6px;left:10px;font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;z-index:2">CODE</div>
+        <textarea id="html_split_input" spellcheck="false"
+          style="width:100%;height:100%;background:#0d0f1a;color:#a8ff78;border:none;padding:28px 12px 12px;font-family:'Courier New',monospace;font-size:11px;line-height:1.55;resize:none;outline:none;box-sizing:border-box"
+          placeholder="HTML code yahan paste karein..." oninput="syncSplitCode()"></textarea>
+      </div>
+      <!-- Rendered half -->
+      <div style="position:relative">
+        <div style="position:absolute;top:6px;left:10px;font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;z-index:2">LIVE PREVIEW</div>
+        <iframe id="html_split_frame"
+          style="width:100%;height:100%;border:none;display:block;background:#fff"
+          sandbox="allow-scripts allow-same-origin allow-forms"
+          title="Split Preview"></iframe>
+      </div>
+    </div>
+    <div style="padding:8px 12px;background:var(--surface2);border-top:1px solid var(--border);display:flex;gap:7px">
+      <button class="btn bp bfull" onclick="syncSplitCode();alert('✅ Rendered!')" style="font-size:12px">▶ Refresh</button>
+      <button class="btn bg bfull" onclick="downloadRenderedHtml()" style="font-size:12px">⬇️ Download</button>
+    </div>
+  </div>
+</div>
+
+<!-- FULLSCREEN OVERLAY -->
+<div id="html_fullscreen_overlay" style="display:none;position:fixed;inset:0;z-index:9998;flex-direction:column;background:#fff">
+  <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#0f172a;flex-shrink:0">
+    <div style="display:flex;gap:5px">
+      <div style="width:12px;height:12px;border-radius:50%;background:#ff5f57"></div>
+      <div style="width:12px;height:12px;border-radius:50%;background:#febc2e"></div>
+      <div style="width:12px;height:12px;border-radius:50%;background:#28c840"></div>
+    </div>
+    <div style="flex:1;background:#1e293b;border-radius:20px;padding:4px 14px;font-size:12px;color:#94a3b8;font-family:monospace">🔒 local-app • MyToolkit HTML Renderer</div>
+    <button onclick="closeHtmlFullscreen()" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 12px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Inter',sans-serif">✕ Close</button>
+  </div>
+  <iframe id="html_fullscreen_frame" style="flex:1;width:100%;border:none;background:#fff"
+    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"></iframe>
+</div>
+
+</section>
 <section class="section" id="sec_whatsapp">
 <div class="prem-hero prem-hero-wa">
   <div class="prem-hero-inner">
@@ -2035,6 +2597,16 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
     <button class="mc" onclick="closeM('prePayModal')">✕</button>
     <div class="modal-title">💳 Loan Pre-Payment</div>
     <div class="ibox ig">Pre-payment reduces your principal. You can either reduce EMI (same tenure) or reduce tenure (same EMI).</div>
+
+    <!-- Outstanding Banner -->
+    <div id="pp_outstanding_banner" style="background:linear-gradient(135deg,rgba(37,99,235,.10),rgba(37,99,235,.05));border:1.5px solid rgba(37,99,235,.25);border-radius:10px;padding:10px 13px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:10px;color:var(--text2);font-weight:600">Outstanding Principal</div>
+        <div style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:var(--red)" id="pp_modal_outstanding">₹0</div>
+      </div>
+      <div style="font-size:26px">🏦</div>
+    </div>
+
     <label>Pre-Payment Amount (₹)</label><input class="inp" type="number" id="pp_amount" placeholder="Ex: 50000">
     <label>Pre-Payment Date</label><input class="inp" type="date" id="pp_date">
     <label>After Pre-Payment, prefer:</label>
@@ -2044,6 +2616,29 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
     </div>
     <button class="btn bp bfull" onclick="calcPrePayment()">Calculate Effect</button>
     <div id="pp_result" style="display:none;margin-top:10px"></div>
+
+    <!-- Save Pre-Payment to Profile -->
+    <div id="pp_save_row" style="display:none;margin-top:10px">
+      <button class="btn bg bfull" onclick="savePrePaymentToProfile()">💾 Save Pre-Payment & Update Profile</button>
+    </div>
+
+    <!-- Divider -->
+    <div style="margin:14px 0 10px;display:flex;align-items:center;gap:8px">
+      <div style="flex:1;height:1px;background:var(--border)"></div>
+      <span style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px">OR</span>
+      <div style="flex:1;height:1px;background:var(--border)"></div>
+    </div>
+
+    <!-- Pay Total Loan (Foreclose) -->
+    <div style="background:linear-gradient(135deg,rgba(220,38,38,.08),rgba(234,88,12,.06));border:1.5px solid rgba(220,38,38,.25);border-radius:12px;padding:12px">
+      <div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px">🔒 Pay Full Loan (Foreclose Now)</div>
+      <div style="font-size:10px;color:var(--text2);margin-bottom:8px">Abhi ka outstanding amount pay karke loan band kar dein. Profile mein ✅ Closed ho jayega.</div>
+      <div id="pp_foreclose_amount_box" style="background:rgba(220,38,38,.07);border-radius:8px;padding:8px 10px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11px;color:var(--text2);font-weight:600">Foreclose Amount</span>
+        <span style="font-family:'Baloo 2',sans-serif;font-size:18px;font-weight:800;color:var(--red)" id="pp_foreclose_total">₹0</span>
+      </div>
+      <button class="btn br bfull" onclick="payFullLoanNow()" style="font-size:12px">🏁 Pay Full Amount &amp; Close Loan</button>
+    </div>
   </div>
 </div>
 
@@ -2071,6 +2666,9 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
     <label>Moratorium Duration (months)</label><input class="inp" type="number" id="mor_months" placeholder="Ex: 3">
     <button class="btn bp bfull" onclick="calcMoratorium()">Calculate Effect</button>
     <div id="mor_result" style="display:none;margin-top:10px"></div>
+    <div id="mor_save_row" style="display:none;margin-top:8px">
+      <button class="btn bg bfull" onclick="saveMoratoriumToProfile()">💾 Apply & Save to Profile</button>
+    </div>
   </div>
 </div>
 
@@ -3209,7 +3807,7 @@ function showProfile(id){
       <tr><td>Interest Rate %</td><td><strong>${Number(p.rA||0).toFixed(1)}%</strong></td></tr>
       <tr><td>Tenure (In Month)</td><td><strong>${p.n||'-'}</strong></td></tr>
       <tr><td><strong>EMI</strong></td><td><strong>${fmtF(p.emi)}</strong></td></tr>
-      <tr><td>Processing Fees</td><td>${fmtF(p.fees)}${p.feesPct>0?' <span style=\"color:var(--text2);font-size:10px\">('+p.feesPct.toFixed(2)+'%)</span>':''}</td></tr>
+      <tr><td>Processing Fees</td><td>${fmtF(p.fees)}${p.feesPct>0?' <span style="color:var(--text2);font-size:10px">('+p.feesPct.toFixed(2)+'%)</span>':''}</td></tr>
       <tr><td>Loan Date</td><td>${fmtDate(p.loanDate)}</td></tr>
       <tr><td>First EMI Date</td><td>${fmtDate(p.firstEmi)}</td></tr>
       <tr><td>Last EMI Date</td><td>${fmtDate(p.lastEmiDate)}</td></tr>
@@ -3221,7 +3819,28 @@ function showProfile(id){
       <tr><td>Outstanding Total</td><td>${fmtF(outInt+outPri)}</td></tr>
       <tr><td>Total Interest</td><td><strong>${fmtF(p.interest)}</strong></td></tr>
       ${foreRow}
-    </table>`;
+    </table>
+    ${(p.prePay&&p.prePay.length>0)?`
+    <div style="margin-top:12px">
+      <div style="font-size:11px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;display:flex;align-items:center;gap:6px">
+        💳 Pre-Payment History
+        <span style="background:var(--accent);color:#fff;border-radius:10px;padding:1px 7px;font-size:10px">${p.prePay.length}</span>
+      </div>
+      ${p.prePay.map((pp,i)=>`
+        <div style="background:${pp.mode==='foreclose'?'rgba(220,38,38,.06)':'rgba(22,163,74,.06)'};border:1px solid ${pp.mode==='foreclose'?'rgba(220,38,38,.2)':'rgba(22,163,74,.2)'};border-radius:9px;padding:9px 11px;margin-bottom:6px;font-size:11px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+            <span style="font-weight:700;color:${pp.mode==='foreclose'?'var(--red)':'var(--green)'}">${pp.mode==='foreclose'?'🏁 Loan Foreclosed':pp.mode==='tenure'?'⏱️ Reduced Tenure':'💸 Reduced EMI'} — #${i+1}</span>
+            <span style="color:var(--text2);font-size:10px">${pp.date?fmtDate(pp.date):pp.savedOn||''}</span>
+          </div>
+          <div style="color:var(--text2)">Amount: <strong style="color:var(--accent)">₹${fmt(pp.amount)}</strong>${pp.newEMI?' &nbsp;|&nbsp; New EMI: <strong>₹'+fmt(pp.newEMI)+'</strong>':''}${pp.newTenure?' &nbsp;|&nbsp; New Tenure: <strong>'+pp.newTenure+' mo</strong>':''}</div>
+          ${pp.note?`<div style="color:var(--text2);margin-top:2px;font-style:italic">${pp.note}</div>`:''}
+        </div>`).join('')}
+    </div>`:''} 
+    ${(p.varRates&&p.varRates.length>0)?`
+    <div style="margin-top:10px">
+      <div style="font-size:11px;font-weight:800;color:var(--accent2);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px">📈 Variable Rate History</div>
+      ${p.varRates.map(vr=>`<div style="display:flex;justify-content:space-between;padding:6px 10px;background:rgba(234,88,12,.05);border:1px solid rgba(234,88,12,.15);border-radius:7px;margin-bottom:4px;font-size:11px"><span>${fmtDate(vr.date)}</span><strong style="color:var(--accent2)">${vr.rate}% p.a.</strong></div>`).join('')}
+    </div>`:''}`;
   if(p.P&&p.r&&p.n&&p.emi)genSched(p.P,p.r,p.n,p.emi);
   openM('profileDetailModal');
 }
@@ -3578,25 +4197,127 @@ function saveProcessingFeesFromModal(){
 
 // Pre-Payment
 let ppMode='tenure';
+let ppLastResult=null; // store last calculated result for saving
+
 function setPPMode(m){ppMode=m;document.getElementById('pp_reduce_emi').className=m==='emi'?'btn bp':'btn bs';document.getElementById('pp_reduce_emi').style.flex='1';document.getElementById('pp_reduce_emi').style.fontSize='11px';document.getElementById('pp_reduce_tenure').className=m==='tenure'?'btn bp':'btn bs';document.getElementById('pp_reduce_tenure').style.flex='1';document.getElementById('pp_reduce_tenure').style.fontSize='11px'}
-function openPrePayment(){closeM('editMenuModal');openM('prePayModal')}
+
+function openPrePayment(){
+  closeM('editMenuModal');
+  ppLastResult=null;
+  document.getElementById('pp_amount').value='';
+  document.getElementById('pp_result').style.display='none';
+  document.getElementById('pp_result').innerHTML='';
+  document.getElementById('pp_save_row').style.display='none';
+  // Set outstanding amount
+  const p=gs('loanProfiles').find(x=>x.id===curPid);
+  if(p){
+    const paid=calcPaidEMIs(p);
+    const outPri=Math.max(0,(p.P||0)-paid.priPaid);
+    // Foreclose total (with charges if set)
+    const _fc=p.foreClosureAmt>0?p.foreClosureAmt:(p.foreClosurePct>0?outPri*p.foreClosurePct/100:0);
+    const _ft=outPri+_fc;
+    document.getElementById('pp_modal_outstanding').textContent='₹'+fmt(outPri);
+    document.getElementById('pp_foreclose_total').textContent='₹'+fmt(_ft);
+  }
+  openM('prePayModal');
+}
+
 function calcPrePayment(){
   const p=gs('loanProfiles').find(x=>x.id===curPid);if(!p)return;
   const ppAmt=parseFloat(document.getElementById('pp_amount').value)||0;
   if(!ppAmt){alert('Enter pre-payment amount');return}
-  const paid=calcPaidEMIs(p);const newP=Math.max(0,(p.P||0)-paid.priPaid-ppAmt);
+  const paid=calcPaidEMIs(p);
+  const outPri=Math.max(0,(p.P||0)-paid.priPaid);
+  if(ppAmt>=outPri){alert('Pre-payment amount ₹'+fmt(ppAmt)+' is equal to or more than outstanding ₹'+fmt(outPri)+'. Use "Pay Full Amount & Close Loan" option below.');return;}
+  const newP=Math.max(0,outPri-ppAmt);
   const r=p.r,rA=p.rA;
   let newEMI,newN,html='';
+  const remN=r===0?(outPri/p.emi):Math.ceil(-Math.log(1-outPri*r/p.emi)/Math.log(1+r));
   if(ppMode==='tenure'){
-    newEMI=p.emi;newN=r===0?newP/newEMI:Math.ceil(-Math.log(1-newP*r/newEMI)/Math.log(1+r));
-    const savedMonths=(p.n-paid.intPaid/p.emi-(newN));// approx
-    html=`<div class="rbox"><div class="rrow"><span>Pre-Payment Amount</span><span class="rv">₹${fmt(ppAmt)}</span></div><div class="rrow"><span>New Outstanding</span><span class="rv">₹${fmt(newP)}</span></div><div class="rrow"><span>EMI (unchanged)</span><span class="rv">₹${fmt(newEMI)}</span></div><div class="rrow"><span>New Remaining Tenure</span><span class="rv grn">${newN} months</span></div><div class="rrow"><span>Interest Saved (approx)</span><span class="rv grn">₹${fmt(newEMI*newN-newP)} vs original remaining</span></div></div>`;
+    newEMI=p.emi;newN=r===0?Math.ceil(newP/newEMI):Math.ceil(-Math.log(1-newP*r/newEMI)/Math.log(1+r));
+    const intSaved=Math.max(0,newEMI*remN-newP-newEMI*newN+newP);
+    html=`<div class="rbox">
+      <div class="rrow"><span>Pre-Payment Amount</span><span class="rv">₹${fmt(ppAmt)}</span></div>
+      <div class="rrow"><span>Previous Outstanding</span><span class="rv red">₹${fmt(outPri)}</span></div>
+      <div class="rrow"><span>New Outstanding</span><span class="rv">₹${fmt(newP)}</span></div>
+      <div class="rrow"><span>EMI (unchanged)</span><span class="rv">₹${fmt(newEMI)}</span></div>
+      <div class="rrow"><span>New Remaining Tenure</span><span class="rv grn">${newN} months</span></div>
+      <div class="rrow"><span>Months Saved</span><span class="rv grn">${Math.max(0,remN-newN)} months</span></div>
+      <div class="rrow"><span>Interest Saved (approx)</span><span class="rv grn">₹${fmt(Math.max(0,p.emi*(remN-newN)))}</span></div>
+    </div>`;
+    ppLastResult={mode:'tenure',ppAmt,newOutstanding:newP,newEMI,newTenureMonths:newN,ppDate:document.getElementById('pp_date').value};
   } else {
-    newN=p.n-paid.intPaid;// approx remaining
-    newEMI=r===0?newP/newN:newP*r*Math.pow(1+r,newN)/(Math.pow(1+r,newN)-1);
-    html=`<div class="rbox"><div class="rrow"><span>Pre-Payment Amount</span><span class="rv">₹${fmt(ppAmt)}</span></div><div class="rrow"><span>New Outstanding</span><span class="rv">₹${fmt(newP)}</span></div><div class="rrow"><span>New EMI</span><span class="rv grn">₹${fmt(newEMI)}</span></div><div class="rrow"><span>EMI Reduction</span><span class="rv grn">₹${fmt(p.emi-newEMI)} less per month</span></div></div>`;
+    const remNFixed=remN;
+    newEMI=r===0?newP/remNFixed:newP*r*Math.pow(1+r,remNFixed)/(Math.pow(1+r,remNFixed)-1);
+    const emiReduction=p.emi-newEMI;
+    html=`<div class="rbox">
+      <div class="rrow"><span>Pre-Payment Amount</span><span class="rv">₹${fmt(ppAmt)}</span></div>
+      <div class="rrow"><span>Previous Outstanding</span><span class="rv red">₹${fmt(outPri)}</span></div>
+      <div class="rrow"><span>New Outstanding</span><span class="rv">₹${fmt(newP)}</span></div>
+      <div class="rrow"><span>Old EMI</span><span class="rv red">₹${fmt(p.emi)}</span></div>
+      <div class="rrow"><span>New EMI</span><span class="rv grn">₹${fmt(Math.round(newEMI))}</span></div>
+      <div class="rrow"><span>EMI Reduction</span><span class="rv grn">₹${fmt(Math.round(emiReduction))} less/month</span></div>
+      <div class="rrow"><span>Tenure (unchanged)</span><span class="rv">${Math.ceil(remNFixed)} months</span></div>
+    </div>`;
+    ppLastResult={mode:'emi',ppAmt,newOutstanding:newP,newEMI:Math.round(newEMI),newTenureMonths:Math.ceil(remNFixed),ppDate:document.getElementById('pp_date').value};
   }
-  document.getElementById('pp_result').innerHTML=html;document.getElementById('pp_result').style.display='block';
+  document.getElementById('pp_result').innerHTML=html;
+  document.getElementById('pp_result').style.display='block';
+  document.getElementById('pp_save_row').style.display='block';
+}
+
+function savePrePaymentToProfile(){
+  if(!ppLastResult){alert('Pehle Calculate Effect dabao');return}
+  const p=gs('loanProfiles').find(x=>x.id===curPid);if(!p)return;
+  let ps=gs('loanProfiles');const idx=ps.findIndex(x=>x.id===curPid);if(idx<0)return;
+  const ppDate=ppLastResult.ppDate||new Date().toISOString().slice(0,10);
+  // Update profile: new outstanding = reduce P by ppAmt, new EMI if reduce-EMI mode
+  const prePays=ps[idx].prePay||[];
+  prePays.push({date:ppDate,amount:ppLastResult.ppAmt,mode:ppLastResult.mode,newEMI:ppLastResult.newEMI,newTenure:ppLastResult.newTenureMonths,savedOn:new Date().toLocaleDateString('en-IN')});
+  // Update P (loan principal) to new outstanding so future calculations use it
+  ps[idx].P=ppLastResult.newOutstanding;
+  // If reduce-EMI mode, update the stored EMI too
+  if(ppLastResult.mode==='emi'){ps[idx].emi=ppLastResult.newEMI;}
+  // Update tenure to new remaining tenure
+  ps[idx].n=ppLastResult.newTenureMonths;
+  ps[idx].prePay=prePays;
+  // Recalculate interest and total with updated values
+  if(ps[idx].r&&ps[idx].n&&ps[idx].emi){
+    ps[idx].interest=Math.max(0,ps[idx].emi*ps[idx].n-ps[idx].P);
+    ps[idx].total=ps[idx].P+ps[idx].interest;
+  }
+  ss('loanProfiles',ps);
+  closeM('prePayModal');
+  renderProfiles();renderLoanOverview();
+  alert('✅ Pre-Payment saved! Profile mein update ho gaya.\n\nNew Outstanding: ₹'+fmt(ppLastResult.newOutstanding)+'\nNew EMI: ₹'+fmt(ppLastResult.newEMI));
+}
+
+function payFullLoanNow(){
+  const p=gs('loanProfiles').find(x=>x.id===curPid);if(!p)return;
+  const paid=calcPaidEMIs(p);
+  const outPri=Math.max(0,(p.P||0)-paid.priPaid);
+  const _fc=p.foreClosureAmt>0?p.foreClosureAmt:(p.foreClosurePct>0?outPri*p.foreClosurePct/100:0);
+  const _ft=outPri+_fc;
+  const msg=`🏁 LOAN FULL PAYMENT CONFIRMATION\n\nLoan: ${p.name}\nOutstanding Principal: ₹${fmt(outPri)}${_fc>0?'\nForeclosure Charges: ₹'+fmt(_fc):''}\nTotal to Pay: ₹${fmt(_ft)}\n\nKya aap confirm karte hain? Profile mein "Closed" mark ho jaayega.`;
+  if(!confirm(msg))return;
+  let ps=gs('loanProfiles');const idx=ps.findIndex(x=>x.id===curPid);if(idx<0)return;
+  const timeStr=new Date().toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  // Set P to 0 to mark as fully paid / closed
+  ps[idx].P=0;
+  ps[idx].n=0;
+  ps[idx].emi=0;
+  // Store foreclosure record
+  const prePays=ps[idx].prePay||[];
+  prePays.push({date:new Date().toISOString().slice(0,10),amount:_ft,mode:'foreclose',note:'Full loan foreclosed',savedOn:timeStr});
+  ps[idx].prePay=prePays;
+  // Add to payment history
+  const hist=ps[idx].paymentHistory||[];
+  hist.push({type:'foreclose',month:new Date().toISOString().slice(0,7),label:'Full Payment — Loan Closed',time:timeStr,amount:Math.round(_ft)});
+  ps[idx].paymentHistory=hist;
+  ss('loanProfiles',ps);
+  closeM('prePayModal');
+  renderProfiles();renderLoanOverview();
+  alert('✅ Loan fully paid! Profile mein "Closed" ho gaya.\n\nPaid: ₹'+fmt(_ft)+'\nLoan: '+p.name);
 }
 
 // Variable Rate
@@ -3604,19 +4325,75 @@ let varRatesList=[];
 function openVariableRate(){closeM('editMenuModal');varRatesList=[];document.getElementById('vr_list').innerHTML='';openM('varRateModal')}
 function addVarRate(){const dt=document.getElementById('vr_date').value,rt=parseFloat(document.getElementById('vr_rate').value);if(!dt||!rt){alert('Enter date and rate');return}varRatesList.push({date:dt,rate:rt});renderVRList()}
 function renderVRList(){document.getElementById('vr_list').innerHTML=varRatesList.map((v,i)=>`<div style="display:flex;justify-content:space-between;padding:6px;background:var(--surface2);border-radius:7px;margin-bottom:5px;font-size:12px"><span>${fmtDate(v.date)} — ${v.rate}%</span><button onclick="varRatesList.splice(${i},1);renderVRList()" style="background:none;border:none;color:var(--red);cursor:pointer">×</button></div>`).join('')}
-function applyVarRate(){alert('Variable rate schedule calculation applied. In a full implementation this would recalculate EMI schedule for each rate period.');closeM('varRateModal')}
+function applyVarRate(){
+  if(!varRatesList.length){alert('Koi rate change add nahi kiya');return}
+  const p=gs('loanProfiles').find(x=>x.id===curPid);if(!p)return;
+  let ps=gs('loanProfiles');const idx=ps.findIndex(x=>x.id===curPid);if(idx<0)return;
+  const sorted=[...varRatesList].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  ps[idx].varRates=sorted;
+  const latest=sorted[sorted.length-1];
+  const newRateA=parseFloat(latest.rate)||p.rA;
+  const newR=newRateA/12/100;
+  const paid=calcPaidEMIs(p);
+  const outPri=Math.max(0,(p.P||0)-paid.priPaid);
+  const remN=Math.max(1,(p.n||0)-paid.paidCount);
+  const newEMI=newR===0?outPri/remN:outPri*newR*Math.pow(1+newR,remN)/(Math.pow(1+newR,remN)-1);
+  const newInterest=Math.max(0,newEMI*remN-outPri);
+  ps[idx].rA=newRateA;ps[idx].r=newR;ps[idx].emi=Math.round(newEMI);
+  ps[idx].P=outPri;ps[idx].n=remN;
+  ps[idx].interest=newInterest;ps[idx].total=outPri+newInterest;
+  ss('loanProfiles',ps);
+  closeM('varRateModal');
+  renderProfiles();renderLoanOverview();
+  alert('✅ Variable Rate Applied!\n\nNew Rate: '+newRateA+'%\nNew EMI: ₹'+fmt(Math.round(newEMI))+'\nOutstanding: ₹'+fmt(outPri)+'\nRemaining Tenure: '+remN+' months');
+}
 
 // Moratorium
-function openMoratorium(){closeM('editMenuModal');openM('moratoriumModal')}
+let morLastResult=null;
+function openMoratorium(){
+  closeM('editMenuModal');
+  morLastResult=null;
+  document.getElementById('mor_result').style.display='none';
+  document.getElementById('mor_save_row').style.display='none';
+  openM('moratoriumModal');
+}
 function calcMoratorium(){
   const p=gs('loanProfiles').find(x=>x.id===curPid);if(!p)return;
   const months=parseInt(document.getElementById('mor_months').value)||0;
   if(!months){alert('Enter months');return}
-  const accruedInt=(p.P||0)*p.r*months;
-  const newPrincipal=(p.P||0)+accruedInt;
-  const newEMI=p.r===0?newPrincipal/p.n:newPrincipal*p.r*Math.pow(1+p.r,p.n)/(Math.pow(1+p.r,p.n)-1);
-  document.getElementById('mor_result').innerHTML=`<div class="rbox"><div class="rrow"><span>Interest Accrued During Moratorium</span><span class="rv red">₹${fmt(accruedInt)}</span></div><div class="rrow"><span>New Principal After Moratorium</span><span class="rv">₹${fmt(newPrincipal)}</span></div><div class="rrow"><span>New EMI (same tenure)</span><span class="rv">₹${fmt(newEMI)}</span></div><div class="rrow"><span>Tenure Extended</span><span class="rv">${months} months</span></div></div>`;
+  const paid=calcPaidEMIs(p);
+  const outPri=Math.max(0,(p.P||0)-paid.priPaid);
+  const accruedInt=outPri*p.r*months;
+  const newPrincipal=outPri+accruedInt;
+  const remN=Math.max(1,(p.n||0)-paid.paidCount);
+  const newEMI=p.r===0?newPrincipal/remN:newPrincipal*p.r*Math.pow(1+p.r,remN)/(Math.pow(1+p.r,remN)-1);
+  const newInterest=Math.max(0,newEMI*remN-newPrincipal);
+  morLastResult={months,accruedInt,newPrincipal,newEMI:Math.round(newEMI),remN,newInterest};
+  document.getElementById('mor_result').innerHTML=`<div class="rbox">
+    <div class="rrow"><span>Moratorium Duration</span><span class="rv">${months} months</span></div>
+    <div class="rrow"><span>Interest Accrued</span><span class="rv red">₹${fmt(accruedInt)}</span></div>
+    <div class="rrow"><span>New Principal (after moratorium)</span><span class="rv">₹${fmt(newPrincipal)}</span></div>
+    <div class="rrow"><span>New EMI</span><span class="rv">₹${fmt(Math.round(newEMI))}</span></div>
+    <div class="rrow"><span>Remaining Tenure</span><span class="rv">${remN} months</span></div>
+  </div>`;
   document.getElementById('mor_result').style.display='block';
+  document.getElementById('mor_save_row').style.display='block';
+}
+function saveMoratoriumToProfile(){
+  if(!morLastResult){alert('Pehle Calculate karein');return}
+  let ps=gs('loanProfiles');const idx=ps.findIndex(x=>x.id===curPid);if(idx<0)return;
+  ps[idx].P=morLastResult.newPrincipal;
+  ps[idx].emi=morLastResult.newEMI;
+  ps[idx].n=morLastResult.remN;
+  ps[idx].interest=morLastResult.newInterest;
+  ps[idx].total=morLastResult.newPrincipal+morLastResult.newInterest;
+  const hist=ps[idx].paymentHistory||[];
+  hist.push({type:'moratorium',month:new Date().toISOString().slice(0,7),label:'Moratorium '+morLastResult.months+' months applied',time:new Date().toLocaleString('en-IN'),amount:Math.round(morLastResult.accruedInt)});
+  ps[idx].paymentHistory=hist;
+  ss('loanProfiles',ps);
+  closeM('moratoriumModal');
+  renderProfiles();renderLoanOverview();
+  alert('✅ Moratorium saved! Profile updated.\n\nNew EMI: ₹'+fmt(morLastResult.newEMI)+'\nNew Principal: ₹'+fmt(morLastResult.newPrincipal));
 }
 
 // Export
@@ -3949,7 +4726,345 @@ function saveExtractedSig(){
 // ═══════════ PDF COMPRESSOR (FIX 8: 500MB + always OCR) ═══════════
 let pdfFile=null,pdfCL='low',pdfDPI=120;
 const CLS={low:{q:.88,label:'Low (88%)',ratio:.55},mid:{q:.68,label:'Medium (68%)',ratio:.33},high:{q:.42,label:'High (42%)',ratio:.17},extreme:{q:.22,label:'Extreme (22%)',ratio:.06}};
-function showPdfTab(t){document.getElementById('pdf_comp_card').style.display=t==='compress'?'block':'none';document.getElementById('pdf_edit_card').style.display=t==='edit'?'block':'none'}
+function showPdfTab(t){
+  document.getElementById('pdf_comp_card').style.display=t==='compress'?'block':'none';
+  document.getElementById('pdf_edit_card').style.display=t==='edit'?'block':'none';
+  document.getElementById('pdf_conv_card').style.display=t==='convert'?'block':'none';
+  document.getElementById('pdf_word_card').style.display=t==='word'?'block':'none';
+  document.getElementById('pdf_pptx_card').style.display=t==='pptx'?'block':'none';
+  document.getElementById('pdf_epub_card').style.display=t==='epub'?'block':'none';
+  document.getElementById('pdf_ocr_card').style.display=t==='ocr'?'block':'none';
+  document.getElementById('pdf_html_card').style.display=t==='html'?'block':'none';
+}
+
+// ═══════════ PDF CONVERTER ═══════════
+let convMode='from'; // 'from' = PDF→other, 'to' = other→PDF
+let convPdfDoc=null; // loaded PDF.js doc
+let convPdfFile=null;
+let convDPI=150;
+
+function setConvMode(m){
+  convMode=m;
+  document.getElementById('conv_from_panel').style.display=m==='from'?'block':'none';
+  document.getElementById('conv_to_panel').style.display=m==='to'?'block':'none';
+  document.getElementById('conv_btn_from').style.background=m==='from'?'linear-gradient(135deg,#1d4ed8,#2563eb)':'transparent';
+  document.getElementById('conv_btn_from').style.color=m==='from'?'#fff':'var(--text2)';
+  document.getElementById('conv_btn_to').style.background=m==='to'?'linear-gradient(135deg,#1d4ed8,#2563eb)':'transparent';
+  document.getElementById('conv_btn_to').style.color=m==='to'?'#fff':'var(--text2)';
+}
+
+function setConvDPI(d,btn){
+  convDPI=d;
+  document.querySelectorAll('[id^="conv_dpi_"]').forEach(b=>{b.className='btn bs';b.style.flex='1';b.style.fontSize='10px';b.style.padding='5px 2px'});
+  btn.className='btn bp';btn.style.flex='1';btn.style.fontSize='10px';btn.style.padding='5px 2px';
+}
+
+async function handleConvFromFile(e){
+  const file=e.target.files[0];if(!file)return;
+  convPdfFile=file;
+  const ab=await file.arrayBuffer();
+  convPdfDoc=await pdfjsLib.getDocument({data:ab}).promise;
+  const pages=convPdfDoc.numPages;
+  const sz=(file.size/1024/1024).toFixed(2);
+  document.getElementById('conv_from_fname').textContent=file.name;
+  document.getElementById('conv_from_fsize').textContent=sz+' MB';
+  document.getElementById('conv_from_fpages').textContent=pages+' pages';
+  document.getElementById('conv_from_fileinfo').style.display='block';
+  document.getElementById('conv_from_formats').style.display='block';
+}
+
+async function convertPdfTo(fmt){
+  if(!convPdfDoc){alert('Pehle PDF upload karein');return}
+  const pages=convPdfDoc.numPages;
+  const quality=(parseInt(document.getElementById('conv_quality').value)||85)/100;
+  const scale=convDPI/72;
+  const prog=document.getElementById('conv_from_prog');
+  const progTxt=document.getElementById('conv_prog_txt');
+  const progFill=document.getElementById('conv_prog_fill');
+  prog.style.display='block';
+
+  // Helper: render page to canvas
+  async function renderPage(pageNum){
+    const page=await convPdfDoc.getPage(pageNum);
+    const vp=page.getViewport({scale});
+    const canvas=document.createElement('canvas');
+    canvas.width=vp.width;canvas.height=vp.height;
+    const ctx=canvas.getContext('2d');
+    await page.render({canvasContext:ctx,viewport:vp}).promise;
+    return canvas;
+  }
+
+  // Helper: extract text
+  async function getPageText(pageNum){
+    const page=await convPdfDoc.getPage(pageNum);
+    const tc=await page.getTextContent();
+    return tc.items.map(i=>i.str).join(' ');
+  }
+
+  try{
+    // Single-image formats (first page only for jpg/png/webp, zip for all)
+    if(fmt==='jpg'||fmt==='png'||fmt==='webp'){
+      if(pages===1){
+        progTxt.textContent='Converting page 1...';progFill.style.width='50%';
+        const canvas=await renderPage(1);
+        const mime=fmt==='jpg'?'image/jpeg':fmt==='png'?'image/png':'image/webp';
+        const ext=fmt==='jpg'?'jpg':fmt;
+        canvas.toBlob(blob=>{
+          dlBlob(blob,convPdfFile.name.replace('.pdf','.'+ext));
+          prog.style.display='none';progFill.style.width='0%';
+        },mime,quality);
+      } else {
+        // Multi-page: convert all, download as zip
+        progTxt.textContent='Loading JSZip...';progFill.style.width='5%';
+        await ensureJSZip();
+        const zip=new window.JSZip();
+        const mime=fmt==='jpg'?'image/jpeg':fmt==='png'?'image/png':'image/webp';
+        const ext=fmt==='jpg'?'jpg':fmt;
+        for(let i=1;i<=pages;i++){
+          progTxt.textContent=`Converting page ${i}/${pages}...`;progFill.style.width=(i/pages*90)+'%';
+          const canvas=await renderPage(i);
+          const blob=await new Promise(res=>canvas.toBlob(res,mime,quality));
+          const ab2=await blob.arrayBuffer();
+          zip.file(`page_${String(i).padStart(3,'0')}.${ext}`,ab2);
+        }
+        progTxt.textContent='Creating ZIP...';progFill.style.width='95%';
+        const zipBlob=await zip.generateAsync({type:'blob'});
+        dlBlob(zipBlob,convPdfFile.name.replace('.pdf',`_pages_${ext}.zip`));
+        prog.style.display='none';progFill.style.width='0%';
+      }
+      return;
+    }
+
+    if(fmt==='zip_jpg'||fmt==='zip_png'){
+      const ext=fmt==='zip_jpg'?'jpg':'png';
+      const mime=fmt==='zip_jpg'?'image/jpeg':'image/png';
+      progTxt.textContent='Loading JSZip...';progFill.style.width='5%';
+      await ensureJSZip();
+      const zip=new window.JSZip();
+      for(let i=1;i<=pages;i++){
+        progTxt.textContent=`Converting page ${i}/${pages}...`;progFill.style.width=(i/pages*90)+'%';
+        const canvas=await renderPage(i);
+        const blob=await new Promise(res=>canvas.toBlob(res,mime,quality));
+        const ab2=await blob.arrayBuffer();
+        zip.file(`page_${String(i).padStart(3,'0')}.${ext}`,ab2);
+      }
+      progTxt.textContent='Creating ZIP...';progFill.style.width='95%';
+      const zipBlob=await zip.generateAsync({type:'blob'});
+      dlBlob(zipBlob,convPdfFile.name.replace('.pdf',`_images.zip`));
+      prog.style.display='none';progFill.style.width='0%';
+      return;
+    }
+
+    if(fmt==='txt'){
+      let allText='';
+      for(let i=1;i<=pages;i++){
+        progTxt.textContent=`Extracting text page ${i}/${pages}...`;progFill.style.width=(i/pages*90)+'%';
+        allText+=`--- Page ${i} ---\n`+(await getPageText(i))+'\n\n';
+      }
+      dlBlob(new Blob([allText],{type:'text/plain'}),convPdfFile.name.replace('.pdf','.txt'));
+      prog.style.display='none';progFill.style.width='0%';
+      return;
+    }
+
+    if(fmt==='html'){
+      let html='<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+convPdfFile.name+'</title>';
+      html+='<style>body{font-family:Calibri,Arial,sans-serif;max-width:800px;margin:0 auto;padding:30px;font-size:14px;line-height:1.7;color:#222}.page{border:1px solid #ddd;padding:24px;margin-bottom:20px;border-radius:6px;page-break-after:always}.page-num{font-size:10px;color:#888;text-align:right;margin-bottom:10px;font-family:monospace}h1{color:#1e3a8a;font-size:18px;margin-bottom:20px}@media print{.page{border:none;padding:0}}</style></head><body>';
+      html+='<h1>'+convPdfFile.name+'</h1>';
+      for(let i=1;i<=pages;i++){
+        progTxt.textContent=`Processing page ${i}/${pages}...`;progFill.style.width=(i/pages*90)+'%';
+        const text=await getPageText(i);
+        const escaped=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+        html+=`<div class="page"><div class="page-num">Page ${i} of ${pages}</div><p>${escaped}</p></div>`;
+      }
+      html+='</body></html>';
+      dlBlob(new Blob([html],{type:'text/html'}),convPdfFile.name.replace('.pdf','.html'));
+      prog.style.display='none';progFill.style.width='0%';
+      return;
+    }
+
+    if(fmt==='csv'){
+      let csv='Page,Content\n';
+      for(let i=1;i<=pages;i++){
+        progTxt.textContent=`Extracting page ${i}/${pages}...`;progFill.style.width=(i/pages*90)+'%';
+        const text=(await getPageText(i)).replace(/"/g,'""').replace(/\n/g,' ');
+        csv+=`${i},"${text}"\n`;
+      }
+      dlBlob(new Blob([csv],{type:'text/csv'}),convPdfFile.name.replace('.pdf','.csv'));
+      prog.style.display='none';progFill.style.width='0%';
+      return;
+    }
+  } catch(err){
+    prog.style.display='none';
+    alert('Conversion failed: '+err.message);
+  }
+}
+
+function dlBlob(blob,filename){
+  const u=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=u;a.download=filename;a.click();
+  setTimeout(()=>URL.revokeObjectURL(u),2000);
+}
+
+// ── Load JSZip on demand ──
+function ensureJSZip(){
+  return new Promise((res,rej)=>{
+    if(window.JSZip){res();return;}
+    const s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+    s.onload=res;s.onerror=rej;
+    document.head.appendChild(s);
+  });
+}
+
+// ── Images → PDF ──
+async function handleConvToImg(e){
+  const files=[...e.target.files];if(!files.length)return;
+  await convImgsToPdf(files);
+  e.target.value='';
+}
+function triggerConvMultiImg(){document.getElementById('convToImgInput').click()}
+async function convImgsToPdf(files){
+  const prog=document.getElementById('conv_to_prog');
+  const progTxt=document.getElementById('conv_to_prog_txt');
+  const progFill=document.getElementById('conv_to_prog_fill');
+  prog.style.display='block';
+  try{
+    const {PDFDocument}=PDFLib;
+    const pdfDoc=await PDFDocument.create();
+    for(let i=0;i<files.length;i++){
+      progTxt.textContent=`Adding image ${i+1}/${files.length}...`;
+      progFill.style.width=((i+1)/files.length*90)+'%';
+      const ab=await files[i].arrayBuffer();
+      const mime=files[i].type;
+      let img;
+      if(mime==='image/jpeg'||mime==='image/jpg'){img=await pdfDoc.embedJpg(ab);}
+      else {
+        // Convert any other image to JPEG via canvas
+        const blob=new Blob([ab],{type:mime});
+        const url=URL.createObjectURL(blob);
+        const canvas=document.createElement('canvas');
+        const imgEl=new Image();
+        await new Promise((res,rej)=>{imgEl.onload=res;imgEl.onerror=rej;imgEl.src=url;});
+        canvas.width=imgEl.naturalWidth;canvas.height=imgEl.naturalHeight;
+        canvas.getContext('2d').drawImage(imgEl,0,0);
+        URL.revokeObjectURL(url);
+        const jpegAb=await new Promise(res=>canvas.toBlob(b=>b.arrayBuffer().then(res),'image/jpeg',0.92));
+        img=await pdfDoc.embedJpg(jpegAb);
+      }
+      const page=pdfDoc.addPage([img.width,img.height]);
+      page.drawImage(img,{x:0,y:0,width:img.width,height:img.height});
+    }
+    progTxt.textContent='Finalizing PDF...';progFill.style.width='97%';
+    const bytes=await pdfDoc.save();
+    dlBlob(new Blob([bytes],{type:'application/pdf'}),files.length===1?files[0].name.replace(/\.[^.]+$/,'.pdf'):'images_converted.pdf');
+    prog.style.display='none';progFill.style.width='0%';
+    alert('✅ PDF ready! '+files.length+' image'+(files.length>1?'s':'')+' converted.');
+  } catch(err){prog.style.display='none';alert('Error: '+err.message);}
+}
+
+// ── Text/HTML → PDF ──
+async function handleConvToText(e){
+  const file=e.target.files[0];if(!file)return;
+  const text=await file.text();
+  const isHTML=file.name.toLowerCase().endsWith('.html')||file.name.toLowerCase().endsWith('.htm');
+  await contentToPdf(text,isHTML,file.name);
+  e.target.value='';
+}
+async function contentToPdf(content,isHTML,filename){
+  const prog=document.getElementById('conv_to_prog');
+  const progTxt=document.getElementById('conv_to_prog_txt');
+  const progFill=document.getElementById('conv_to_prog_fill');
+  prog.style.display='block';progTxt.textContent='Building PDF...';progFill.style.width='30%';
+  try{
+    const {PDFDocument,rgb,StandardFonts}=PDFLib;
+    const pdfDoc=await PDFDocument.create();
+    const font=await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const fSize=11,lineH=16,margin=50,pgW=595,pgH=842;
+    const maxW=pgW-margin*2;
+    // Strip HTML tags if HTML
+    const rawText=isHTML?content.replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/\s+/g,' ').trim():content;
+    const words=rawText.split(/\s+/);
+    let lines=[],curLine='';
+    for(const w of words){
+      const test=curLine?curLine+' '+w:w;
+      if(font.widthOfTextAtSize(test,fSize)>maxW){if(curLine)lines.push(curLine);curLine=w;}
+      else curLine=test;
+    }
+    if(curLine)lines.push(curLine);
+    const linesPerPage=Math.floor((pgH-margin*2)/lineH);
+    const totalPages=Math.ceil(lines.length/linesPerPage)||1;
+    for(let p=0;p<totalPages;p++){
+      progFill.style.width=(30+(p/totalPages*65))+'%';
+      const page=pdfDoc.addPage([pgW,pgH]);
+      const chunk=lines.slice(p*linesPerPage,(p+1)*linesPerPage);
+      chunk.forEach((line,i)=>{
+        page.drawText(line,{x:margin,y:pgH-margin-(i*lineH),size:fSize,font,color:rgb(0.1,0.1,0.1)});
+      });
+      page.drawText(`Page ${p+1} / ${totalPages}`,{x:pgW/2-30,y:25,size:8,font,color:rgb(0.5,0.5,0.5)});
+    }
+    progFill.style.width='97%';
+    const bytes=await pdfDoc.save();
+    dlBlob(new Blob([bytes],{type:'application/pdf'}),(filename||'document').replace(/\.[^.]+$/,'.pdf'));
+    prog.style.display='none';progFill.style.width='0%';
+    alert('✅ PDF created! '+totalPages+' page(s).');
+  } catch(err){prog.style.display='none';alert('Error: '+err.message);}
+}
+
+// ── Text typed/pasted → PDF ──
+function textToPdf(){
+  const text=document.getElementById('conv_paste_text').value.trim();
+  const title=document.getElementById('conv_paste_title').value.trim()||'document';
+  if(!text){alert('Pehle text enter karein');return}
+  contentToPdf(text,false,title+'.txt');
+}
+
+// ── CSV → PDF ──
+async function handleConvToCsv(e){
+  const file=e.target.files[0];if(!file)return;
+  const text=await file.text();
+  const prog=document.getElementById('conv_to_prog');
+  const progTxt=document.getElementById('conv_to_prog_txt');
+  const progFill=document.getElementById('conv_to_prog_fill');
+  prog.style.display='block';progTxt.textContent='Parsing CSV...';progFill.style.width='20%';
+  try{
+    const {PDFDocument,rgb,StandardFonts}=PDFLib;
+    const pdfDoc=await PDFDocument.create();
+    const font=await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const bold=await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    const sep=text.includes('\t')?'\t':',';
+    const rows=text.trim().split('\n').map(r=>{
+      const cols=[];let cur='',inQ=false;
+      for(const ch of r){if(ch==='"'){inQ=!inQ;}else if(ch===sep&&!inQ){cols.push(cur.trim());cur='';}else cur+=ch;}
+      cols.push(cur.trim());return cols;
+    });
+    const fSize=9,lineH=14,margin=30,pgW=842,pgH=595; // Landscape
+    const cols=rows[0]?rows[0].length:1;
+    const colW=(pgW-margin*2)/Math.min(cols,12);
+    const rowsPerPage=Math.floor((pgH-margin*2)/lineH);
+    const totalPages=Math.ceil(rows.length/rowsPerPage)||1;
+    for(let p=0;p<totalPages;p++){
+      progFill.style.width=(20+(p/totalPages*70))+'%';
+      const page=pdfDoc.addPage([pgW,pgH]);
+      const chunk=rows.slice(p*rowsPerPage,(p+1)*rowsPerPage);
+      chunk.forEach((row,ri)=>{
+        const isHeader=p===0&&ri===0;
+        const y=pgH-margin-(ri*lineH);
+        if(isHeader){page.drawRectangle({x:margin,y:y-3,width:pgW-margin*2,height:lineH,color:rgb(0.12,0.37,0.92),opacity:0.85});}
+        row.slice(0,12).forEach((cell,ci)=>{
+          const cellText=String(cell||'').slice(0,30);
+          page.drawText(cellText,{x:margin+ci*colW+2,y:y+2,size:fSize,font:isHeader?bold:font,color:isHeader?rgb(1,1,1):rgb(0.1,0.1,0.1),maxWidth:colW-4});
+        });
+        if(ri>0){page.drawLine({start:{x:margin,y:y-3},end:{x:pgW-margin,y:y-3},thickness:0.3,color:rgb(0.8,0.8,0.8)});}
+      });
+    }
+    progFill.style.width='97%';
+    const bytes=await pdfDoc.save();
+    dlBlob(new Blob([bytes],{type:'application/pdf'}),file.name.replace(/\.[^.]+$/,'.pdf'));
+    prog.style.display='none';progFill.style.width='0%';
+    alert('✅ CSV converted to PDF! '+rows.length+' rows, '+totalPages+' page(s).');
+  } catch(err){prog.style.display='none';alert('Error: '+err.message);}
+  e.target.value='';
+}
 function setCL(l){
   pdfCL=l;
   const cols={low:'var(--green)',mid:'var(--accent2)',high:'var(--red)',extreme:'#9333ea'};
@@ -5132,14 +6247,14 @@ function resetCrop(){
 
 // ═══════════ PDF EDITOR — TABS, TEXT, SIGN ═══════════
 function setPdfEditTab(t){
-  ['pages','text','sign'].forEach(tab=>{
-    document.getElementById('pe_tab_'+tab).className=tab===t?'btn bp':'btn bs';
-    document.getElementById('pe_tab_'+tab).style.flex='1';
-    document.getElementById('pe_tab_'+tab).style.fontSize='11px';
-    document.getElementById('pe_tab_'+tab).style.padding='6px 4px';
-    document.getElementById('pe_panel_'+tab).style.display=tab===t?'block':'none';
+  ['pages','text','replace','pen','sign'].forEach(tab=>{
+    const btn=document.getElementById('pe_tab_'+tab);
+    const panel=document.getElementById('pe_panel_'+tab);
+    if(btn){btn.className=tab===t?'btn bp':'btn bs';btn.style.flex='1';btn.style.minWidth='60px';btn.style.fontSize='10px';btn.style.padding='5px 2px';}
+    if(panel)panel.style.display=tab===t?'block':'none';
   });
   if(t==='sign') loadSavedSigsForPdf();
+  if(t==='pen') renderPenCanvas();
 }
 
 // Text annotations added to PDF
@@ -5266,6 +6381,233 @@ function _hexToRgbPdf(hex){
   const b=parseInt(hex.slice(5,7),16)/255;
   return{r,g,b};
 }
+
+// ═══════════ PDF TEXT REPLACE ═══════════
+let pdfReplaceAnnotations=[];
+
+async function extractPdfText(){
+  if(!editPages.length){alert('Pehle PDF upload karein');return}
+  const area=document.getElementById('pe_replace_extract_area');
+  const blocksEl=document.getElementById('pe_replace_blocks');
+  area.style.display='block';
+  blocksEl.innerHTML='<div style="color:var(--text2)">⏳ Extracting text...</div>';
+  try{
+    const {PDFDocument}=PDFLib;
+    const outDoc=await PDFDocument.create();
+    for(const ep of editPages){outDoc.addPage(ep.page);}
+    const bytes=await outDoc.save();
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    const loadingTask=pdfjsLib.getDocument({data:bytes});
+    const pdfDoc2=await loadingTask.promise;
+    let html='';
+    for(let i=1;i<=pdfDoc2.numPages;i++){
+      const page=await pdfDoc2.getPage(i);
+      const tc=await page.getTextContent();
+      const vp=page.getViewport({scale:1});
+      html+=`<div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)"><strong style="color:var(--accent)">Page ${i}:</strong><br>`;
+      tc.items.forEach(item=>{
+        if(item.str&&item.str.trim()){
+          const tx=item.transform[4];
+          const ty=vp.height-item.transform[5];
+          html+=`<span onclick="fillReplaceForm(${i},'${item.str.replace(/'/g,"\\'")}',${Math.round(tx)},${Math.round(item.transform[5])},${Math.round(item.height||12)})" style="cursor:pointer;background:rgba(37,99,235,0.07);border:1px solid rgba(37,99,235,0.15);border-radius:4px;padding:1px 5px;margin:2px;display:inline-block;font-size:10px" title="Click to fill replace form">${item.str}</span>`;
+        }
+      });
+      html+='</div>';
+    }
+    blocksEl.innerHTML=html||'<div style="color:var(--text2)">No text found in PDF</div>';
+  }catch(e){blocksEl.innerHTML=`<div style="color:var(--red)">Error: ${e.message}</div>`;}
+}
+
+function fillReplaceForm(page,text,x,y,size){
+  document.getElementById('pe_rep_page').value=page;
+  document.getElementById('pe_rep_old').value=text;
+  document.getElementById('pe_rep_x').value=x;
+  document.getElementById('pe_rep_y').value=y;
+  document.getElementById('pe_rep_size').value=size||12;
+  document.getElementById('pe_rep_new').focus();
+  alert(`✅ "${text}" selected! Ab "New Text" mein replacement likhein.`);
+}
+
+function addTextReplacement(){
+  const oldTxt=document.getElementById('pe_rep_old').value.trim();
+  const newTxt=document.getElementById('pe_rep_new').value.trim();
+  if(!oldTxt||!newTxt){alert('Purana aur naya text dono fill karein');return}
+  if(!editPages.length){alert('Pehle PDF upload karein');return}
+  const page=parseInt(document.getElementById('pe_rep_page').value)||1;
+  const size=parseFloat(document.getElementById('pe_rep_size').value)||12;
+  const x=parseFloat(document.getElementById('pe_rep_x').value)||50;
+  const y=parseFloat(document.getElementById('pe_rep_y').value)||700;
+  const color=document.getElementById('pe_rep_color').value||'#000000';
+  const whitebox=document.getElementById('pe_rep_whitebox').checked;
+  // Estimate text width to cover with white box
+  const approxW=oldTxt.length*size*0.55+10;
+  if(whitebox){
+    pdfTextAnnotations.push({id:Date.now(),type:'whitebox',page,x:x-2,y:y-2,w:approxW,h:size+6});
+  }
+  pdfTextAnnotations.push({id:Date.now()+1,type:'text',text:newTxt,page,size,x,y,color,bold:false});
+  pdfReplaceAnnotations.push({oldTxt,newTxt,page,size,x,y,color});
+  renderReplaceList();
+  document.getElementById('pe_rep_old').value='';
+  document.getElementById('pe_rep_new').value='';
+  alert(`✅ Replacement added! Download karein.`);
+}
+
+function renderReplaceList(){
+  const el=document.getElementById('pe_replace_list');if(!el)return;
+  if(!pdfReplaceAnnotations.length){el.innerHTML='';return}
+  el.innerHTML=`<div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:5px">Replacements (${pdfReplaceAnnotations.length})</div>`+
+    pdfReplaceAnnotations.map((a,i)=>`<div style="display:flex;align-items:center;gap:6px;background:var(--surface2);border-radius:7px;padding:7px 9px;margin-bottom:5px;font-size:11px">
+      <span style="flex:1">P${a.page}: "<del style='color:var(--red)'>${a.oldTxt.substring(0,20)}</del>" → "<span style='color:var(--green)'>${a.newTxt.substring(0,20)}</span>"</span>
+      <button onclick="pdfReplaceAnnotations.splice(${i},1);pdfTextAnnotations=pdfTextAnnotations.filter((_,j)=>true);renderReplaceList()" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:16px;padding:0">×</button>
+    </div>`).join('');
+}
+
+// ═══════════ PDF PEN DRAW ═══════════
+let penMode='pen', penCanvas=null, penCtx=null, penDrawing=false;
+let penStrokes=[]; // {pageIdx, imageData}
+let penPageRendered=false;
+
+function setPenMode(m){
+  penMode=m;
+  ['pen','highlight','erase'].forEach(x=>{
+    const btn=document.getElementById('pe_pen_mode_'+x);
+    if(btn)btn.className=x===m?'btn bp':'btn bs';
+  });
+  if(!penCtx)return;
+  if(m==='erase'){penCtx.globalCompositeOperation='destination-out';}
+  else{penCtx.globalCompositeOperation='source-over';}
+}
+
+async function renderPenCanvas(){
+  if(!editPages.length)return;
+  const pageNum=parseInt(document.getElementById('pe_pen_page').value)||1;
+  const pageIdx=pageNum-1;
+  if(pageIdx<0||pageIdx>=editPages.length)return;
+  const loadingEl=document.getElementById('pe_pen_loading');
+  const cvs=document.getElementById('pe_pen_canvas');
+  if(loadingEl)loadingEl.style.display='flex';
+  try{
+    // Build temp doc with this page and render via pdf.js
+    const {PDFDocument}=PDFLib;
+    const tmpDoc=await PDFDocument.create();
+    const [pg]=await tmpDoc.copyPages({getPageCount:()=>editPages.length,getPage:(i)=>editPages[i].page},{getPageCount:()=>editPages.length}[Symbol.iterator]?.[0]||[editPages[pageIdx].page],0);
+    // Simpler: render blank with page dimensions
+    const pg2=editPages[pageIdx].page;
+    const {width:pw,height:ph}=pg2.getSize();
+    const scale=Math.min(350/pw,1);
+    cvs.width=Math.round(pw*scale);
+    cvs.height=Math.round(ph*scale);
+    penCtx=cvs.getContext('2d');
+    // Draw white background
+    penCtx.fillStyle='#ffffff';
+    penCtx.fillRect(0,0,cvs.width,cvs.height);
+    // Try to render page thumbnail via pdf.js
+    try{
+      const singleDoc=await PDFDocument.create();
+      const [copiedPg]=await singleDoc.copyPages(editPdfDoc,[pageIdx]);
+      singleDoc.addPage(copiedPg);
+      const singleBytes=await singleDoc.save();
+      pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      const pdfLoaded=await pdfjsLib.getDocument({data:singleBytes}).promise;
+      const pdfPage=await pdfLoaded.getPage(1);
+      const vp=pdfPage.getViewport({scale});
+      cvs.width=Math.round(vp.width);cvs.height=Math.round(vp.height);
+      penCtx=cvs.getContext('2d');
+      penCtx.fillStyle='#ffffff';penCtx.fillRect(0,0,cvs.width,cvs.height);
+      await pdfPage.render({canvasContext:penCtx,viewport:vp}).promise;
+    }catch(e){
+      // fallback: just white canvas with page number
+      penCtx.fillStyle='#e5e7eb';penCtx.fillRect(0,0,cvs.width,cvs.height);
+      penCtx.fillStyle='#9ca3af';penCtx.font='16px sans-serif';penCtx.textAlign='center';
+      penCtx.fillText('Page '+pageNum,cvs.width/2,cvs.height/2);
+    }
+    penPageRendered=true;
+    if(loadingEl)loadingEl.style.display='none';
+    // Setup drawing events
+    setupPenEvents(cvs);
+    setPenMode(penMode);
+  }catch(e){if(loadingEl)loadingEl.innerHTML='⚠️ Preview error. Drawing still works.';loadingEl.style.display='flex';}
+}
+
+function setupPenEvents(cvs){
+  penCanvas=cvs;
+  const getPos=e=>{const r=cvs.getBoundingClientRect();const t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)*(cvs.width/r.width),y:(t.clientY-r.top)*(cvs.height/r.height)}};
+  cvs.onmousedown=cvs.ontouchstart=e=>{e.preventDefault();penDrawing=true;const p=getPos(e);penCtx.beginPath();penCtx.moveTo(p.x,p.y);};
+  cvs.onmousemove=cvs.ontouchmove=e=>{e.preventDefault();if(!penDrawing||!penCtx)return;
+    const p=getPos(e);
+    const col=penMode==='highlight'?document.getElementById('pe_hl_color').value:document.getElementById('pe_pen_color').value;
+    const sz=parseFloat(document.getElementById('pe_pen_size').value)||3;
+    if(penMode==='highlight'){penCtx.globalCompositeOperation='source-over';penCtx.globalAlpha=0.35;penCtx.strokeStyle=col;penCtx.lineWidth=sz*4;}
+    else if(penMode==='erase'){penCtx.globalCompositeOperation='destination-out';penCtx.lineWidth=sz*4;penCtx.globalAlpha=1;}
+    else{penCtx.globalCompositeOperation='source-over';penCtx.globalAlpha=1;penCtx.strokeStyle=col;penCtx.lineWidth=sz;}
+    penCtx.lineCap='round';penCtx.lineJoin='round';
+    penCtx.lineTo(p.x,p.y);penCtx.stroke();
+  };
+  cvs.onmouseup=cvs.ontouchend=()=>{penDrawing=false;penCtx.beginPath();penCtx.globalAlpha=1;penCtx.globalCompositeOperation='source-over';};
+}
+
+function clearPenCanvas(){
+  if(!penCtx||!penCanvas)return;
+  penCtx.clearRect(0,0,penCanvas.width,penCanvas.height);
+  penCtx.fillStyle='#ffffff';penCtx.fillRect(0,0,penCanvas.width,penCanvas.height);
+  renderPenCanvas();
+}
+
+async function applyPenToPdf(){
+  if(!editPages.length){alert('PDF upload karein pehle');return}
+  if(!penCanvas){alert('Pehle Pen Draw tab mein page render karein');return}
+  const pageNum=parseInt(document.getElementById('pe_pen_page').value)||1;
+  const pageIdx=pageNum-1;
+  // Store canvas drawing as image annotation
+  const dataUrl=penCanvas.toDataURL('image/png');
+  const pg=editPages[pageIdx].page;
+  const {width:pw,height:ph}=pg.getSize();
+  pdfTextAnnotations.push({id:Date.now(),type:'image',dataUrl,page:pageNum,x:0,y:0,width:pw,height:ph,isFullPage:true});
+  alert(`✅ Drawing page ${pageNum} par apply hogi. Download karein.`);
+}
+
+// Patch downloadEditedPDF to support whitebox and full-page image
+const _origDownloadEditedPDF=downloadEditedPDF;
+downloadEditedPDF=async function(){
+  if(!editPages.length){alert('No pages to download');return}
+  const {PDFDocument,degrees,rgb:pdfRgb,StandardFonts}=PDFLib;
+  const outDoc=await PDFDocument.create();
+  for(const ep of editPages){
+    const pg=ep.page;
+    if(ep.rotation){pg.setRotation(degrees(ep.rotation))}
+    outDoc.addPage(pg);
+  }
+  const pages2=outDoc.getPages();
+  const font=await outDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont=await outDoc.embedFont(StandardFonts.HelveticaBold);
+  for(const ann of pdfTextAnnotations){
+    const pageIdx=(ann.page||1)-1;
+    if(pageIdx<0||pageIdx>=pages2.length)continue;
+    const pg=pages2[pageIdx];
+    const {height:pgH,width:pgW}=pg.getSize();
+    if(ann.type==='whitebox'){
+      try{pg.drawRectangle({x:ann.x,y:ann.y,width:ann.w||60,height:ann.h||16,color:pdfRgb(1,1,1),opacity:1});}catch(e){}
+    } else if(ann.type==='image'||ann.isFullPage){
+      try{
+        const imgBytes=Uint8Array.from(atob(ann.dataUrl.split(',')[1]),c2=>c2.charCodeAt(0));
+        const img=await outDoc.embedPng(imgBytes);
+        if(ann.isFullPage){
+          pg.drawImage(img,{x:0,y:0,width:pgW,height:pgH,opacity:0.95});
+        } else {
+          const dims=img.scale(ann.width/img.width);
+          pg.drawImage(img,{x:ann.x,y:ann.y,width:dims.width,height:dims.height});
+        }
+      }catch(e){console.warn('img fail',e);}
+    } else {
+      const col=_hexToRgbPdf(ann.color||'#000000');
+      try{pg.drawText(ann.text,{x:ann.x,y:ann.y,size:ann.size||12,font:ann.bold?boldFont:font,color:pdfRgb(col.r,col.g,col.b)});}catch(e){}
+    }
+  }
+  const bytes=await outDoc.save();
+  const blob=new Blob([bytes],{type:'application/pdf'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='edited_document.pdf';a.click();URL.revokeObjectURL(url);
+};
 
 // ═══════════ SIP CALCULATOR ═══════════
 let sipMode='sip', sipPeriodT='years', lumpPeriodT='years', targetPeriodT='years';
@@ -5858,6 +7200,1409 @@ function saveSwpProfile(){
   ss('swpProfiles',ps);
   closeM('swpSaveModal');
   alert('✅ SWP Profile save ho gaya!');
+}
+
+// ═══════════ PDF → WORD (.docx) ═══════════
+let wordPdfDoc=null, wordPdfFile=null, wordStyleMode='para';
+
+function setWordStyle(s){
+  wordStyleMode=s;
+  document.getElementById('word_style_para').className=s==='para'?'btn bp':'btn bs';
+  document.getElementById('word_style_para').style.flex='1';document.getElementById('word_style_para').style.fontSize='11px';
+  document.getElementById('word_style_table').className=s==='table'?'btn bp':'btn bs';
+  document.getElementById('word_style_table').style.flex='1';document.getElementById('word_style_table').style.fontSize='11px';
+}
+
+async function handleWordPdf(e){
+  const file=e.target.files[0];if(!file)return;
+  wordPdfFile=file;
+  const ab=await file.arrayBuffer();
+  wordPdfDoc=await pdfjsLib.getDocument({data:ab}).promise;
+  const pages=wordPdfDoc.numPages;
+  document.getElementById('word_fname').textContent=file.name;
+  document.getElementById('word_pages').textContent=pages+' pages';
+  document.getElementById('word_size').textContent=(file.size/1024/1024).toFixed(2)+' MB';
+  document.getElementById('word_file_info').style.display='block';
+  document.getElementById('word_options').style.display='block';
+  document.getElementById('word_pg_to').placeholder=pages;
+  document.getElementById('word_btn').disabled=false;
+}
+
+async function pdfToWord(){
+  if(!wordPdfDoc){alert('Pehle PDF upload karein');return}
+  const totalPages=wordPdfDoc.numPages;
+  const fromPg=Math.max(1,parseInt(document.getElementById('word_pg_from').value)||1);
+  const toPg=Math.min(totalPages,parseInt(document.getElementById('word_pg_to').value)||totalPages);
+  const progEl=document.getElementById('word_prog');
+  const progTxt=document.getElementById('word_prog_txt');
+  const progFill=document.getElementById('word_prog_fill');
+  progEl.style.display='block';
+  document.getElementById('word_btn').disabled=true;
+
+  // Extract text from each page
+  let allText=[];
+  for(let i=fromPg;i<=toPg;i++){
+    progTxt.textContent=`Extracting page ${i} of ${toPg}...`;
+    progFill.style.width=((i-fromPg)/(toPg-fromPg+1)*80)+'%';
+    const page=await wordPdfDoc.getPage(i);
+    const content=await page.getTextContent();
+    const pageText=content.items.map(item=>item.str).join(' ').replace(/\s+/g,' ').trim();
+    allText.push({page:i, text:pageText});
+  }
+
+  progTxt.textContent='Building Word document...';
+  progFill.style.width='90%';
+
+  // Build DOCX using Office Open XML (pure JS, no external lib needed)
+  // Create a valid minimal .docx (ZIP-based)
+  const docTitle=wordPdfFile.name.replace(/\.pdf$/i,'');
+  let bodyXml='';
+
+  if(wordStyleMode==='table'){
+    // Table layout: 2-col table with page# and text
+    bodyXml+=`<w:tbl><w:tblPr><w:tblStyle w:val="TableGrid"/><w:tblW w:w="0" w:type="auto"/></w:tblPr>`;
+    bodyXml+=`<w:tr><w:tc><w:p><w:r><w:rPr><w:b/></w:rPr><w:t>Page</w:t></w:r></w:p></w:tc><w:tc><w:p><w:r><w:rPr><w:b/></w:rPr><w:t>Content</w:t></w:r></w:p></w:tc></w:tr>`;
+    for(const {page, text} of allText){
+      const safeText=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      bodyXml+=`<w:tr><w:tc><w:p><w:r><w:t>${page}</w:t></w:r></w:p></w:tc><w:tc><w:p><w:r><w:t xml:space="preserve">${safeText}</w:t></w:r></w:p></w:tc></w:tr>`;
+    }
+    bodyXml+=`</w:tbl>`;
+  } else {
+    // Paragraph layout
+    bodyXml+=`<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:b/><w:sz w:val="32"/><w:color w:val="1D4ED8"/></w:rPr><w:t>${docTitle.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</w:t></w:r></w:p>`;
+    bodyXml+=`<w:p><w:r><w:t> </w:t></w:r></w:p>`;
+    for(const {page, text} of allText){
+      const safeText=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      bodyXml+=`<w:p><w:pPr><w:pStyle w:val="Heading2"/></w:pPr><w:r><w:rPr><w:b/><w:color w:val="2563EB"/></w:rPr><w:t>Page ${page}</w:t></w:r></w:p>`;
+      if(safeText){
+        // Split by sentences for readability
+        const sentences=safeText.match(/[^.!?]+[.!?]+/g)||[safeText];
+        for(const sent of sentences){
+          bodyXml+=`<w:p><w:r><w:t xml:space="preserve">${sent.trim()}</w:t></w:r></w:p>`;
+        }
+      } else {
+        bodyXml+=`<w:p><w:r><w:rPr><w:color w:val="999999"/><w:i/></w:rPr><w:t>[No text found on this page]</w:t></w:r></w:p>`;
+      }
+      bodyXml+=`<w:p><w:r><w:t> </w:t></w:r></w:p>`;
+    }
+  }
+
+  const documentXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"
+  xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<w:body>${bodyXml}<w:sectPr><w:pgSz w:w="12240" w:h="15840"/></w:sectPr></w:body>
+</w:document>`;
+
+  const relsXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+</Relationships>`;
+
+  const stylesXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+<w:style w:type="paragraph" w:styleId="Normal"><w:name w:val="Normal"/><w:rPr><w:sz w:val="24"/></w:rPr></w:style>
+<w:style w:type="paragraph" w:styleId="Heading2"><w:name w:val="heading 2"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:before="200" w:after="100"/></w:pPr><w:rPr><w:b/><w:sz w:val="28"/><w:color w:val="2563EB"/></w:rPr></w:style>
+<w:style w:type="paragraph" w:styleId="TableGrid"><w:name w:val="Table Grid"/></w:style>
+</w:styles>`;
+
+  const contentTypesXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+<Default Extension="xml" ContentType="application/xml"/>
+<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+<Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>
+</Types>`;
+
+  const rootRelsXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+</Relationships>`;
+
+  // Build ZIP using fflate (loaded inline) or manual ZIP
+  progTxt.textContent='Packaging .docx file...';
+  progFill.style.width='95%';
+
+  // Use JSZip-compatible manual ZIP builder (we'll use a simple approach with data URIs)
+  // Since we don't have JSZip loaded, we create a Blob-based approach using the zip.js pattern
+  // We'll dynamically load JSZip from CDN
+  if(!window.JSZip){
+    await new Promise((res,rej)=>{
+      const s=document.createElement('script');
+      s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+      s.onload=res;s.onerror=rej;document.head.appendChild(s);
+    });
+  }
+
+  const zip=new JSZip();
+  zip.file('[Content_Types].xml', contentTypesXml);
+  zip.file('_rels/.rels', rootRelsXml);
+  zip.file('word/document.xml', documentXml);
+  zip.file('word/styles.xml', stylesXml);
+  zip.file('word/_rels/document.xml.rels', relsXml);
+
+  const blob=await zip.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=docTitle+'.docx';a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),5000);
+
+  progFill.style.width='100%';
+  progTxt.textContent='✅ Word file download ho gayi!';
+  setTimeout(()=>{progEl.style.display='none';},3000);
+  document.getElementById('word_btn').disabled=false;
+}
+
+// ═══════════ PDF → POWERPOINT (.pptx) ═══════════
+let pptxPdfDoc=null, pptxPdfFile=null, pptxSlideSize='wide', pptxDPI2=150;
+
+function setPptxSize(s){
+  pptxSlideSize=s;
+  document.getElementById('pptx_sz_wide').className=s==='wide'?'btn bp':'btn bs';
+  document.getElementById('pptx_sz_wide').style.flex='1';document.getElementById('pptx_sz_wide').style.fontSize='11px';
+  document.getElementById('pptx_sz_std').className=s==='std'?'btn bp':'btn bs';
+  document.getElementById('pptx_sz_std').style.flex='1';document.getElementById('pptx_sz_std').style.fontSize='11px';
+}
+
+function setPptxDPI(d,btn){
+  pptxDPI2=d;
+  document.querySelectorAll('[id^="pptx_dpi_"]').forEach(b=>{b.className='btn bs';b.style.flex='1';b.style.fontSize='10px';b.style.padding='6px 2px';});
+  btn.className='btn bp';btn.style.flex='1';btn.style.fontSize='10px';btn.style.padding='6px 2px';
+}
+
+async function handlePptxPdf(e){
+  const file=e.target.files[0];if(!file)return;
+  pptxPdfFile=file;
+  const ab=await file.arrayBuffer();
+  pptxPdfDoc=await pdfjsLib.getDocument({data:ab}).promise;
+  const pages=pptxPdfDoc.numPages;
+  document.getElementById('pptx_fname').textContent=file.name;
+  document.getElementById('pptx_pages').textContent=pages+' pages';
+  document.getElementById('pptx_size').textContent=(file.size/1024/1024).toFixed(2)+' MB';
+  document.getElementById('pptx_file_info').style.display='block';
+  document.getElementById('pptx_options').style.display='block';
+  document.getElementById('pptx_pg_to').placeholder=pages;
+  document.getElementById('pptx_btn').disabled=false;
+}
+
+async function pdfToPptx(){
+  if(!pptxPdfDoc){alert('Pehle PDF upload karein');return}
+  const totalPages=pptxPdfDoc.numPages;
+  const fromPg=Math.max(1,parseInt(document.getElementById('pptx_pg_from').value)||1);
+  const toPg=Math.min(totalPages,parseInt(document.getElementById('pptx_pg_to').value)||totalPages);
+  const progEl=document.getElementById('pptx_prog');
+  const progTxt=document.getElementById('pptx_prog_txt');
+  const progFill=document.getElementById('pptx_prog_fill');
+  progEl.style.display='block';
+  document.getElementById('pptx_btn').disabled=true;
+
+  // Load JSZip if not loaded
+  if(!window.JSZip){
+    await new Promise((res,rej)=>{
+      const s=document.createElement('script');
+      s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+      s.onload=res;s.onerror=rej;document.head.appendChild(s);
+    });
+  }
+
+  // Slide dimensions in EMU (English Metric Units)
+  // 16:9 = 9144000 x 5143500, 4:3 = 9144000 x 6858000
+  const cx=9144000, cy=pptxSlideSize==='wide'?5143500:6858000;
+  const scale=pptxDPI2/72;
+
+  const zip=new JSZip();
+  const slideImages=[];
+
+  // Render each page to image
+  for(let i=fromPg;i<=toPg;i++){
+    progTxt.textContent=`Rendering page ${i} of ${toPg}...`;
+    progFill.style.width=((i-fromPg)/(toPg-fromPg+1)*75)+'%';
+    const page=await pptxPdfDoc.getPage(i);
+    const vp=page.getViewport({scale});
+    const canvas=document.createElement('canvas');
+    canvas.width=Math.round(vp.width);canvas.height=Math.round(vp.height);
+    const ctx=canvas.getContext('2d');
+    ctx.fillStyle='#ffffff';ctx.fillRect(0,0,canvas.width,canvas.height);
+    await page.render({canvasContext:ctx,viewport:vp}).promise;
+    // Get base64 jpeg (strip data: prefix)
+    const b64=canvas.toDataURL('image/jpeg',0.88).split(',')[1];
+    slideImages.push({b64,w:canvas.width,h:canvas.height,pg:i});
+  }
+
+  progTxt.textContent='Building PPTX slides...';
+  progFill.style.width='80%';
+
+  const numSlides=slideImages.length;
+
+  // Content types
+  let imgCT=slideImages.map((_,idx)=>`<Override PartName="/ppt/media/img${idx+1}.jpeg" ContentType="image/jpeg"/>`).join('');
+  let slideCT=slideImages.map((_,idx)=>`<Override PartName="/ppt/slides/slide${idx+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slide+xml"/>`).join('');
+  zip.file('[Content_Types].xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+<Default Extension="xml" ContentType="application/xml"/>
+<Override PartName="/ppt/presentation.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml"/>
+<Override PartName="/ppt/slideMasters/slideMaster1.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml"/>
+<Override PartName="/ppt/slideLayouts/slideLayout1.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slideLayout+xml"/>
+${slideCT}${imgCT}
+</Types>`);
+
+  // Root rels
+  zip.file('_rels/.rels',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="ppt/presentation.xml"/>
+</Relationships>`);
+
+  // Slide master (minimal)
+  zip.file('ppt/slideMasters/slideMaster1.xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:sldMaster xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"
+  xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<p:cSld><p:spTree><p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/><a:chOff x="0" y="0"/><a:chExt cx="${cx}" cy="${cy}"/></a:xfrm></p:grpSpPr></p:spTree></p:cSld>
+<p:clrMap bg1="lt1" tx1="dk1" bg2="lt2" tx2="dk2" accent1="accent1" accent2="accent2" accent3="accent3" accent4="accent4" accent5="accent5" accent6="accent6" hlink="hlink" folHlink="folHlink"/>
+<p:sldLayoutIdLst><p:sldLayoutId id="2147483649" r:id="rId1"/></p:sldLayoutIdLst>
+<p:txStyles><p:titleStyle/><p:bodyStyle/><p:otherStyle/></p:txStyles>
+</p:sldMaster>`);
+
+  zip.file('ppt/slideMasters/_rels/slideMaster1.xml.rels',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout1.xml"/>
+</Relationships>`);
+
+  // Slide layout (minimal blank)
+  zip.file('ppt/slideLayouts/slideLayout1.xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:sldLayout xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"
+  xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" type="blank">
+<p:cSld name="Blank"><p:spTree><p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/><a:chOff x="0" y="0"/><a:chExt cx="${cx}" cy="${cy}"/></a:xfrm></p:grpSpPr></p:spTree></p:cSld>
+</p:sldLayout>`);
+
+  zip.file('ppt/slideLayouts/_rels/slideLayout1.xml.rels',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster" Target="../slideMasters/slideMaster1.xml"/>
+</Relationships>`);
+
+  // Presentation
+  let slideIdList=slideImages.map((_,idx)=>`<p:sldId id="${256+idx}" r:id="rId${idx+1}"/>`).join('');
+  let presRels=slideImages.map((_,idx)=>`<Relationship Id="rId${idx+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slides/slide${idx+1}.xml"/>`).join('');
+  presRels+=`<Relationship Id="rId${numSlides+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster" Target="slideMasters/slideMaster1.xml"/>`;
+
+  zip.file('ppt/presentation.xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:presentation xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"
+  xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<p:sldMasterIdLst><p:sldMasterId id="2147483648" r:id="rId${numSlides+1}"/></p:sldMasterIdLst>
+<p:sldIdLst>${slideIdList}</p:sldIdLst>
+<p:sldSz cx="${cx}" cy="${cy}"/>
+<p:notesSz cx="6858000" cy="9144000"/>
+</p:presentation>`);
+
+  zip.file('ppt/_rels/presentation.xml.rels',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${presRels}</Relationships>`);
+
+  // Each slide + image
+  for(let idx=0;idx<slideImages.length;idx++){
+    const {b64,w,h,pg}=slideImages[idx];
+    const slideNum=idx+1;
+    const imgName=`img${slideNum}.jpeg`;
+    // Add image to media
+    zip.file(`ppt/media/${imgName}`, b64, {base64:true});
+    // Slide XML — image fills entire slide
+    zip.file(`ppt/slides/slide${slideNum}.xml`,`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:sld xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"
+  xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<p:cSld><p:spTree>
+<p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr>
+<p:grpSpPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/><a:chOff x="0" y="0"/><a:chExt cx="${cx}" cy="${cy}"/></a:xfrm></p:grpSpPr>
+<p:pic><p:nvPicPr><p:cNvPr id="2" name="Page${pg}"/><p:cNvPicPr><a:picLocks noChangeAspect="1"/></p:cNvPicPr><p:nvPr/></p:nvPicPr>
+<p:blipFill><a:blip r:embed="rId1"/><a:stretch><a:fillRect/></a:stretch></p:blipFill>
+<p:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></p:spPr>
+</p:pic>
+</p:spTree></p:cSld>
+</p:sld>`);
+
+    zip.file(`ppt/slides/_rels/slide${slideNum}.xml.rels`,`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="../media/${imgName}"/>
+<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout1.xml"/>
+</Relationships>`);
+  }
+
+  progTxt.textContent='Saving PPTX file...';
+  progFill.style.width='95%';
+
+  const blob=await zip.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.presentationml.presentation'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const fname=(pptxPdfFile.name.replace(/\.pdf$/i,'')||'presentation')+'.pptx';
+  a.href=url;a.download=fname;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),5000);
+
+  progFill.style.width='100%';
+  progTxt.textContent=`✅ ${numSlides} slides wala PPTX download ho gaya!`;
+  setTimeout(()=>{progEl.style.display='none';},3000);
+  document.getElementById('pptx_btn').disabled=false;
+}
+
+// ═══════════ PDF → EPUB ═══════════
+let epubPdfDoc=null, epubPdfFile=null, epubChapterMode='page';
+
+function setEpubChapter(m){
+  epubChapterMode=m;
+  document.getElementById('epub_ch_page').className=m==='page'?'btn bp':'btn bs';
+  document.getElementById('epub_ch_page').style.flex='1';document.getElementById('epub_ch_page').style.fontSize='11px';
+  document.getElementById('epub_ch_all').className=m==='all'?'btn bp':'btn bs';
+  document.getElementById('epub_ch_all').style.flex='1';document.getElementById('epub_ch_all').style.fontSize='11px';
+}
+
+async function handleEpubPdf(e){
+  const file=e.target.files[0];if(!file)return;
+  epubPdfFile=file;
+  const ab=await file.arrayBuffer();
+  epubPdfDoc=await pdfjsLib.getDocument({data:ab}).promise;
+  const pages=epubPdfDoc.numPages;
+  document.getElementById('epub_fname').textContent=file.name;
+  document.getElementById('epub_pages').textContent=pages+' pages';
+  document.getElementById('epub_size').textContent=(file.size/1024/1024).toFixed(2)+' MB';
+  document.getElementById('epub_file_info').style.display='block';
+  document.getElementById('epub_options').style.display='block';
+  // Pre-fill title from filename
+  const sugTitle=file.name.replace(/\.pdf$/i,'').replace(/[-_]/g,' ');
+  document.getElementById('epub_title').value=sugTitle;
+  document.getElementById('epub_btn').disabled=false;
+}
+
+async function pdfToEpub(){
+  if(!epubPdfDoc){alert('Pehle PDF upload karein');return}
+  const totalPages=epubPdfDoc.numPages;
+  const title=(document.getElementById('epub_title').value.trim()||epubPdfFile.name.replace(/\.pdf$/i,'')).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  const author=(document.getElementById('epub_author').value.trim()||'Unknown').replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  const lang=document.getElementById('epub_lang').value;
+  const progEl=document.getElementById('epub_prog');
+  const progTxt=document.getElementById('epub_prog_txt');
+  const progFill=document.getElementById('epub_prog_fill');
+  progEl.style.display='block';
+  document.getElementById('epub_btn').disabled=true;
+
+  // Load JSZip if not loaded
+  if(!window.JSZip){
+    await new Promise((res,rej)=>{
+      const s=document.createElement('script');
+      s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+      s.onload=res;s.onerror=rej;document.head.appendChild(s);
+    });
+  }
+
+  // Extract text
+  let chapters=[];
+  for(let i=1;i<=totalPages;i++){
+    progTxt.textContent=`Extracting page ${i} of ${totalPages}...`;
+    progFill.style.width=(i/totalPages*70)+'%';
+    const page=await epubPdfDoc.getPage(i);
+    const content=await page.getTextContent();
+    const text=content.items.map(item=>item.str).join(' ').replace(/\s+/g,' ').trim();
+    chapters.push({num:i, text});
+  }
+
+  progTxt.textContent='Building ePub...';
+  progFill.style.width='80%';
+
+  const uid='urn:uuid:'+([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16));
+
+  const zip=new JSZip();
+
+  // Mimetype (must be first, uncompressed)
+  zip.file('mimetype','application/epub+zip',{compression:'STORE'});
+
+  // META-INF/container.xml
+  zip.file('META-INF/container.xml',`<?xml version="1.0" encoding="UTF-8"?>
+<container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
+<rootfiles><rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/></rootfiles>
+</container>`);
+
+  // CSS
+  zip.file('OEBPS/style.css',`body{font-family:Georgia,serif;line-height:1.7;margin:1.5em;color:#1e2240;background:#fff}
+h1{font-size:1.8em;color:#1d4ed8;border-bottom:2px solid #2563eb;padding-bottom:0.3em;margin-bottom:0.7em}
+h2{font-size:1.2em;color:#2563eb;margin-top:1.5em}
+p{margin:0.6em 0;text-align:justify}
+.page-break{page-break-after:always}`);
+
+  // Chapter HTML files
+  let chapterFiles=[];
+  let manifestItems='';
+  let spineItems='';
+
+  if(epubChapterMode==='all'){
+    // Single chapter
+    let body='<h1>'+title+'</h1>';
+    for(const {num,text} of chapters){
+      const safe=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      body+=`<h2>Page ${num}</h2>`;
+      if(safe) body+=`<p>${safe}</p>`;
+      else body+=`<p><em>[No text found]</em></p>`;
+    }
+    const html=`<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="${lang}"><head><meta charset="UTF-8"/><title>${title}</title><link rel="stylesheet" type="text/css" href="style.css"/></head><body>${body}</body></html>`;
+    zip.file('OEBPS/chapter1.xhtml',html);
+    manifestItems+=`<item id="chapter1" href="chapter1.xhtml" media-type="application/xhtml+xml"/>`;
+    spineItems+=`<itemref idref="chapter1"/>`;
+  } else {
+    // Per-page chapters
+    for(const {num,text} of chapters){
+      const safe=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const body=`<h1>Page ${num}</h1>${safe?`<p>${safe}</p>`:'<p><em>[No text found on this page]</em></p>'}`;
+      const html=`<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="${lang}"><head><meta charset="UTF-8"/><title>Page ${num}</title><link rel="stylesheet" type="text/css" href="style.css"/></head><body>${body}</body></html>`;
+      zip.file(`OEBPS/page${num}.xhtml`,html);
+      manifestItems+=`<item id="page${num}" href="page${num}.xhtml" media-type="application/xhtml+xml"/>`;
+      spineItems+=`<itemref idref="page${num}"/>`;
+    }
+  }
+
+  // content.opf
+  zip.file('OEBPS/content.opf',`<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="bookid" version="2.0">
+<metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+<dc:title>${title}</dc:title>
+<dc:creator opf:role="aut">${author}</dc:creator>
+<dc:language>${lang}</dc:language>
+<dc:identifier id="bookid">${uid}</dc:identifier>
+</metadata>
+<manifest>
+<item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+<item id="css" href="style.css" media-type="text/css"/>
+${manifestItems}
+</manifest>
+<spine toc="ncx">${spineItems}</spine>
+</package>`);
+
+  // toc.ncx
+  let navPoints='';
+  if(epubChapterMode==='all'){
+    navPoints=`<navPoint id="np1" playOrder="1"><navLabel><text>${title}</text></navLabel><content src="chapter1.xhtml"/></navPoint>`;
+  } else {
+    for(const {num} of chapters){
+      navPoints+=`<navPoint id="np${num}" playOrder="${num}"><navLabel><text>Page ${num}</text></navLabel><content src="page${num}.xhtml"/></navPoint>`;
+    }
+  }
+  zip.file('OEBPS/toc.ncx',`<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
+<head><meta name="dtb:uid" content="${uid}"/><meta name="dtb:depth" content="1"/><meta name="dtb:totalPageCount" content="0"/><meta name="dtb:maxPageNumber" content="0"/></head>
+<docTitle><text>${title}</text></docTitle>
+<navMap>${navPoints}</navMap>
+</ncx>`);
+
+  progFill.style.width='95%';
+  progTxt.textContent='Saving ePub...';
+
+  const blob=await zip.generateAsync({type:'blob',mimeType:'application/epub+zip'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const fname=(epubPdfFile.name.replace(/\.pdf$/i,'')||'ebook')+'.epub';
+  a.href=url;a.download=fname;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),5000);
+
+  progFill.style.width='100%';
+  progTxt.textContent=`✅ ePub (${totalPages} pages) download ho gaya!`;
+  setTimeout(()=>{progEl.style.display='none';},3000);
+  document.getElementById('epub_btn').disabled=false;
+}
+
+// ═══════════ PDF → SEARCHABLE OCR ═══════════
+let ocrPdfDoc=null, ocrPdfFile=null, ocrDPI=200, ocrOutput='pdf', ocrExtractedText='';
+
+function setOcrDPI(d,btn){
+  ocrDPI=d;
+  document.querySelectorAll('[id^="ocr_dpi_"]').forEach(b=>{b.className='btn bs';b.style.flex='1';b.style.fontSize='10px';b.style.padding='6px 2px';});
+  btn.className='btn bp';btn.style.flex='1';btn.style.fontSize='10px';btn.style.padding='6px 2px';
+}
+
+function setOcrOutput(o){
+  ocrOutput=o;
+  document.getElementById('ocr_out_pdf').className=o==='pdf'?'btn bp':'btn bs';
+  document.getElementById('ocr_out_pdf').style.flex='1';document.getElementById('ocr_out_pdf').style.fontSize='11px';
+  document.getElementById('ocr_out_txt').className=o==='txt'?'btn bp':'btn bs';
+  document.getElementById('ocr_out_txt').style.flex='1';document.getElementById('ocr_out_txt').style.fontSize='11px';
+}
+
+async function handleOcrPdf(e){
+  const file=e.target.files[0];if(!file)return;
+  ocrPdfFile=file;
+  const ab=await file.arrayBuffer();
+  ocrPdfDoc=await pdfjsLib.getDocument({data:ab}).promise;
+  const pages=ocrPdfDoc.numPages;
+  document.getElementById('ocr_fname').textContent=file.name;
+  document.getElementById('ocr_pages').textContent=pages+' pages';
+  document.getElementById('ocr_size').textContent=(file.size/1024/1024).toFixed(2)+' MB';
+  document.getElementById('ocr_file_info').style.display='block';
+  document.getElementById('ocr_options').style.display='block';
+  document.getElementById('ocr_pg_to').placeholder=pages;
+  document.getElementById('ocr_btn').disabled=false;
+  document.getElementById('ocr_result_box').style.display='none';
+}
+
+async function runOcrPdf(){
+  if(!ocrPdfDoc){alert('Pehle PDF upload karein');return}
+  const totalPages=ocrPdfDoc.numPages;
+  const fromPg=Math.max(1,parseInt(document.getElementById('ocr_pg_from').value)||1);
+  const toPg=Math.min(totalPages,parseInt(document.getElementById('ocr_pg_to').value)||totalPages);
+  const ocrLang=document.getElementById('ocr_lang').value;
+  const progEl=document.getElementById('ocr_prog');
+  const progTxt=document.getElementById('ocr_prog_txt');
+  const progFill=document.getElementById('ocr_prog_fill');
+  const progPage=document.getElementById('ocr_prog_page');
+  progEl.style.display='block';
+  document.getElementById('ocr_btn').disabled=true;
+  document.getElementById('ocr_result_box').style.display='none';
+
+  // Load Tesseract.js if not loaded
+  if(!window.Tesseract){
+    progTxt.textContent='Loading OCR engine (Tesseract.js)...';
+    await new Promise((res,rej)=>{
+      const s=document.createElement('script');
+      s.src='https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.3/tesseract.min.js';
+      s.onload=res;s.onerror=()=>{
+        // Fallback: try unpkg
+        const s2=document.createElement('script');
+        s2.src='https://unpkg.com/tesseract.js@5/dist/tesseract.min.js';
+        s2.onload=res;s2.onerror=rej;document.head.appendChild(s2);
+      };
+      document.head.appendChild(s);
+    });
+  }
+
+  progTxt.textContent='Initializing OCR worker...';
+  progFill.style.width='5%';
+
+  const worker=await Tesseract.createWorker(ocrLang,1,{
+    logger: m=>{
+      if(m.status==='recognizing text'){
+        const pct=Math.round(m.progress*100);
+        progFill.style.width=Math.min(95,10+pct*0.8)+'%';
+      }
+    }
+  });
+
+  let allTexts=[];
+  let allPageData=[];
+
+  for(let i=fromPg;i<=toPg;i++){
+    progTxt.textContent=`OCR processing page ${i} of ${toPg}...`;
+    progPage.textContent=`Page ${i} of ${toPg}`;
+    progFill.style.width=((i-fromPg)/(toPg-fromPg+1)*85+5)+'%';
+
+    const page=await ocrPdfDoc.getPage(i);
+    const scale=ocrDPI/72;
+    const vp=page.getViewport({scale});
+    const canvas=document.createElement('canvas');
+    canvas.width=Math.round(vp.width);canvas.height=Math.round(vp.height);
+    const ctx=canvas.getContext('2d');
+    ctx.fillStyle='#ffffff';ctx.fillRect(0,0,canvas.width,canvas.height);
+    await page.render({canvasContext:ctx,viewport:vp}).promise;
+
+    const {data:{text,words,blocks}}=await worker.recognize(canvas);
+    allTexts.push(`--- Page ${i} ---\n${text.trim()}`);
+    allPageData.push({pageNum:i, text:text.trim(), words, blocks, canvas, vp, w:canvas.width, h:canvas.height});
+  }
+
+  await worker.terminate();
+
+  ocrExtractedText=allTexts.join('\n\n');
+  const preview=document.getElementById('ocr_text_preview');
+  preview.value=ocrExtractedText;
+  document.getElementById('ocr_result_box').style.display='block';
+
+  progFill.style.width='100%';
+
+  if(ocrOutput==='txt'){
+    progTxt.textContent='✅ OCR complete! Text ready to download.';
+  } else {
+    // Build searchable PDF: render pages as images + invisible text overlay
+    progTxt.textContent='Building searchable PDF...';
+    if(!window.PDFLib) await new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js';s.onload=res;s.onerror=rej;document.head.appendChild(s);});
+
+    const {PDFDocument,rgb,degrees}=PDFLib;
+    const pdfDoc=await PDFDocument.create();
+    for(const {canvas,w,h,words,text,pageNum} of allPageData){
+      const jpegBytes=await fetch(canvas.toDataURL('image/jpeg',0.90)).then(r=>r.arrayBuffer());
+      const jpegImage=await pdfDoc.embedJpg(jpegBytes);
+      const pdfPage=pdfDoc.addPage([w,h]);
+      // Draw image as background
+      pdfPage.drawImage(jpegImage,{x:0,y:0,width:w,height:h});
+      // Draw invisible text overlay for searchability
+      if(words&&words.length>0){
+        for(const word of words){
+          if(!word.text||!word.bbox)continue;
+          const {x0,y0,x1,y1}=word.bbox;
+          const ww=x1-x0,wh=y1-y0;
+          if(ww<2||wh<2)continue;
+          try{
+            pdfPage.drawText(word.text,{
+              x:x0,
+              y:h-y1,
+              size:Math.max(6,wh),
+              opacity:0,
+              color:rgb(0,0,0),
+              maxWidth:ww*1.1,
+            });
+          }catch(e){}
+        }
+      }
+    }
+    const pdfBytes=await pdfDoc.save();
+    const blob=new Blob([pdfBytes],{type:'application/pdf'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download=(ocrPdfFile.name.replace(/\.pdf$/i,'')||'ocr_output')+'_searchable.pdf';
+    a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),5000);
+    progTxt.textContent='✅ Searchable PDF download ho gaya!';
+  }
+
+  setTimeout(()=>{progEl.style.display='none';progPage.textContent='';},4000);
+  document.getElementById('ocr_btn').disabled=false;
+}
+
+function copyOcrText(){
+  if(!ocrExtractedText){return}
+  navigator.clipboard.writeText(ocrExtractedText)
+    .then(()=>alert('✅ Text copied!'))
+    .catch(()=>{
+      const ta=document.getElementById('ocr_text_preview');
+      ta.select();document.execCommand('copy');
+      alert('✅ Text copied!');
+    });
+}
+
+
+// ═══════════ HTML RENDERER ═══════════
+let htmlViewMode='code', _htmlCurrentCode='';
+
+function setHtmlViewMode(mode){
+  htmlViewMode=mode;
+  // Panel visibility
+  document.getElementById('html_code_panel').style.display=mode==='code'?'block':'none';
+  document.getElementById('html_app_panel').style.display=mode==='app'?'block':'none';
+  document.getElementById('html_split_panel').style.display=mode==='split'?'block':'none';
+  // Tab button styles
+  ['code','app','split'].forEach(m=>{
+    const btn=document.getElementById('html_vm_'+m);
+    if(!btn)return;
+    btn.style.background=m===mode?'linear-gradient(135deg,#059669,#065f46)':'transparent';
+    btn.style.color=m===mode?'#fff':'var(--text2)';
+  });
+  // On switching to app — render current code
+  if(mode==='app'){
+    const code=document.getElementById('html_code_input').value.trim();
+    if(code) _renderIntoFrame('html_render_frame', code);
+    else document.getElementById('html_vm_code').click(); // back to code if nothing
+  }
+  // On switching to split — sync textareas
+  if(mode==='split'){
+    const code=document.getElementById('html_code_input').value;
+    document.getElementById('html_split_input').value=code;
+    if(code.trim()) _renderIntoFrame('html_split_frame', code);
+  }
+}
+
+function _renderIntoFrame(frameId, code){
+  const frame=document.getElementById(frameId);
+  if(!frame)return;
+  // Use srcdoc for full HTML rendering including scripts, styles
+  frame.srcdoc=code;
+  _htmlCurrentCode=code;
+}
+
+function runHtmlCode(){
+  const code=document.getElementById('html_code_input').value.trim();
+  if(!code){alert('Pehle HTML code paste karein ya upload karein');return;}
+  _htmlCurrentCode=code;
+  // Switch to app view and render
+  setHtmlViewMode('app');
+}
+
+function syncSplitCode(){
+  const code=document.getElementById('html_split_input').value;
+  document.getElementById('html_code_input').value=code;
+  _htmlCurrentCode=code;
+  // Debounce render
+  clearTimeout(window._splitDebounce);
+  window._splitDebounce=setTimeout(()=>{
+    if(code.trim()) _renderIntoFrame('html_split_frame', code);
+  }, 600);
+}
+
+function loadHtmlFile(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const code=ev.target.result;
+    document.getElementById('html_code_input').value=code;
+    document.getElementById('html_split_input').value=code;
+    _htmlCurrentCode=code;
+    // Auto-run
+    setTimeout(()=>runHtmlCode(),100);
+  };
+  reader.readAsText(file);
+  e.target.value='';
+}
+
+function clearHtmlCode(){
+  document.getElementById('html_code_input').value='';
+  document.getElementById('html_split_input').value='';
+  _htmlCurrentCode='';
+  const f=document.getElementById('html_render_frame');
+  if(f)f.srcdoc='';
+  const sf=document.getElementById('html_split_frame');
+  if(sf)sf.srcdoc='';
+}
+
+function htmlLoadSample(){
+  const sample=`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sample App</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+  .card{background:#fff;border-radius:20px;padding:32px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center}
+  h1{color:#4c1d95;font-size:1.8em;margin-bottom:8px}
+  p{color:#6b7280;margin-bottom:20px;line-height:1.6}
+  input{width:100%;padding:12px 16px;border:2px solid #e5e7eb;border-radius:12px;font-size:14px;margin-bottom:12px;outline:none;transition:.2s}
+  input:focus{border-color:#7c3aed}
+  button{width:100%;padding:13px;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:.2s}
+  button:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(124,58,237,.4)}
+  #msg{margin-top:14px;padding:10px;border-radius:10px;font-size:13px;display:none}
+  .success{background:#d1fae5;color:#065f46}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>✨ MyToolkit App</h1>
+  <p>HTML code paste karo aur dekho yeh rendered app ki tarah kaise dikhta hai!</p>
+  <input type="text" id="nameInp" placeholder="Apna naam likhein...">
+  <button onclick="greet()">👋 Greet Me!</button>
+  <div id="msg"></div>
+</div>
+<script>
+function greet(){
+  const name=document.getElementById('nameInp').value.trim()||'Dost';
+  const m=document.getElementById('msg');
+  m.textContent='🎉 Namaste, '+name+'! MyToolkit Pro mein aapka swagat hai!';
+  m.className='success';m.style.display='block';
+}
+<\/script>
+</body>
+</html>`;
+  document.getElementById('html_code_input').value=sample;
+  document.getElementById('html_split_input').value=sample;
+  _htmlCurrentCode=sample;
+}
+
+function openHtmlFullscreen(){
+  const code=document.getElementById('html_code_input').value.trim()||_htmlCurrentCode;
+  if(!code){alert('Pehle HTML code paste ya run karein');return;}
+  const overlay=document.getElementById('html_fullscreen_overlay');
+  const frame=document.getElementById('html_fullscreen_frame');
+  overlay.style.display='flex';
+  document.body.style.overflow='hidden';
+  frame.srcdoc=code;
+}
+
+function closeHtmlFullscreen(){
+  document.getElementById('html_fullscreen_overlay').style.display='none';
+  document.body.style.overflow='';
+}
+
+function downloadRenderedHtml(){
+  const code=document.getElementById('html_code_input').value.trim()||_htmlCurrentCode;
+  if(!code){alert('Pehle HTML code paste karein');return;}
+  // Extract title from code
+  const tm=/<title[^>]*>([^<]+)<\/title>/i.exec(code);
+  const fname=(tm?tm[1].trim().replace(/[^a-z0-9_\-\s]/gi,'').trim():'myapp').replace(/\s+/g,'_')||'myapp';
+  const blob=new Blob([code],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=fname+'.html';a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),3000);
+}
+
+// Old stubs (kept so existing references don't break)
+function liveHtmlPreview(){}
+function previewHtmlFile(){}
+function downloadHtmlFile(){downloadRenderedHtml();}
+function copyHtmlCode(){
+  const code=document.getElementById('html_code_input').value.trim()||_htmlCurrentCode;
+  if(!code){alert('Koi HTML code nahi hai');return;}
+  navigator.clipboard.writeText(code).then(()=>alert('✅ HTML code copied!')).catch(()=>{});
+}
+function setHtmlTheme(){}
+function setHtmlInputMode(){}
+function loadHtmlTxtFile(){}
+function _parseTextToHtml(){}
+function _buildFullHtml(){}
+function _getHtmlOpts(){}
+function downloadOcrOutput(){
+  if(!ocrExtractedText&&ocrOutput!=='txt'){return}
+  if(ocrOutput==='txt'||!ocrExtractedText.includes('searchable')){
+    const blob=new Blob([ocrExtractedText],{type:'text/plain;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download=(ocrPdfFile?ocrPdfFile.name.replace(/\.pdf$/i,''):'ocr_output')+'.txt';
+    a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),3000);
+  }
+}
+
+const HTML_THEMES={
+  modern:{
+    bg:'#f0f4ff',surface:'#ffffff',text:'#1e2240',accent:'#2563eb',accent2:'#1d4ed8',
+    heading:'#1e3a8a',border:'#dbeafe',card:'#ffffff',
+    css:`body{background:#f0f4ff;font-family:var(--ff);font-size:var(--fs);color:#1e2240;margin:0;padding:20px}
+.wrap{max-width:860px;margin:0 auto}
+.hero{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:28px 28px 22px;border-radius:16px;margin-bottom:24px;box-shadow:0 6px 24px rgba(37,99,235,.25)}
+.hero h1{margin:0 0 6px;font-size:1.8em;font-weight:800}
+.hero .meta{font-size:12px;opacity:.75;margin:0}
+h2{color:#1e3a8a;border-left:4px solid #2563eb;padding-left:12px;margin:24px 0 10px}
+h3{color:#2563eb;margin:18px 0 8px}
+p{line-height:1.75;margin:0 0 12px}
+ul{padding-left:22px}li{margin-bottom:6px;line-height:1.65}
+blockquote{border-left:4px solid #2563eb;margin:16px 0;padding:10px 16px;background:#eff6ff;border-radius:0 10px 10px 0;color:#1e40af;font-style:italic}
+hr{border:none;border-top:2px solid #dbeafe;margin:24px 0}
+a{color:#2563eb}
+.toc{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:16px 20px;margin-bottom:20px}
+.toc h3{color:#1e3a8a;margin:0 0 10px}
+.toc a{display:block;color:#2563eb;margin-bottom:4px;font-size:14px}
+.ln{color:#94a3b8;font-size:11px;margin-right:12px;user-select:none;min-width:28px;display:inline-block;text-align:right}
+.stamp{text-align:right;font-size:11px;color:#94a3b8;margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0}`
+  },
+  dark:{
+    bg:'#0d0f1a',surface:'#161925',text:'#e8eaf6',accent:'#4f8ef7',
+    heading:'#93c5fd',border:'rgba(255,255,255,.1)',
+    css:`body{background:#0d0f1a;font-family:var(--ff);font-size:var(--fs);color:#e8eaf6;margin:0;padding:20px}
+.wrap{max-width:860px;margin:0 auto}
+.hero{background:linear-gradient(135deg,#1e3a6e,#2563eb);color:#fff;padding:28px 28px 22px;border-radius:16px;margin-bottom:24px;box-shadow:0 6px 32px rgba(0,0,0,.5)}
+.hero h1{margin:0 0 6px;font-size:1.8em;font-weight:800}
+.hero .meta{font-size:12px;opacity:.65;margin:0}
+h2{color:#93c5fd;border-left:4px solid #4f8ef7;padding-left:12px;margin:24px 0 10px}
+h3{color:#4f8ef7;margin:18px 0 8px}
+p{line-height:1.75;margin:0 0 12px}
+ul{padding-left:22px}li{margin-bottom:6px;line-height:1.65}
+blockquote{border-left:4px solid #4f8ef7;margin:16px 0;padding:10px 16px;background:#1e2235;border-radius:0 10px 10px 0;color:#93c5fd;font-style:italic}
+hr{border:none;border-top:1px solid rgba(255,255,255,.12);margin:24px 0}
+a{color:#4f8ef7}
+.toc{background:#1e2235;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px 20px;margin-bottom:20px}
+.toc h3{color:#93c5fd;margin:0 0 10px}
+.toc a{display:block;color:#4f8ef7;margin-bottom:4px;font-size:14px}
+.ln{color:#4a5568;font-size:11px;margin-right:12px;user-select:none;min-width:28px;display:inline-block;text-align:right}
+.stamp{text-align:right;font-size:11px;color:#4a5568;margin-top:32px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08)}`
+  },
+  minimal:{
+    bg:'#ffffff',text:'#111827',accent:'#374151',heading:'#111827',
+    css:`body{background:#fff;font-family:var(--ff);font-size:var(--fs);color:#111827;margin:0;padding:40px 20px}
+.wrap{max-width:720px;margin:0 auto}
+.hero{margin-bottom:36px;padding-bottom:20px;border-bottom:2px solid #111827}
+.hero h1{margin:0 0 6px;font-size:2em;font-weight:900;letter-spacing:-0.5px}
+.hero .meta{font-size:12px;color:#6b7280;margin:0}
+h2{font-size:1.2em;font-weight:800;color:#111827;margin:28px 0 10px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #e5e7eb;padding-bottom:6px}
+h3{font-size:1.05em;font-weight:700;margin:18px 0 8px}
+p{line-height:1.8;margin:0 0 14px;color:#374151}
+ul{padding-left:20px}li{margin-bottom:6px;line-height:1.7;color:#374151}
+blockquote{border-left:3px solid #111827;margin:18px 0;padding:8px 16px;color:#6b7280;font-style:italic}
+hr{border:none;border-top:1px solid #e5e7eb;margin:28px 0}
+a{color:#111827;text-decoration:underline}
+.toc{border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:24px}
+.toc h3{margin:0 0 10px;font-size:.85em;text-transform:uppercase;letter-spacing:1px}
+.toc a{display:block;color:#374151;margin-bottom:4px;font-size:14px;text-decoration:none}
+.ln{color:#d1d5db;font-size:11px;margin-right:12px;user-select:none;min-width:28px;display:inline-block;text-align:right}
+.stamp{text-align:right;font-size:11px;color:#9ca3af;margin-top:32px;padding-top:14px;border-top:1px solid #f3f4f6}`
+  },
+  doc:{
+    bg:'#f8fafc',text:'#1e293b',accent:'#0f172a',heading:'#0f172a',
+    css:`body{background:#f8fafc;font-family:var(--ff);font-size:var(--fs);color:#1e293b;margin:0;padding:20px}
+.wrap{max-width:860px;margin:0 auto;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:40px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.hero{margin-bottom:28px;padding-bottom:20px;border-bottom:3px double #1e293b}
+.hero h1{margin:0 0 6px;font-size:1.9em;font-weight:800}
+.hero .meta{font-size:12px;color:#64748b;margin:0}
+h2{font-size:1.15em;font-weight:700;color:#0f172a;margin:26px 0 10px;padding:8px 14px;background:#f1f5f9;border-left:4px solid #0f172a;border-radius:0 6px 6px 0}
+h3{font-size:1em;font-weight:700;color:#334155;margin:18px 0 8px}
+p{line-height:1.75;margin:0 0 12px}
+ul{padding-left:22px}li{margin-bottom:5px;line-height:1.65}
+blockquote{border-left:4px solid #94a3b8;margin:16px 0;padding:10px 16px;background:#f8fafc;color:#475569;font-style:italic;border-radius:0 6px 6px 0}
+hr{border:none;border-top:1px solid #e2e8f0;margin:24px 0}
+a{color:#2563eb}
+.toc{border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;margin-bottom:22px;background:#f8fafc}
+.toc h3{margin:0 0 10px;color:#0f172a}
+.toc a{display:block;color:#2563eb;margin-bottom:4px;font-size:13px}
+.ln{color:#cbd5e1;font-size:11px;margin-right:12px;user-select:none;min-width:28px;display:inline-block;text-align:right}
+.stamp{text-align:right;font-size:11px;color:#94a3b8;margin-top:28px;padding-top:14px;border-top:1px solid #e2e8f0}`
+  },
+  card:{
+    bg:'#f1f5f9',text:'#1e293b',accent:'#7c3aed',heading:'#5b21b6',
+    css:`body{background:#f1f5f9;font-family:var(--ff);font-size:var(--fs);color:#1e293b;margin:0;padding:20px}
+.wrap{max-width:860px;margin:0 auto}
+.hero{background:linear-gradient(135deg,#5b21b6,#7c3aed);color:#fff;padding:28px;border-radius:20px;margin-bottom:20px;box-shadow:0 8px 32px rgba(124,58,237,.3)}
+.hero h1{margin:0 0 6px;font-size:1.8em;font-weight:800}
+.hero .meta{font-size:12px;opacity:.75;margin:0}
+.card-block{background:#fff;border-radius:14px;padding:20px;margin-bottom:14px;border:1px solid #e2e8f0;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+h2{color:#5b21b6;font-size:1.1em;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+h2::before{content:'';width:8px;height:8px;border-radius:50%;background:#7c3aed;flex-shrink:0}
+h3{color:#7c3aed;margin:14px 0 8px}
+p{line-height:1.75;margin:0 0 10px}
+ul{padding-left:20px}li{margin-bottom:5px;line-height:1.65}
+blockquote{border-left:4px solid #7c3aed;margin:14px 0;padding:10px 14px;background:#faf5ff;border-radius:0 10px 10px 0;color:#5b21b6;font-style:italic}
+hr{border:none;border-top:1px solid #e9d5ff;margin:18px 0}
+a{color:#7c3aed}
+.toc{background:#fff;border:1px solid #e9d5ff;border-radius:14px;padding:16px 20px;margin-bottom:18px}
+.toc h3{color:#5b21b6;margin:0 0 10px}
+.toc a{display:block;color:#7c3aed;margin-bottom:4px;font-size:14px}
+.ln{color:#c4b5fd;font-size:11px;margin-right:12px;user-select:none;min-width:28px;display:inline-block;text-align:right}
+.stamp{text-align:right;font-size:11px;color:#a78bfa;margin-top:24px;padding-top:14px;border-top:1px solid #e9d5ff}`
+  },
+  print:{
+    bg:'#ffffff',text:'#000000',accent:'#000000',heading:'#000000',
+    css:`@media print{body{margin:0}}.wrap{max-width:720px;margin:0 auto}
+body{background:#fff;font-family:var(--ff);font-size:var(--fs);color:#000;margin:0;padding:30px 20px}
+.hero{margin-bottom:28px;padding-bottom:16px;border-bottom:2px solid #000;text-align:center}
+.hero h1{margin:0 0 6px;font-size:1.9em;font-weight:900}
+.hero .meta{font-size:12px;color:#555;margin:0}
+h2{font-size:1.15em;font-weight:700;margin:24px 0 10px;padding-bottom:4px;border-bottom:1px solid #000}
+h3{font-size:1em;font-weight:700;margin:16px 0 8px}
+p{line-height:1.8;margin:0 0 12px;text-align:justify}
+ul{padding-left:22px}li{margin-bottom:4px;line-height:1.7}
+blockquote{border-left:3px solid #555;margin:16px 0;padding:8px 14px;color:#333;font-style:italic}
+hr{border:none;border-top:1px solid #aaa;margin:22px 0}
+a{color:#000;text-decoration:underline}
+.toc{border:1px solid #ccc;padding:14px 18px;margin-bottom:20px}
+.toc h3{margin:0 0 8px}
+.toc a{display:block;color:#000;margin-bottom:3px;font-size:13px}
+.ln{color:#bbb;font-size:11px;margin-right:12px;user-select:none;min-width:28px;display:inline-block;text-align:right}
+.stamp{text-align:center;font-size:11px;color:#777;margin-top:28px;padding-top:12px;border-top:1px solid #ccc}`
+  }
+};
+
+function setHtmlTheme(t){
+  htmlTheme=t;
+  Object.keys(HTML_THEMES).forEach(k=>{
+    const btn=document.getElementById('html_th_'+k);
+    if(btn){btn.className=k===t?'btn bp':'btn bs';btn.style.fontSize='10px';btn.style.padding='7px 4px';}
+  });
+  liveHtmlPreview();
+}
+
+function setHtmlInputMode(m){
+  htmlInputMode=m;
+  document.getElementById('html_panel_text').style.display=m==='text'?'block':'none';
+  document.getElementById('html_panel_file').style.display=m==='file'?'block':'none';
+  const tb=document.getElementById('html_mode_text');
+  const fb=document.getElementById('html_mode_file');
+  tb.style.background=m==='text'?'linear-gradient(135deg,var(--accent),#1d4ed8)':'transparent';
+  tb.style.color=m==='text'?'#fff':'var(--text2)';
+  fb.style.background=m==='file'?'linear-gradient(135deg,var(--accent),#1d4ed8)':'transparent';
+  fb.style.color=m==='file'?'#fff':'var(--text2)';
+}
+
+function loadHtmlTxtFile(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const text=ev.target.result;
+    document.getElementById('html_input_text').value=text;
+    document.getElementById('html_file_name').textContent=file.name;
+    document.getElementById('html_file_chars').textContent=text.length.toLocaleString('en-IN');
+    document.getElementById('html_file_loaded').style.display='block';
+    // Switch to text panel to show loaded content
+    setHtmlInputMode('text');
+    liveHtmlPreview();
+  };
+  reader.readAsText(file);
+}
+
+function _parseTextToHtml(raw, opts){
+  const {showLineNums, addLinks, theme} = opts;
+  const themeCSS = HTML_THEMES[theme]||HTML_THEMES.modern;
+  const isCard = theme==='card';
+  const lines = raw.split('\n');
+  let html='';
+  let inUl=false, lineNum=0, headings=[];
+
+  // First pass: collect headings for TOC
+  lines.forEach(line=>{
+    const h1=/^#\s+(.+)/.exec(line);
+    const h2=/^##\s+(.+)/.exec(line);
+    if(h1) headings.push({level:1,text:h1[1],id:'h_'+headings.length});
+    else if(h2) headings.push({level:2,text:h2[1],id:'h_'+headings.length});
+  });
+
+  function closePara(){if(inUl){html+='</ul>';inUl=false;}}
+  function makeLink(t){
+    if(!addLinks) return t;
+    return t.replace(/(https?:\/\/[^\s<>"]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+  }
+  function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function ln(n){return showLineNums?`<span class="ln">${n}</span>`:''}
+
+  let hIdx=0;
+  let openCard=false;
+
+  lines.forEach(line=>{
+    lineNum++;
+    const trimmed=line.trim();
+
+    // Horizontal rule
+    if(/^---+$/.test(trimmed)){
+      closePara();
+      if(isCard&&openCard){html+='</div>';openCard=false;}
+      html+=`<hr>`;
+      return;
+    }
+
+    // H1 heading
+    const h1m=/^#\s+(.+)/.exec(trimmed);
+    if(h1m){
+      closePara();
+      if(isCard&&openCard){html+='</div>';openCard=false;}
+      if(isCard){html+=`<div class="card-block">`;openCard=true;}
+      const id=headings[hIdx]?headings[hIdx].id:'';hIdx++;
+      html+=`${ln(lineNum)}<h2 id="${id}">${makeLink(esc(h1m[1]))}</h2>`;
+      return;
+    }
+
+    // H2 heading
+    const h2m=/^##\s+(.+)/.exec(trimmed);
+    if(h2m){
+      closePara();
+      const id=headings[hIdx]?headings[hIdx].id:'';hIdx++;
+      html+=`${ln(lineNum)}<h3 id="${id}">${makeLink(esc(h2m[1]))}</h3>`;
+      return;
+    }
+
+    // Blockquote
+    const qm=/^>\s*(.*)/.exec(trimmed);
+    if(qm){
+      closePara();
+      html+=`${ln(lineNum)}<blockquote>${makeLink(esc(qm[1]))}</blockquote>`;
+      return;
+    }
+
+    // Bullet list
+    const ulm=/^[-*•]\s+(.+)/.exec(trimmed);
+    if(ulm){
+      if(!inUl){html+='<ul>';inUl=true;}
+      html+=`<li>${ln(lineNum)}${makeLink(esc(ulm[1]))}</li>`;
+      return;
+    }
+
+    // Empty line = paragraph break
+    if(!trimmed){
+      closePara();
+      html+=`<br>`;
+      return;
+    }
+
+    // Regular paragraph line
+    closePara();
+    html+=`<p>${ln(lineNum)}${makeLink(esc(trimmed))}</p>`;
+  });
+
+  closePara();
+  if(isCard&&openCard) html+='</div>';
+  return {bodyHtml:html, headings};
+}
+
+function _buildFullHtml(opts){
+  const {title, text, theme, fontSize, fontFamily, showToc, showLineNums, timestamp, addLinks} = opts;
+  const themeCSS=HTML_THEMES[theme]||HTML_THEMES.modern;
+  const {bodyHtml, headings}=_parseTextToHtml(text,{showLineNums,addLinks,theme});
+  const safeTitle=(title||'Document').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const now=new Date();
+  const dtStr=now.toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+  let tocHtml='';
+  if(showToc&&headings.length>0){
+    tocHtml='<div class="toc"><h3>📑 Table of Contents</h3>';
+    headings.forEach(h=>{
+      const indent=h.level===2?'margin-left:16px;':'';
+      tocHtml+=`<a href="#${h.id}" style="${indent}">${h.level===2?'↳ ':''}${h.text.replace(/</g,'&lt;')}</a>`;
+    });
+    tocHtml+='</div>';
+  }
+
+  const stampHtml=timestamp?`<div class="stamp">Generated on ${dtStr} • MyToolkit Pro</div>`:'';
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${safeTitle}</title>
+<style>
+:root{--ff:${fontFamily};--fs:${fontSize}}
+${themeCSS.css}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hero">
+  <h1>${safeTitle}</h1>
+  <p class="meta">${timestamp?dtStr+' &nbsp;•&nbsp; ':''} MyToolkit Pro</p>
+</div>
+${tocHtml}
+${bodyHtml}
+${stampHtml}
+</div>
+</body>
+</html>`;
+}
+
+function _getHtmlOpts(){
+  return {
+    title: document.getElementById('html_title').value.trim()||'Document',
+    text: document.getElementById('html_input_text').value,
+    theme: htmlTheme,
+    fontSize: document.getElementById('html_fontsize').value,
+    fontFamily: document.getElementById('html_fontfam').value,
+    showToc: document.getElementById('html_opt_toc').checked,
+    showLineNums: document.getElementById('html_opt_lineno').checked,
+    timestamp: document.getElementById('html_opt_timestamp').checked,
+    addLinks: document.getElementById('html_opt_links').checked,
+  };
+}
+
+function liveHtmlPreview(){
+  const opts=_getHtmlOpts();
+  if(!opts.text.trim())return;
+  const fullHtml=_buildFullHtml(opts);
+  const frame=document.getElementById('html_preview_frame');
+  if(frame){
+    frame.srcdoc=fullHtml;
+  }
+}
+
+function previewHtmlFile(){liveHtmlPreview();}
+
+function downloadHtmlFile(){
+  const opts=_getHtmlOpts();
+  if(!opts.text.trim()){alert('Pehle kuch text type ya paste karein');return}
+  const fullHtml=_buildFullHtml(opts);
+  const blob=new Blob([fullHtml],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const fname=(opts.title.replace(/[^a-z0-9_\-\s]/gi,'').trim()||'document').replace(/\s+/g,'_')+'.html';
+  a.href=url;a.download=fname;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),3000);
+  // Flash confirmation
+  const btn=document.querySelector('[onclick="downloadHtmlFile()"]');
+  if(btn){const orig=btn.textContent;btn.textContent='✅ Downloaded!';setTimeout(()=>btn.textContent=orig,2000);}
+}
+
+function copyHtmlCode(){
+  const opts=_getHtmlOpts();
+  if(!opts.text.trim()){alert('Pehle kuch text type ya paste karein');return}
+  const fullHtml=_buildFullHtml(opts);
+  navigator.clipboard.writeText(fullHtml)
+    .then(()=>alert('✅ HTML code copied!'))
+    .catch(()=>{
+      const ta=document.createElement('textarea');
+      ta.value=fullHtml;document.body.appendChild(ta);ta.select();
+      document.execCommand('copy');document.body.removeChild(ta);
+      alert('✅ HTML code copied!');
+    });
+}
+
+// ═══════════ TEXT → HTML CONVERTER ═══════════
+let t2hTheme='clean', t2hFont='medium';
+
+const T2H_THEMES={
+  clean:{bg:'#ffffff',text:'#1e2240',accent:'#2563eb',heading:'#1d4ed8',card:'#f0f4ff',border:'#dde3f5',link:'#2563eb'},
+  dark:{bg:'#0d0f1a',text:'#e8eaf6',accent:'#4f8ef7',heading:'#93c5fd',card:'#161925',border:'rgba(255,255,255,0.08)',link:'#60a5fa'},
+  blue:{bg:'#eff6ff',text:'#1e3a5f',accent:'#1d4ed8',heading:'#1e40af',card:'#dbeafe',border:'#93c5fd',link:'#1d4ed8'},
+  warm:{bg:'#fff7ed',text:'#431407',accent:'#ea580c',heading:'#c2410c',card:'#ffedd5',border:'#fed7aa',link:'#ea580c'}
+};
+
+const T2H_FONTS={small:'14px',medium:'16px',large:'19px'};
+
+function setT2HTheme(t){
+  t2hTheme=t;
+  ['clean','dark','blue','warm'].forEach(th=>{
+    const el=document.getElementById('t2h_theme_'+th);
+    if(!el)return;
+    el.style.border=th===t?'2px solid var(--accent)':'2px solid var(--border)';
+    const lbl=el.querySelector('div:nth-child(2)');
+    if(lbl)lbl.style.color=th===t?'var(--accent)':'var(--text2)';
+  });
+}
+
+function setT2HFont(f){
+  t2hFont=f;
+  ['sm','md','lg'].forEach((s,i)=>{
+    const id='t2h_fs_'+s;
+    const el=document.getElementById(id);if(!el)return;
+    const sizes=['small','medium','large'];
+    el.className=sizes[i]===f?'btn bp':'btn bs';
+    el.style.flex='1';el.style.fontSize='11px';
+  });
+}
+
+function buildT2HHtml(){
+  const title=(document.getElementById('t2h_title').value.trim()||'My Document').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const rawText=document.getElementById('t2h_text').value;
+  const optH=document.getElementById('t2h_opt_heading').checked;
+  const optB=document.getElementById('t2h_opt_bold').checked;
+  const optI=document.getElementById('t2h_opt_italic').checked;
+  const optL=document.getElementById('t2h_opt_list').checked;
+  const optLk=document.getElementById('t2h_opt_link').checked;
+  const optHR=document.getElementById('t2h_opt_hr').checked;
+  const th=T2H_THEMES[t2hTheme]||T2H_THEMES.clean;
+  const fs=T2H_FONTS[t2hFont]||'16px';
+
+  // Parse lines
+  const lines=rawText.split('\n');
+  let htmlBody='';
+  let inList=false;
+
+  function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function applyInline(s){
+    // Bold **text**
+    if(optB) s=s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+    // Italic *text*
+    if(optI) s=s.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g,'<em>$1</em>');
+    // Links
+    if(optLk) s=s.replace(/(https?:\/\/[^\s<>"]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+    return s;
+  }
+
+  for(let i=0;i<lines.length;i++){
+    const raw=lines[i];
+    const trimmed=raw.trim();
+
+    // Horizontal rule
+    if(optHR&&(trimmed==='---'||trimmed==='==='||trimmed==='___')){
+      if(inList){htmlBody+='</ul>';inList=false;}
+      htmlBody+=`<hr style="border:none;border-top:2px solid ${th.border};margin:20px 0">`;
+      continue;
+    }
+
+    // Headings
+    if(optH&&trimmed.startsWith('### ')){
+      if(inList){htmlBody+='</ul>';inList=false;}
+      htmlBody+=`<h3 style="font-size:1.15em;font-weight:700;color:${th.heading};margin:16px 0 6px">${applyInline(escHtml(trimmed.slice(4)))}</h3>`;continue;
+    }
+    if(optH&&trimmed.startsWith('## ')){
+      if(inList){htmlBody+='</ul>';inList=false;}
+      htmlBody+=`<h2 style="font-size:1.35em;font-weight:700;color:${th.heading};margin:20px 0 8px;border-bottom:1px solid ${th.border};padding-bottom:4px">${applyInline(escHtml(trimmed.slice(3)))}</h2>`;continue;
+    }
+    if(optH&&trimmed.startsWith('# ')){
+      if(inList){htmlBody+='</ul>';inList=false;}
+      htmlBody+=`<h1 style="font-size:1.7em;font-weight:800;color:${th.heading};margin:24px 0 10px;border-bottom:2px solid ${th.accent};padding-bottom:6px">${applyInline(escHtml(trimmed.slice(2)))}</h1>`;continue;
+    }
+
+    // Bullet list
+    if(optL&&(trimmed.startsWith('- ')||trimmed.startsWith('• ')||trimmed.startsWith('* '))){
+      if(!inList){htmlBody+=`<ul style="margin:8px 0 8px 20px;padding:0">`;inList=true;}
+      const itemText=trimmed.slice(2);
+      htmlBody+=`<li style="margin:4px 0;line-height:1.6">${applyInline(escHtml(itemText))}</li>`;
+      continue;
+    }
+
+    // Numbered list (1. 2. etc)
+    if(optL&&/^\d+\.\s/.test(trimmed)){
+      if(inList&&!htmlBody.endsWith('</ol>')){htmlBody+='</ul>';inList=false;}
+      // Simple: treat as bullet for now
+      if(!inList){htmlBody+=`<ol style="margin:8px 0 8px 20px;padding:0">`;inList=true;}
+      const itemText=trimmed.replace(/^\d+\.\s/,'');
+      htmlBody+=`<li style="margin:4px 0;line-height:1.6">${applyInline(escHtml(itemText))}</li>`;
+      continue;
+    }
+
+    // Close list if non-list line
+    if(inList&&trimmed!==''){htmlBody+='</ul>';inList=false;}
+
+    // Empty line → paragraph break
+    if(trimmed===''){
+      if(inList){htmlBody+='</ul>';inList=false;}
+      htmlBody+='<br>';
+      continue;
+    }
+
+    // Normal paragraph
+    htmlBody+=`<p style="margin:6px 0;line-height:1.75">${applyInline(escHtml(trimmed))}</p>`;
+  }
+  if(inList)htmlBody+='</ul>';
+
+  const now=new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title}</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:${th.bg};color:${th.text};font-size:${fs};line-height:1.7;padding:0}
+  .container{max-width:780px;margin:0 auto;padding:32px 24px 60px}
+  .doc-header{background:${th.accent};color:#fff;padding:28px 32px;border-radius:14px;margin-bottom:32px;box-shadow:0 4px 20px rgba(0,0,0,0.12)}
+  .doc-header h1{font-size:1.8em;font-weight:800;margin-bottom:6px;letter-spacing:-0.3px}
+  .doc-header .meta{font-size:0.8em;opacity:0.75;margin-top:4px}
+  .content{background:${th.card};border:1px solid ${th.border};border-radius:12px;padding:28px 28px 32px;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+  a{color:${th.link};text-decoration:none}a:hover{text-decoration:underline}
+  strong{font-weight:700}em{font-style:italic}
+  ul,ol{padding-left:20px}
+  .footer{text-align:center;font-size:0.75em;color:${th.text};opacity:0.4;margin-top:28px}
+  @media(max-width:600px){.container{padding:16px 12px 40px}.doc-header{padding:18px 18px}.content{padding:16px 16px 20px}}
+  @media print{.container{padding:0}.doc-header{border-radius:0;box-shadow:none}.content{border:none;box-shadow:none;padding:12px 0}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="doc-header">
+    <h1>${title}</h1>
+    <div class="meta">📅 Generated: ${now} &nbsp;•&nbsp; MyToolkit Pro</div>
+  </div>
+  <div class="content">${htmlBody}</div>
+  <div class="footer">Generated with MyToolkit Pro • ${now}</div>
+</div>
+</body>
+</html>`;
+}
+
+function previewT2H(){
+  const html=buildT2HHtml();
+  const frame=document.getElementById('t2h_preview_frame');
+  const box=document.getElementById('t2h_preview_box');
+  if(!document.getElementById('t2h_text').value.trim()){alert('Pehle kuch text likhein!');return;}
+  box.style.display='block';
+  const blob=new Blob([html],{type:'text/html'});
+  const url=URL.createObjectURL(blob);
+  frame.src=url;
+  setTimeout(()=>URL.revokeObjectURL(url),10000);
+  box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function downloadT2H(){
+  if(!document.getElementById('t2h_text').value.trim()){alert('Pehle kuch text likhein!');return;}
+  const html=buildT2HHtml();
+  const title=(document.getElementById('t2h_title').value.trim()||'my_document').replace(/\s+/g,'_').replace(/[^a-z0-9_\-]/gi,'');
+  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=(title||'document')+'.html';a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),3000);
+}
+
+function copyT2HCode(){
+  if(!document.getElementById('t2h_text').value.trim()){alert('Pehle kuch text likhein!');return;}
+  const html=buildT2HHtml();
+  const codeBox=document.getElementById('t2h_code_box');
+  const codeOut=document.getElementById('t2h_code_output');
+  codeOut.value=html;
+  codeBox.style.display='block';
+  navigator.clipboard.writeText(html)
+    .then(()=>alert('✅ HTML code copied!'))
+    .catch(()=>{codeOut.select();document.execCommand('copy');alert('✅ HTML code copied!');});
+  codeBox.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
 // ═══════════ INIT (append to existing) ═══════════
