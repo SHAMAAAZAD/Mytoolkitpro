@@ -12,6 +12,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<!-- Chart.js for SENP Eligibility Chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <!-- Firebase SDK v9 compat — works on GitHub Pages -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -150,6 +152,87 @@ body.dark .ig{background:rgba(79,202,122,.07)}.io{background:rgba(247,160,79,.07
 input[type=range]{width:100%;accent-color:var(--accent);margin:4px 0}
 ::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-thumb{background:rgba(37,99,235,.2);border-radius:3px}
 body.dark ::-webkit-scrollbar-thumb{background:rgba(79,142,247,.3)}
+
+/* ═══════════════════════════════════════
+   DASHBOARD STYLES
+═══════════════════════════════════════ */
+.dash-wrap{padding:10px 10px 80px}
+.dash-hero{
+  background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 55%,#1d4ed8 100%);
+  border-radius:20px;padding:18px 16px 16px;margin-bottom:16px;
+  position:relative;overflow:hidden;
+  box-shadow:0 8px 32px rgba(37,99,235,.35);
+  border:1px solid rgba(99,179,237,.2);
+}
+.dash-hero::before{content:'🛠️';position:absolute;right:-8px;top:-4px;font-size:80px;opacity:.1;pointer-events:none}
+.dash-hero-title{font-family:'Baloo 2',sans-serif;font-size:24px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:4px}
+.dash-hero-sub{font-size:12px;color:rgba(255,255,255,.55);margin-bottom:14px}
+.dash-hero-stats{display:flex;gap:12px}
+.dash-stat{background:rgba(255,255,255,.1);border-radius:10px;padding:8px 14px;text-align:center;border:1px solid rgba(255,255,255,.15)}
+.dash-stat-num{font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:900;color:#fff}
+.dash-stat-lbl{font-size:9px;color:rgba(255,255,255,.55);font-weight:700;text-transform:uppercase;letter-spacing:.8px}
+
+.dash-cat{margin-bottom:16px}
+.dash-cat-title{
+  font-family:'Baloo 2',sans-serif;font-size:14px;font-weight:800;
+  color:var(--text);margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;padding:0 2px;
+}
+.dash-cat-title::after{content:'';flex:1;height:1.5px;background:var(--border);border-radius:2px}
+
+.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.dash-card{
+  background:var(--surface);border-radius:16px;
+  padding:14px 8px 10px;
+  border:1px solid var(--border);
+  box-shadow:0 2px 12px rgba(37,99,235,.07);
+  cursor:pointer;transition:all .18s;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  text-align:center;position:relative;overflow:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+.dash-card:active{transform:scale(.94);box-shadow:0 1px 5px rgba(37,99,235,.15)}
+.dash-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(37,99,235,.06),transparent);
+  opacity:0;transition:opacity .2s;
+}
+.dash-card:active::before{opacity:1}
+.dash-icon-wrap{
+  width:52px;height:52px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;flex-shrink:0;
+  box-shadow:0 3px 12px rgba(0,0,0,.15);
+}
+.dash-card-lbl{font-size:10px;font-weight:700;color:var(--text);line-height:1.25;word-break:break-word}
+
+/* Icon gradient colors */
+.ic-blue{background:linear-gradient(135deg,#1d4ed8,#3b82f6)}
+.ic-gold{background:linear-gradient(135deg,#b45309,#f59e0b)}
+.ic-green{background:linear-gradient(135deg,#166534,#22c55e)}
+.ic-teal{background:linear-gradient(135deg,#0f766e,#14b8a6)}
+.ic-purple{background:linear-gradient(135deg,#7e22ce,#a855f7)}
+.ic-pink{background:linear-gradient(135deg,#be185d,#ec4899)}
+.ic-orange{background:linear-gradient(135deg,#c2410c,#fb923c)}
+.ic-indigo{background:linear-gradient(135deg,#3730a3,#6366f1)}
+.ic-cyan{background:linear-gradient(135deg,#0e7490,#22d3ee)}
+.ic-rose{background:linear-gradient(135deg,#9f1239,#f43f5e)}
+.ic-emerald{background:linear-gradient(135deg,#065f46,#10b981)}
+.ic-amber{background:linear-gradient(135deg,#92400e,#fbbf24)}
+.ic-sky{background:linear-gradient(135deg,#075985,#38bdf8)}
+.ic-violet{background:linear-gradient(135deg,#5b21b6,#8b5cf6)}
+
+/* Dashboard home button in nav */
+.dash-home-btn{
+  position:fixed;bottom:16px;right:16px;
+  width:50px;height:50px;border-radius:50%;
+  background:linear-gradient(135deg,#1e40af,#2563eb);
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;box-shadow:0 4px 20px rgba(37,99,235,.5);
+  z-index:150;transition:all .2s;
+}
+.dash-home-btn:active{transform:scale(.92)}
 
 /* ═══════════════════════════════════════
    PREMIUM SIP SECTION STYLES
@@ -688,6 +771,189 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 /* Ensure old .card also gets a subtle shimmer top border */
 .card{position:relative;overflow:hidden}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),#10b981,var(--accent));background-size:200% 100%;animation:prem-shimmer 4s linear infinite;opacity:0.6}
+
+/* ═══════════════════════════════════════
+   DOC VIEWER (Full Screen PDF Viewer)
+═══════════════════════════════════════ */
+#docViewerOverlay{
+  display:none;position:fixed;inset:0;z-index:2000;
+  flex-direction:column;background:#0d0f1a;
+  font-family:'Inter',sans-serif;
+}
+#docViewerOverlay.open{display:flex;}
+.dv-topbar{
+  height:56px;background:#161925;border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;padding:0 12px;gap:10px;flex-shrink:0;z-index:10;
+}
+.dv-topbar-btn{
+  width:38px;height:38px;border-radius:10px;border:none;
+  background:#1e2235;color:#e8eaf6;font-size:1.1rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .15s;
+}
+.dv-topbar-btn:active{transform:scale(.92);}
+.dv-topbar-btn:hover{background:rgba(79,142,255,.2);color:#4f8eff;}
+.dv-doc-title{flex:1;font-size:.88rem;font-weight:600;color:#e8eaf6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dv-page-info{font-size:.75rem;color:#8896b8;flex-shrink:0;}
+#dvDocArea{
+  flex:1;overflow:auto;background:#111118;
+  display:flex;flex-direction:column;align-items:center;
+  padding:16px 10px;gap:14px;scroll-behavior:smooth;
+}
+.dv-page-wrap{
+  position:relative;width:100%;max-width:640px;
+  border-radius:8px;overflow:hidden;
+  box-shadow:0 8px 40px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.05);
+  background:#fff;
+}
+.dv-page-wrap canvas.dv-render{width:100%;display:block;}
+.dv-anno-canvas{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;border-radius:8px;
+}
+.dv-anno-canvas.active{pointer-events:all;}
+.dv-text-anno{
+  position:absolute;background:rgba(255,255,100,.85);color:#000;
+  font-size:14px;font-weight:500;padding:3px 7px;border-radius:4px;
+  cursor:move;user-select:none;min-width:50px;border:2px solid transparent;
+  white-space:pre-wrap;word-break:break-word;max-width:180px;
+  box-shadow:0 2px 8px rgba(0,0,0,.3);
+}
+.dv-text-anno.selected{border-color:#4f8eff;}
+.dv-sig-img{
+  position:absolute;cursor:move;user-select:none;
+  border:2px solid transparent;border-radius:4px;
+}
+.dv-sig-img.selected{border-color:#4f8eff;}
+/* Zoom FAB */
+.dv-zoom-fab{position:fixed;right:14px;bottom:170px;display:flex;flex-direction:column;gap:6px;z-index:20;}
+.dv-zoom-btn{
+  width:38px;height:38px;border-radius:50%;background:#1e2235;
+  border:1px solid rgba(255,255,255,.1);color:#e8eaf6;font-size:1.1rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 12px rgba(0,0,0,.5);transition:all .15s;
+}
+.dv-zoom-btn:active{transform:scale(.9);}
+.dv-page-ind{
+  position:fixed;left:14px;bottom:170px;
+  background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
+  border-radius:8px;padding:5px 10px;font-size:.72rem;color:#8896b8;
+  z-index:20;border:1px solid rgba(255,255,255,.08);
+}
+/* Bottom Edit Toolbar */
+.dv-bottom-bar{
+  background:#161925;border-top:1px solid rgba(255,255,255,.07);
+  flex-shrink:0;z-index:10;
+}
+.dv-tool-tabs{
+  display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;
+  padding:8px 10px 6px;border-bottom:1px solid rgba(255,255,255,.06);
+}
+.dv-tool-tabs::-webkit-scrollbar{display:none;}
+.dv-ttab{
+  padding:5px 13px;border-radius:18px;border:1px solid rgba(255,255,255,.08);
+  background:#1e2235;color:#8896b8;font-size:.74rem;font-weight:600;
+  cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Inter',sans-serif;
+}
+.dv-ttab.active{
+  background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;border-color:transparent;
+}
+.dv-tool-panels{padding:8px 10px 10px;}
+.dv-tpanel{display:none;}
+.dv-tpanel.active{display:block;}
+.dv-tool-row{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.dv-tool-row::-webkit-scrollbar{display:none;}
+.dv-tbtn{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:7px 11px;border-radius:10px;border:1px solid rgba(255,255,255,.08);
+  background:#1e2235;color:#e8eaf6;cursor:pointer;transition:all .15s;
+  white-space:nowrap;min-width:52px;font-family:'Inter',sans-serif;
+}
+.dv-tbtn:active{transform:scale(.93);}
+.dv-tbtn.active{background:rgba(79,142,255,.2);border-color:#4f8eff;color:#4f8eff;}
+.dv-tbtn .ti{font-size:1.2rem;}
+.dv-tbtn .tl{font-size:.65rem;font-weight:600;}
+.dv-color-row{display:flex;gap:7px;align-items:center;padding:5px 0;overflow-x:auto;scrollbar-width:none;}
+.dv-color-row::-webkit-scrollbar{display:none;}
+.dv-cdot{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .15s;flex-shrink:0;}
+.dv-cdot.sel{border-color:#fff;transform:scale(1.2);}
+.dv-size-row{display:flex;align-items:center;gap:8px;padding:3px 0;}
+.dv-size-row label{font-size:.72rem;color:#8896b8;white-space:nowrap;}
+.dv-size-row input[type=range]{flex:1;accent-color:#4f8eff;}
+/* Quick Tools Bar (PDF tools strip) */
+.dv-pdftools-bar{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:1999;
+  background:#161925;border-top:1px solid rgba(255,255,255,.1);
+  padding:8px 10px 12px;
+}
+.dv-pdftools-bar.show{display:block;}
+.dv-ptbar-title{font-size:.7rem;font-weight:700;color:#8896b8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;}
+.dv-ptbar-scroll{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.dv-ptbar-scroll::-webkit-scrollbar{display:none;}
+.dv-ptool{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:8px 12px;border-radius:12px;border:1.5px solid rgba(255,255,255,.1);
+  background:#1e2235;color:#e8eaf6;cursor:pointer;
+  white-space:nowrap;min-width:62px;font-family:'Inter',sans-serif;
+  transition:all .15s;flex-shrink:0;
+}
+.dv-ptool:active{transform:scale(.94);}
+.dv-ptool .pti{font-size:1.35rem;}
+.dv-ptool .ptl{font-size:.65rem;font-weight:700;color:#8896b8;}
+.dv-ptool.compress{border-color:rgba(22,163,74,.4);background:rgba(22,163,74,.07);}
+.dv-ptool.edit{border-color:rgba(79,142,255,.4);background:rgba(79,142,255,.07);}
+.dv-ptool.convert{border-color:rgba(234,88,12,.4);background:rgba(234,88,12,.07);}
+.dv-ptool.word{border-color:rgba(37,99,235,.4);background:rgba(37,99,235,.07);}
+.dv-ptool.ocr{border-color:rgba(124,58,237,.4);background:rgba(124,58,237,.07);}
+.dv-ptool.pptx{border-color:rgba(217,119,6,.4);background:rgba(217,119,6,.07);}
+.dv-ptool.epub{border-color:rgba(220,38,38,.4);background:rgba(220,38,38,.07);}
+.dv-ptool.sign{border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.07);}
+/* Viewer loading spinner */
+.dv-loading{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;padding:48px 24px;color:#8896b8;font-size:.85rem;
+}
+.dv-spinner{
+  width:36px;height:36px;border:3px solid rgba(79,142,255,.2);
+  border-top-color:#4f8eff;border-radius:50%;animation:dv-spin .7s linear infinite;
+}
+@keyframes dv-spin{to{transform:rotate(360deg);}}
+/* Sign modal for viewer */
+#dvSignModal{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);
+  backdrop-filter:blur(6px);align-items:flex-end;z-index:2100;
+}
+#dvSignModal.open{display:flex;}
+.dv-sign-sheet{
+  width:100%;background:#161925;border-radius:20px 20px 0 0;padding:18px;
+  transform:translateY(100%);transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+#dvSignModal.open .dv-sign-sheet{transform:translateY(0);}
+#dvSignCanvas{width:100%;height:160px;background:#fff;border-radius:10px;display:block;touch-action:none;cursor:crosshair;}
+/* Text modal for viewer */
+#dvTextModal{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);
+  backdrop-filter:blur(4px);align-items:flex-end;z-index:2100;
+}
+#dvTextModal.open{display:flex;}
+.dv-text-sheet{
+  width:100%;background:#161925;border-radius:20px 20px 0 0;padding:18px;
+  transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+#dvTextModal.open .dv-text-sheet{transform:translateY(0);}
+#dvTextInput{
+  width:100%;background:#1e2235;border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;padding:10px 12px;color:#e8eaf6;font-family:'Inter',sans-serif;
+  font-size:.92rem;resize:none;height:90px;outline:none;margin-bottom:8px;
+}
+#dvTextInput:focus{border-color:#4f8eff;}
+.dv-toast{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);
+  background:#1e2235;border:1px solid rgba(255,255,255,.1);color:#e8eaf6;
+  padding:8px 18px;border-radius:18px;font-size:.82rem;font-weight:500;
+  opacity:0;transition:all .25s;z-index:2200;white-space:nowrap;pointer-events:none;
+}
+.dv-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
@@ -836,24 +1102,217 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
   <div class="dot-item" onclick="showFirebaseSetup();document.getElementById('dotDrawer').classList.remove('open')">🔥 Firebase Setup</div>
   <div class="dot-item" onclick="logoutUser()">🚪 Logout</div>
 </div>
-<div class="edit-bar" id="editBar"><span>↔️ Drag to reorder tabs</span><button class="btn bp" style="padding:3px 9px;font-size:10px;margin-left:auto" onclick="toggleEdit()">✅ Done</button></div>
 <nav class="nav-bar" id="navBar"></nav>
+
+<!-- DASHBOARD HOME SECTION -->
+<section class="section active" id="sec_dashboard">
+<div class="dash-wrap">
+
+  <!-- EMI Calculators -->
+  <div class="dash-cat">
+    <div class="dash-cat-title">💰 EMI Calculators</div>
+    <div class="dash-grid">
+      <div class="dash-card" onclick="showSection('sec_emi')">
+        <div class="dash-icon-wrap ic-blue">🧮</div>
+        <div class="dash-card-lbl">EMI Calculator</div>
+      </div>
+      <div class="dash-card" onclick="showSection('sec_quick_calc')">
+        <div class="dash-icon-wrap ic-gold">⚡</div>
+        <div class="dash-card-lbl">Quick Calculator</div>
+      </div>
+      <div class="dash-card" onclick="showSection('sec_sip')">
+        <div class="dash-icon-wrap ic-green">📈</div>
+        <div class="dash-card-lbl">Advance EMI / SIP</div>
+      </div>
+      <div class="dash-card" onclick="showSection('sec_compare')">
+        <div class="dash-icon-wrap ic-sky">⚖️</div>
+        <div class="dash-card-lbl">Compare Loans</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loan Tools -->
+  <div class="dash-cat">
+    <div class="dash-cat-title">🏦 Loan Tools</div>
+    <div class="dash-grid">
+      <div class="dash-card" onclick="showSection('sec_loan_overview')">
+        <div class="dash-icon-wrap ic-teal">📋</div>
+        <div class="dash-card-lbl">Loan Profile</div>
+      </div>
+      <div class="dash-card" onclick="showSection('sec_revised_emi')">
+        <div class="dash-icon-wrap ic-purple">🔁</div>
+        <div class="dash-card-lbl">PrePayment / ROI</div>
+      </div>
+      <div class="dash-card" onclick="showSection('sec_check_eligibility')">
+        <div class="dash-icon-wrap ic-pink">✅</div>
+        <div class="dash-card-lbl">Check Eligibility</div>
+      </div>
+      <div class="dash-card" onclick="showSection('sec_moratorium')">
+        <div class="dash-icon-wrap ic-indigo">⏸️</div>
+        <div class="dash-card-lbl">Moratorium Calc</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Finance & Banking -->
+  <div class="dash-cat">
+    <div class="dash-cat-title">🏛️ Finance &amp; Banking</div>
+    <div class="dash-grid">
+      <div class="dash-card" onclick="showSection('sec_cash')">
+        <div class="dash-icon-wrap ic-emerald">💵</div>
+        <div class="dash-card-lbl">Cash Counter</div>
+      </div>
+      <div class="dash-card" onclick="showSection('sec_a2w')">
+        <div class="dash-icon-wrap ic-amber">🔤</div>
+        <div class="dash-card-lbl">Amount to Word</div>
+      </div>
+      <div class="dash-card" onclick="showSection('sec_sip_overview')">
+        <div class="dash-icon-wrap ic-violet">📊</div>
+        <div class="dash-card-lbl">My SIPs</div>
+      </div>
+      <div class="dash-card" onclick="showSection('sec_mileage')">
+        <div class="dash-icon-wrap ic-orange">⛽</div>
+        <div class="dash-card-lbl">Mileage Calc</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Productivity & Docs -->
+  <div class="dash-cat">
+    <div class="dash-cat-title">✍️ Productivity &amp; Docs</div>
+    <div class="dash-grid">
+      <div class="dash-card" onclick="showSection('sec_signature')">
+        <div class="dash-icon-wrap ic-rose">✍️</div>
+        <div class="dash-card-lbl">Signature</div>
+      </div>
+      <div class="dash-card" onclick="showSection('sec_whatsapp')">
+        <div class="dash-icon-wrap ic-green">💬</div>
+        <div class="dash-card-lbl">WA Scheduler</div>
+      </div>
+      <div class="dash-card" onclick="showSection('sec_pdf')">
+        <div class="dash-icon-wrap ic-cyan">📄</div>
+        <div class="dash-card-lbl">PDF Tools</div>
+      </div>
+      <div class="dash-card" onclick="showSection('sec_pdf')">
+        <div class="dash-icon-wrap ic-blue">🖊️</div>
+        <div class="dash-card-lbl">Doc Viewer</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- ═══ QUICK CALCULATOR SECTION ═══ -->
+<section class="section" id="sec_quick_calc">
+
+
+<div class="prem-card" style="padding:0;overflow:hidden">
+  <!-- Tab Bar -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;background:var(--surface2);border-bottom:1px solid var(--border)">
+    <button id="qc_tab_emi"      onclick="qcSetTab('emi')"      style="padding:12px 4px;border:none;cursor:pointer;font-size:12px;font-weight:700;font-family:'Inter',sans-serif;background:var(--accent);color:#fff;transition:all .2s">EMI</button>
+    <button id="qc_tab_amount"   onclick="qcSetTab('amount')"   style="padding:12px 4px;border:none;cursor:pointer;font-size:12px;font-weight:700;font-family:'Inter',sans-serif;background:var(--surface2);color:var(--text2);transition:all .2s">Amount</button>
+    <button id="qc_tab_period"   onclick="qcSetTab('period')"   style="padding:12px 4px;border:none;cursor:pointer;font-size:12px;font-weight:700;font-family:'Inter',sans-serif;background:var(--surface2);color:var(--text2);transition:all .2s">Period</button>
+    <button id="qc_tab_interest" onclick="qcSetTab('interest')" style="padding:12px 4px;border:none;cursor:pointer;font-size:12px;font-weight:700;font-family:'Inter',sans-serif;background:var(--surface2);color:var(--text2);transition:all .2s">Interest</button>
+  </div>
+
+  <div style="padding:16px">
+    <!-- Result Display -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:3px" id="qc_res_label">Total Interest</div>
+        <div style="font-size:26px;font-weight:800;font-family:'Baloo 2',sans-serif;color:var(--text)" id="qc_res_interest">—</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:6px">Total Payment</div>
+        <div style="font-size:22px;font-weight:800;font-family:'Baloo 2',sans-serif;color:var(--text)" id="qc_res_total">—</div>
+      </div>
+      <!-- Pie Chart -->
+      <div style="position:relative;width:110px;height:110px;flex-shrink:0">
+        <canvas id="qcPieCanvas" width="110" height="110"></canvas>
+        <div id="qcPieLegend" style="position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:9px;color:var(--text2);display:flex;gap:8px">
+          <span>🟠 Loan Amount</span><span>🟢 Total Interest</span>
+        </div>
+      </div>
+    </div>
+    <!-- Spacer for legend -->
+    <div style="height:28px"></div>
+
+    <!-- Solved Value Highlight -->
+    <div id="qc_solved_wrap" style="text-align:center;margin-bottom:14px;display:none">
+      <div style="font-size:13px;color:var(--accent);font-weight:600" id="qc_solved_label">Monthly EMI</div>
+      <div style="font-size:32px;font-weight:800;font-family:'Baloo 2',sans-serif;color:var(--accent)" id="qc_solved_value">—</div>
+      <div style="font-size:11px;color:var(--text2)" id="qc_solved_words"></div>
+      <button class="btn" style="margin-top:8px;font-size:11px;border:1.5px solid var(--accent);background:transparent;color:var(--accent);border-radius:8px" onclick="qcViewFullDetails()">VIEW FULL DETAILS</button>
+    </div>
+
+    <!-- Input Fields (dynamic per tab) -->
+    <div id="qc_inputs">
+
+      <!-- EMI Tab: inputs = Amount, Interest%, Period -->
+      <div id="qc_panel_emi">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><label style="margin:0">Amount</label><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text2);font-size:13px">₹</span><input type="number" id="qc_emi_amount" value="100000" oninput="qcCalc()" style="width:110px;text-align:right;border:1.5px solid var(--border);border-radius:9px;padding:8px 10px;background:var(--surface2);color:var(--text);font-size:14px;font-weight:700;font-family:'Inter',sans-serif;outline:none"></div></div>
+        <div style="font-size:10px;color:var(--text2);text-align:right;margin-bottom:6px" id="qc_emi_amount_words">One Lakh</div>
+        <input type="range" id="qc_emi_amount_sl" min="10000" max="10000000" step="10000" value="100000" oninput="qcSliderSync('emi','amount')" style="width:100%;accent-color:var(--accent);margin-bottom:14px">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><label style="margin:0">Interest %</label><input type="number" id="qc_emi_rate" value="6.5" step="0.1" oninput="qcCalc()" style="width:80px;text-align:right;border:1.5px solid var(--border);border-radius:9px;padding:8px 10px;background:var(--surface2);color:var(--text);font-size:14px;font-weight:700;font-family:'Inter',sans-serif;outline:none"></div>
+        <input type="range" id="qc_emi_rate_sl" min="1" max="30" step="0.5" value="6.5" oninput="qcSliderSync('emi','rate')" style="width:100%;accent-color:var(--accent);margin-bottom:14px">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><label style="margin:0">Period</label><div style="display:flex;align-items:center;gap:6px"><input type="number" id="qc_emi_period" value="8" oninput="qcCalc()" style="width:70px;text-align:right;border:1.5px solid var(--border);border-radius:9px;padding:8px 10px;background:var(--surface2);color:var(--text);font-size:14px;font-weight:700;font-family:'Inter',sans-serif;outline:none"><span style="font-size:12px;color:var(--text2)">Yr</span></div></div>
+        <div style="font-size:10px;color:var(--text2);text-align:right;margin-bottom:6px" id="qc_emi_period_months">96 months</div>
+        <input type="range" id="qc_emi_period_sl" min="1" max="30" step="1" value="8" oninput="qcSliderSync('emi','period')" style="width:100%;accent-color:var(--accent);margin-bottom:0">
+      </div>
+
+      <!-- Amount Tab: inputs = Interest%, Period, Monthly EMI -->
+      <div id="qc_panel_amount" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><label style="margin:0">Interest %</label><input type="number" id="qc_amt_rate" value="6.5" step="0.1" oninput="qcCalc()" style="width:80px;text-align:right;border:1.5px solid var(--border);border-radius:9px;padding:8px 10px;background:var(--surface2);color:var(--text);font-size:14px;font-weight:700;font-family:'Inter',sans-serif;outline:none"></div>
+        <input type="range" id="qc_amt_rate_sl" min="1" max="30" step="0.5" value="6.5" oninput="qcSliderSync('amt','rate')" style="width:100%;accent-color:var(--accent);margin-bottom:14px">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><label style="margin:0">Period</label><div style="display:flex;align-items:center;gap:6px"><input type="number" id="qc_amt_period" value="8" oninput="qcCalc()" style="width:70px;text-align:right;border:1.5px solid var(--border);border-radius:9px;padding:8px 10px;background:var(--surface2);color:var(--text);font-size:14px;font-weight:700;font-family:'Inter',sans-serif;outline:none"><span style="font-size:12px;color:var(--text2)">Yr</span></div></div>
+        <div style="font-size:10px;color:var(--text2);text-align:right;margin-bottom:6px" id="qc_amt_period_months">96 months</div>
+        <input type="range" id="qc_amt_period_sl" min="1" max="30" step="1" value="8" oninput="qcSliderSync('amt','period')" style="width:100%;accent-color:var(--accent);margin-bottom:14px">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><label style="margin:0">Monthly EMI</label><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text2);font-size:13px">₹</span><input type="number" id="qc_amt_emi" value="1425" oninput="qcCalc()" style="width:110px;text-align:right;border:1.5px solid var(--border);border-radius:9px;padding:8px 10px;background:var(--surface2);color:var(--text);font-size:14px;font-weight:700;font-family:'Inter',sans-serif;outline:none"></div></div>
+        <div style="font-size:10px;color:var(--text2);text-align:right;margin-bottom:6px" id="qc_amt_emi_words">One Thousand Four Hundred Twenty Five</div>
+        <input type="range" id="qc_amt_emi_sl" min="500" max="100000" step="100" value="1425" oninput="qcSliderSync('amt','emi')" style="width:100%;accent-color:var(--accent)">
+      </div>
+
+      <!-- Period Tab: inputs = Amount, Interest%, Monthly EMI -->
+      <div id="qc_panel_period" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><label style="margin:0">Amount</label><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text2);font-size:13px">₹</span><input type="number" id="qc_per_amount" value="100000" oninput="qcCalc()" style="width:110px;text-align:right;border:1.5px solid var(--border);border-radius:9px;padding:8px 10px;background:var(--surface2);color:var(--text);font-size:14px;font-weight:700;font-family:'Inter',sans-serif;outline:none"></div></div>
+        <div style="font-size:10px;color:var(--text2);text-align:right;margin-bottom:6px" id="qc_per_amount_words">One Lakh</div>
+        <input type="range" id="qc_per_amount_sl" min="10000" max="10000000" step="10000" value="100000" oninput="qcSliderSync('per','amount')" style="width:100%;accent-color:var(--accent);margin-bottom:14px">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><label style="margin:0">Interest %</label><input type="number" id="qc_per_rate" value="6.5" step="0.1" oninput="qcCalc()" style="width:80px;text-align:right;border:1.5px solid var(--border);border-radius:9px;padding:8px 10px;background:var(--surface2);color:var(--text);font-size:14px;font-weight:700;font-family:'Inter',sans-serif;outline:none"></div>
+        <input type="range" id="qc_per_rate_sl" min="1" max="30" step="0.5" value="6.5" oninput="qcSliderSync('per','rate')" style="width:100%;accent-color:var(--accent);margin-bottom:14px">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><label style="margin:0">Monthly EMI</label><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text2);font-size:13px">₹</span><input type="number" id="qc_per_emi" value="1425" oninput="qcCalc()" style="width:110px;text-align:right;border:1.5px solid var(--border);border-radius:9px;padding:8px 10px;background:var(--surface2);color:var(--text);font-size:14px;font-weight:700;font-family:'Inter',sans-serif;outline:none"></div></div>
+        <div style="font-size:10px;color:var(--text2);text-align:right;margin-bottom:6px" id="qc_per_emi_words">One Thousand Four Hundred Twenty Five</div>
+        <input type="range" id="qc_per_emi_sl" min="500" max="100000" step="100" value="1425" oninput="qcSliderSync('per','emi')" style="width:100%;accent-color:var(--accent)">
+      </div>
+
+      <!-- Interest Tab: inputs = Amount, Period, Monthly EMI -->
+      <div id="qc_panel_interest" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><label style="margin:0">Amount</label><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text2);font-size:13px">₹</span><input type="number" id="qc_int_amount" value="100000" oninput="qcCalc()" style="width:110px;text-align:right;border:1.5px solid var(--border);border-radius:9px;padding:8px 10px;background:var(--surface2);color:var(--text);font-size:14px;font-weight:700;font-family:'Inter',sans-serif;outline:none"></div></div>
+        <div style="font-size:10px;color:var(--text2);text-align:right;margin-bottom:6px" id="qc_int_amount_words">One Lakh</div>
+        <input type="range" id="qc_int_amount_sl" min="10000" max="10000000" step="10000" value="100000" oninput="qcSliderSync('int','amount')" style="width:100%;accent-color:var(--accent);margin-bottom:14px">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><label style="margin:0">Period</label><div style="display:flex;align-items:center;gap:6px"><input type="number" id="qc_int_period" value="8" oninput="qcCalc()" style="width:70px;text-align:right;border:1.5px solid var(--border);border-radius:9px;padding:8px 10px;background:var(--surface2);color:var(--text);font-size:14px;font-weight:700;font-family:'Inter',sans-serif;outline:none"><span style="font-size:12px;color:var(--text2)">Yr</span></div></div>
+        <div style="font-size:10px;color:var(--text2);text-align:right;margin-bottom:6px" id="qc_int_period_months">96 months</div>
+        <input type="range" id="qc_int_period_sl" min="1" max="30" step="1" value="8" oninput="qcSliderSync('int','period')" style="width:100%;accent-color:var(--accent);margin-bottom:14px">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><label style="margin:0">Monthly EMI</label><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text2);font-size:13px">₹</span><input type="number" id="qc_int_emi" value="1425" oninput="qcCalc()" style="width:110px;text-align:right;border:1.5px solid var(--border);border-radius:9px;padding:8px 10px;background:var(--surface2);color:var(--text);font-size:14px;font-weight:700;font-family:'Inter',sans-serif;outline:none"></div></div>
+        <div style="font-size:10px;color:var(--text2);text-align:right;margin-bottom:6px" id="qc_int_emi_words">One Thousand Four Hundred Twenty Five</div>
+        <input type="range" id="qc_int_emi_sl" min="500" max="100000" step="100" value="1425" oninput="qcSliderSync('int','emi')" style="width:100%;accent-color:var(--accent)">
+      </div>
+
+    </div><!-- /qc_inputs -->
+  </div><!-- /padding -->
+</div><!-- /prem-card -->
+</section>
 
 <!-- EMI SECTION PREMIUM -->
 <section class="section" id="sec_emi">
 
-<div class="prem-hero prem-hero-emi">
-  <div class="prem-hero-inner">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px">
-      <div>
-        <div class="prem-hero-label">Loan Planner</div>
-        <div class="prem-hero-title">💰 EMI Calculator</div>
-        <div class="prem-hero-sub">Har loan ka EMI turant calculate karein</div>
-      </div>
-      <button class="btn" style="padding:4px 10px;font-size:10px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;flex-shrink:0;margin-top:4px" onclick="showSection('sec_loan_overview')">👁️ All Loans</button>
-    </div>
-  </div>
-</div>
+
 
 <div class="prem-card">
   <div class="prem-card-title">📋 Loan Details</div>
@@ -889,33 +1348,137 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 
 </section>
 
+<!-- ═══ REVISED EMI & TENURE ═══ -->
+<section class="section" id="sec_revised_emi">
+
+
+
+<!-- Tab Toggle -->
+<div style="display:flex;gap:0;margin:12px 12px 0;border-radius:12px;overflow:hidden;border:2px solid var(--accent)">
+  <button id="re_tab_prepay" onclick="reSetTab('prepay')" style="flex:1;padding:11px 4px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:'Inter',sans-serif;background:var(--accent);color:#fff;transition:all .2s">Pre Payment</button>
+  <button id="re_tab_roi" onclick="reSetTab('roi')" style="flex:1;padding:11px 4px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:'Inter',sans-serif;background:var(--surface2);color:var(--text2);transition:all .2s">ROI Change</button>
+</div>
+
+<div class="prem-card" style="margin-top:10px">
+  <!-- Common Fields -->
+  <div>
+    <label>Outstanding Amount (₹)</label>
+    <input class="inp" type="number" id="re_outstanding" placeholder="Ex: 500000">
+    <label>Current Rate %</label>
+    <input class="inp" type="number" id="re_cur_rate" placeholder="Ex: 8.5">
+    <label>Current EMI (₹)</label>
+    <input class="inp" type="number" id="re_cur_emi" placeholder="Ex: 10000">
+  </div>
+  <!-- Pre Payment extra field -->
+  <div id="re_prepay_field">
+    <label>Pre Payment Amount (₹)</label>
+    <input class="inp" type="number" id="re_prepay_amt" placeholder="Ex: 50000">
+  </div>
+  <!-- ROI Change extra field -->
+  <div id="re_roi_field" style="display:none">
+    <label>Revised Rate %</label>
+    <input class="inp" type="number" id="re_new_rate" placeholder="Ex: 7.5">
+  </div>
+
+  <div class="btn-row" style="margin-top:4px">
+    <button class="btn bp" style="flex:1;justify-content:center" onclick="reCalc()">⚡ Calculate</button>
+    <button class="btn bs" onclick="reReset()">↺ Reset</button>
+    <button class="btn" style="background:var(--accent2);color:#fff" onclick="reShowHistory()">📋 History</button>
+  </div>
+</div>
+
+<!-- Results -->
+<div id="re_result" style="display:none;padding:0 12px 20px">
+
+  <!-- If you want to change EMI -->
+  <div style="background:var(--surface);border:1.5px solid var(--accent);border-radius:13px;overflow:hidden;margin-bottom:12px">
+    <div style="background:linear-gradient(135deg,rgba(37,99,235,0.1),rgba(37,99,235,0.05));padding:11px 14px;font-size:13px;font-weight:700;color:var(--accent);text-align:center;border-bottom:1px solid var(--border)">
+      If you want to change EMI
+    </div>
+    <table style="width:100%;border-collapse:collapse">
+      <tr>
+        <td style="padding:8px 12px;font-size:11px;color:var(--text2);text-align:center;width:33%">New EMI</td>
+        <td style="padding:8px 12px;font-size:11px;color:var(--text2);text-align:center;width:33%;border-left:1px solid var(--border);border-right:1px solid var(--border)">Old EMI</td>
+        <td style="padding:8px 12px;font-size:11px;color:var(--text2);text-align:center;width:34%">Difference</td>
+      </tr>
+      <tr style="border-top:1px solid var(--border)">
+        <td style="padding:10px 12px;text-align:center"><span id="re_new_emi" style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:var(--green)">—</span></td>
+        <td style="padding:10px 12px;text-align:center;border-left:1px solid var(--border);border-right:1px solid var(--border)"><span id="re_old_emi_show" style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:var(--accent)">—</span></td>
+        <td style="padding:10px 12px;text-align:center"><span id="re_emi_diff" style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:var(--accent2)">—</span></td>
+      </tr>
+      <tr style="border-top:1px solid var(--border)">
+        <td style="padding:8px 12px;font-size:11px;color:var(--text2);text-align:center">New Interest</td>
+        <td style="padding:8px 12px;font-size:11px;color:var(--text2);text-align:center;border-left:1px solid var(--border);border-right:1px solid var(--border)">Old Interest</td>
+        <td style="padding:8px 12px;font-size:11px;color:var(--text2);text-align:center">Difference</td>
+      </tr>
+      <tr style="border-top:1px solid var(--border)">
+        <td style="padding:10px 12px;text-align:center"><span id="re_new_int_emi" style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:var(--green)">—</span></td>
+        <td style="padding:10px 12px;text-align:center;border-left:1px solid var(--border);border-right:1px solid var(--border)"><span id="re_old_int_emi" style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:var(--accent)">—</span></td>
+        <td style="padding:10px 12px;text-align:center"><span id="re_int_emi_diff" style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:var(--green)">—</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- If you want to change Tenure -->
+  <div style="background:var(--surface);border:1.5px solid var(--accent);border-radius:13px;overflow:hidden;margin-bottom:14px">
+    <div style="background:linear-gradient(135deg,rgba(37,99,235,0.1),rgba(37,99,235,0.05));padding:11px 14px;font-size:13px;font-weight:700;color:var(--accent);text-align:center;border-bottom:1px solid var(--border)">
+      If you want to change Tenure
+    </div>
+    <table style="width:100%;border-collapse:collapse">
+      <tr>
+        <td style="padding:8px 12px;font-size:11px;color:var(--text2);text-align:center;width:33%">New Months</td>
+        <td style="padding:8px 12px;font-size:11px;color:var(--text2);text-align:center;width:33%;border-left:1px solid var(--border);border-right:1px solid var(--border)">Old Months</td>
+        <td style="padding:8px 12px;font-size:11px;color:var(--text2);text-align:center;width:34%">Difference</td>
+      </tr>
+      <tr style="border-top:1px solid var(--border)">
+        <td style="padding:10px 12px;text-align:center"><span id="re_new_months" style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:var(--green)">—</span></td>
+        <td style="padding:10px 12px;text-align:center;border-left:1px solid var(--border);border-right:1px solid var(--border)"><span id="re_old_months" style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:var(--accent)">—</span></td>
+        <td style="padding:10px 12px;text-align:center"><span id="re_months_diff" style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:var(--accent2)">—</span></td>
+      </tr>
+      <tr style="border-top:1px solid var(--border)">
+        <td style="padding:8px 12px;font-size:11px;color:var(--text2);text-align:center">New Interest</td>
+        <td style="padding:8px 12px;font-size:11px;color:var(--text2);text-align:center;border-left:1px solid var(--border);border-right:1px solid var(--border)">Old Interest</td>
+        <td style="padding:8px 12px;font-size:11px;color:var(--text2);text-align:center">Difference</td>
+      </tr>
+      <tr style="border-top:1px solid var(--border)">
+        <td style="padding:10px 12px;text-align:center"><span id="re_new_int_ten" style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:var(--green)">—</span></td>
+        <td style="padding:10px 12px;text-align:center;border-left:1px solid var(--border);border-right:1px solid var(--border)"><span id="re_old_int_ten" style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:var(--accent)">—</span></td>
+        <td style="padding:10px 12px;text-align:center"><span id="re_int_ten_diff" style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:var(--green)">—</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <button class="btn bp bfull" onclick="reShare()" style="justify-content:center;font-size:13px;padding:12px">📤 Share Result</button>
+</div>
+
+<!-- History Modal -->
+<div class="mov" id="reHistoryModal" style="display:none">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">📋 Calculation History</span>
+      <button class="mc" onclick="closeM('reHistoryModal')">✕</button>
+    </div>
+    <div id="re_history_list" style="max-height:400px;overflow-y:auto;padding:4px 0"></div>
+    <button class="btn br bfull" style="margin-top:10px;justify-content:center" onclick="reClearHistory()">🗑️ Clear History</button>
+  </div>
+</div>
+
+</section>
+
 <!-- ═══ SIP CALCULATOR — PREMIUM ═══ -->
 <section class="section" id="sec_sip">
 
-<!-- ── Hero Card with Mode Toggle ── -->
-<div class="sip-hero-card">
-  <div class="sip-hero-inner">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">
-      <div>
-        <div class="sip-hero-label">Investment Planner</div>
-        <div class="sip-hero-title">📈 SIP Calculator</div>
-        <div class="sip-hero-sub">Wealth banana start karein aaj se</div>
-      </div>
-      <button class="btn" style="padding:4px 10px;font-size:10px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;flex-shrink:0;margin-top:4px" onclick="showSection('sec_sip_overview')">👁️ My SIPs</button>
-    </div>
-    <!-- Premium Mode Toggle -->
-    <div class="sip-mode-toggle">
-      <button id="sip_mode_sip" class="sip-mode-btn active" onclick="setSipMode('sip')">📈 SIP</button>
-      <button id="sip_mode_lump" class="sip-mode-btn" onclick="setSipMode('lump')">💰 Lump Sum</button>
-      <button id="sip_mode_target" class="sip-mode-btn" onclick="setSipMode('target')">🎯 Target</button>
-      <button class="sip-mode-btn" onclick="openM('swpModal')" style="background:linear-gradient(135deg,rgba(234,88,12,0.7),rgba(180,83,9,0.7));color:#fff">💸 SWP</button>
-    </div>
-  </div>
+<!-- SIP Mode Toggle -->
+<div class="sip-mode-toggle" style="margin-bottom:10px">
+  <button id="sip_mode_sip" class="sip-mode-btn active" onclick="setSipMode('sip')">📈 SIP</button>
+  <button id="sip_mode_lump" class="sip-mode-btn" onclick="setSipMode('lump')">💰 Lump Sum</button>
+  <button id="sip_mode_target" class="sip-mode-btn" onclick="setSipMode('target')">🎯 Target</button>
+  <button class="sip-mode-btn" onclick="openM('swpModal')" style="background:linear-gradient(135deg,rgba(234,88,12,0.7),rgba(180,83,9,0.7));color:#fff">💸 SWP</button>
 </div>
 
 <!-- ── SIP Mode Inputs ── -->
 <div id="sip_panel_sip" class="sip-inputs-section">
-  <div class="sip-section-label">📊 SIP Details</div>
+  <div class="sip-section-label" style="display:flex;align-items:center;justify-content:space-between">📊 SIP Details <button class="btn bs" style="padding:4px 10px;font-size:10px" onclick="showSection('sec_sip_overview')">👁️ My SIPs</button></div>
 
   <div class="sip-inp-wrap">
     <span class="sip-inp-label">Monthly Investment</span>
@@ -1138,13 +1701,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 
 <!-- ═══ SIP OVERVIEW ═══ -->
 <section class="section" id="sec_sip_overview">
-<div class="prem-hero" style="background:linear-gradient(135deg,#052e16,#14532d,#059669);margin-bottom:10px">
-  <div class="prem-hero-inner">
-    <div class="prem-hero-label">Investment Portfolio</div>
-    <div class="prem-hero-title">📈 My SIP Portfolio</div>
-    <div class="prem-hero-sub">Saare SIP investments ek jagah</div>
-  </div>
-</div>
+
 <div class="prem-card">
   <div class="prem-card-title">📊 My SIP Profiles
     <div style="display:flex;gap:4px;margin-left:auto;align-items:center">
@@ -1186,13 +1743,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 
 <!-- ═══ LOAN OVERVIEW (screenshot-style) ═══ -->
 <section class="section" id="sec_loan_overview">
-<div class="prem-hero prem-hero-emi" style="margin-bottom:10px">
-  <div class="prem-hero-inner">
-    <div class="prem-hero-label">Portfolio Overview</div>
-    <div class="prem-hero-title">📁 All My Loans</div>
-    <div class="prem-hero-sub">Saare loan profiles ek jagah dekhein</div>
-  </div>
-</div>
+
 <div class="prem-card">
   <div class="prem-card-title">📊 My Loan Profile
     <div style="display:flex;gap:4px;margin-left:auto;align-items:center">
@@ -1465,13 +2016,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 
 <!-- ═══ PDF ═══ -->
 <section class="section" id="sec_pdf">
-<div class="prem-hero prem-hero-pdf">
-  <div class="prem-hero-inner">
-    <div class="prem-hero-label">PDF Tools</div>
-    <div class="prem-hero-title">📄 PDF Toolkit</div>
-    <div class="prem-hero-sub">Compress, Edit, Word, PPT, ePub, OCR — sab ek jagah</div>
-  </div>
-</div>
+
 <!-- PDF COMPRESSOR -->
 <div class="prem-card" id="pdf_comp_card">
   <div class="prem-card-title">📄 PDF Compressor
@@ -1492,18 +2037,21 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
     <div class="cl-btn" id="cl_mid" onclick="setCL('mid')">🟡 Medium<br><span style="font-size:9px;font-weight:400">~70%</span></div>
     <div class="cl-btn" id="cl_high" onclick="setCL('high')">🔴 High<br><span style="font-size:9px;font-weight:400">~45%</span></div>
     <div class="cl-btn" id="cl_extreme" onclick="setCL('extreme')">⚡ Extreme<br><span style="font-size:9px;font-weight:400">~22%</span></div>
+    <div class="cl-btn" id="cl_ultra" onclick="setCL('ultra')" style="border-color:rgba(220,38,38,.5);background:rgba(220,38,38,.06);color:var(--red);font-weight:800">🔥 Ultra<br><span style="font-size:9px;font-weight:400">~2–5%</span></div>
   </div>
+  <div id="ultra_warn" style="display:none;background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.3);border-radius:9px;padding:8px 11px;font-size:11px;color:var(--red);margin-bottom:8px">⚠️ <strong>Ultra Mode:</strong> Maximum compression — images pixelated honge, text readable rahega. Sirf size minimize karne ke liye use karein.</div>
   <label>DPI (Resolution):</label>
-  <div style="display:flex;gap:5px;margin-bottom:10px" id="dpi_btns">
-    <button class="btn bs" style="flex:1;font-size:10px" id="dpi72" onclick="setDPI(72,this)">72<br><span style="font-size:9px">Smallest</span></button>
-    <button class="btn bp" style="flex:1;font-size:10px" id="dpi120" onclick="setDPI(120,this)">120<br><span style="font-size:9px">Default</span></button>
-    <button class="btn bs" style="flex:1;font-size:10px" id="dpi150" onclick="setDPI(150,this)">150<br><span style="font-size:9px">Better</span></button>
-    <button class="btn bs" style="flex:1;font-size:10px" id="dpi200" onclick="setDPI(200,this)">200<br><span style="font-size:9px">Sharp</span></button>
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:10px" id="dpi_btns">
+    <button class="btn bs" style="font-size:10px;padding:6px 2px;width:100%" id="dpi48" onclick="setDPI(48,this)">48<br><span style="font-size:9px">Ultra Min</span></button>
+    <button class="btn bs" style="font-size:10px;padding:6px 2px;width:100%" id="dpi72" onclick="setDPI(72,this)">72<br><span style="font-size:9px">Smallest</span></button>
+    <button class="btn bp" style="font-size:10px;padding:6px 2px;width:100%" id="dpi120" onclick="setDPI(120,this)">120<br><span style="font-size:9px">Default</span></button>
+    <button class="btn bs" style="font-size:10px;padding:6px 2px;width:100%" id="dpi150" onclick="setDPI(150,this)">150<br><span style="font-size:9px">Better</span></button>
+    <button class="btn bs" style="font-size:10px;padding:6px 2px;width:100%" id="dpi200" onclick="setDPI(200,this)">200<br><span style="font-size:9px">Sharp</span></button>
   </div>
   <div class="uarea prem-drop-zone" onclick="document.getElementById('pdfInput').click()">
     <div style="font-size:24px;margin-bottom:4px">📄</div>
     <!-- FIX 8: 500MB limit -->
-    <div style="font-size:12px;color:var(--text2)">Select PDF (up to 500MB)<br><strong style="color:var(--text)">Extreme+72DPI: 100MB → ~3MB | Always OCR searchable</strong></div>
+    <div style="font-size:12px;color:var(--text2)">Select PDF (up to 500MB)<br><strong style="color:var(--text)">Ultra+48DPI: 100MB → ~1MB | Extreme+72DPI: ~3MB | OCR Searchable</strong></div>
   </div>
   <input type="file" id="pdfInput" accept=".pdf,application/pdf" style="display:none" onchange="handlePDF(event)">
   <div id="pdf_info" style="display:none" class="rbox">
@@ -1654,7 +2202,10 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 
     <!-- Pen Draw panel -->
     <div id="pe_panel_pen" style="display:none">
-      <div class="ibox ig" style="font-size:11px">🖊️ PDF page ka preview canvas par free-hand pen se draw/write karein — handwriting, annotations, arrows, corrections sab kuch.</div>
+      <div class="ibox ig" style="font-size:11px">🖊️ PDF page ka preview canvas par free-hand pen se draw/write karein — handwriting, annotations, arrows, corrections sab kuch.<br>⬜ <strong>White Erase mode:</strong> Original PDF content ko permanently white se cover karein.</div>
+      <div style="background:rgba(234,88,12,0.07);border:1px solid rgba(234,88,12,0.25);border-radius:8px;padding:7px 10px;font-size:10px;color:var(--accent2);margin-bottom:8px">
+        💡 <strong>Original content erase karne ke liye:</strong> "⬜ White Erase" select karein → Content pe brush chalayein → "✅ Apply to PDF" click karein → Download.
+      </div>
       <div style="display:flex;gap:7px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
         <div>
           <label style="font-size:10px">Page No.</label>
@@ -1666,7 +2217,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
         </div>
         <div>
           <label style="font-size:10px">Size</label>
-          <input class="inp" id="pe_pen_size" type="number" placeholder="3" value="3" min="1" max="30" style="width:55px;margin-bottom:0;padding:7px 9px;font-size:12px">
+          <input class="inp" id="pe_pen_size" type="number" placeholder="3" value="3" min="1" max="50" style="width:55px;margin-bottom:0;padding:7px 9px;font-size:12px">
         </div>
         <div style="display:flex;flex-direction:column;gap:3px">
           <label style="font-size:10px">Highlighter</label>
@@ -1675,7 +2226,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
         <div style="display:flex;gap:5px;margin-top:14px;flex-wrap:wrap">
           <button class="btn bp" id="pe_pen_mode_pen" style="font-size:10px;padding:5px 8px" onclick="setPenMode('pen')">🖊️ Pen</button>
           <button class="btn bs" id="pe_pen_mode_hl" style="font-size:10px;padding:5px 8px" onclick="setPenMode('highlight')">🖍️ Highlight</button>
-          <button class="btn bs" id="pe_pen_mode_erase" style="font-size:10px;padding:5px 8px" onclick="setPenMode('erase')">🧹 Erase</button>
+          <button class="btn bs" id="pe_pen_mode_erase" style="font-size:10px;padding:5px 8px" onclick="setPenMode('erase')">⬜ White Erase</button>
         </div>
       </div>
       <div style="border:2px solid var(--border);border-radius:9px;overflow:hidden;position:relative;margin-bottom:8px;background:#f5f5f5">
@@ -2192,13 +2743,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 
 </section>
 <section class="section" id="sec_whatsapp">
-<div class="prem-hero prem-hero-wa">
-  <div class="prem-hero-inner">
-    <div class="prem-hero-label">Messaging Tool</div>
-    <div class="prem-hero-title">💬 WhatsApp Scheduler</div>
-    <div class="prem-hero-sub">Schedule karo, auto-send ho jaayega</div>
-  </div>
-</div>
+
 <div class="prem-card">
   <div class="prem-card-title">📝 New Message</div>
   <div class="ibox ig">📌 At scheduled time, WhatsApp opens with pre-filled message. Keep this tab open.</div>
@@ -2222,13 +2767,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 
 <!-- ═══ CASH ═══ -->
 <section class="section" id="sec_cash">
-<div class="prem-hero prem-hero-cash">
-  <div class="prem-hero-inner">
-    <div class="prem-hero-label">Note Counter</div>
-    <div class="prem-hero-title">🏦 Cash Counter</div>
-    <div class="prem-hero-sub">Notes aur coins quickly count karein</div>
-  </div>
-</div>
+
 <div class="prem-card">
   <div class="prem-card-title">💵 Enter Notes & Coins</div>
   <div style="background:linear-gradient(135deg,rgba(22,163,74,0.12),rgba(37,99,235,0.08));border:1.5px solid rgba(22,163,74,0.25);border-radius:14px;padding:14px;text-align:center;margin-bottom:14px">
@@ -2261,13 +2800,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 
 <!-- ═══ AMOUNT TO WORD ═══ -->
 <section class="section" id="sec_a2w">
-<div class="prem-hero prem-hero-a2w">
-  <div class="prem-hero-inner">
-    <div class="prem-hero-label">Currency Converter</div>
-    <div class="prem-hero-title">🔤 Amount to Word</div>
-    <div class="prem-hero-sub">18+ currencies mein words mein convert karein</div>
-  </div>
-</div>
+
 <div class="prem-card">
   <div class="prem-card-title">💱 Enter Amount</div>
   <div class="sip-inp-with-prefix" style="margin-bottom:8px">
@@ -2281,13 +2814,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 
 <!-- ═══ COMPARE ═══ -->
 <section class="section" id="sec_compare">
-<div class="prem-hero prem-hero-compare">
-  <div class="prem-hero-inner">
-    <div class="prem-hero-label">Loan Comparison</div>
-    <div class="prem-hero-title">⚖️ Compare Loans</div>
-    <div class="prem-hero-sub">Do loans mein se sabse best choose karein</div>
-  </div>
-</div>
+
 <div class="prem-card">
   <div class="prem-card-title">📊 Enter Loan Details</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
@@ -2321,15 +2848,902 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 </div>
 </section>
 
-<!-- ═══ MILEAGE CALCULATOR ═══ -->
-<section class="section" id="sec_mileage">
-<div class="prem-hero prem-hero-mileage">
-  <div class="prem-hero-inner">
-    <div class="prem-hero-label">Vehicle Tracker</div>
-    <div class="prem-hero-title">⛽ Mileage Calculator</div>
-    <div class="prem-hero-sub">Gaadi ki fuel efficiency track karein</div>
+<!-- ═══ MORATORIUM CALCULATOR ═══ -->
+<section class="section" id="sec_moratorium">
+
+
+
+<div class="prem-card" style="margin-top:10px">
+  <div class="prem-card-title">📋 Loan Details</div>
+
+  <label>Loan Amount (₹)</label>
+  <input class="inp" type="number" id="mor2_principal" placeholder="Ex: 100000" oninput="mor2Calc()">
+
+  <label>Interest Rate (%)</label>
+  <input class="inp" type="number" id="mor2_rate" placeholder="Ex: 8" oninput="mor2Calc()">
+
+  <label>Loan Period</label>
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+    <input class="inp" type="number" id="mor2_period" placeholder="Ex: 10" style="margin-bottom:0;flex:1" oninput="mor2Calc()">
+    <div class="ptog" style="margin-bottom:0">
+      <button class="ptbtn active" id="mor2_yr" onclick="mor2PeriodToggle('yr')">Years</button>
+      <button class="ptbtn" id="mor2_mo" onclick="mor2PeriodToggle('mo')">Months</button>
+    </div>
+  </div>
+
+  <label>Installments Already Paid (Months)</label>
+  <input class="inp" type="number" id="mor2_paid" placeholder="Ex: 12 (0 for new loan)" oninput="mor2Calc()">
+
+  <label>Moratorium Period (Months)</label>
+  <input class="inp" type="number" id="mor2_morperiod" placeholder="Ex: 3 or 6" oninput="mor2Calc()">
+
+  <label>Select Your Option</label>
+  <div style="display:flex;gap:0;border-radius:11px;overflow:hidden;border:2px solid var(--accent);margin-bottom:8px">
+    <button id="mor2_opt_emi" onclick="mor2SetOpt('emi')" style="flex:1;padding:10px 4px;border:none;cursor:pointer;font-size:11px;font-weight:700;font-family:'Inter',sans-serif;background:var(--accent);color:#fff;transition:all .2s;line-height:1.3">No Change in<br>Monthly EMI</button>
+    <button id="mor2_opt_tenure" onclick="mor2SetOpt('tenure')" style="flex:1;padding:10px 4px;border:none;cursor:pointer;font-size:11px;font-weight:700;font-family:'Inter',sans-serif;background:var(--surface2);color:var(--text2);transition:all .2s;line-height:1.3">No Change in<br>Loan Tenure</button>
+  </div>
+
+  <div class="btn-row" style="margin-top:10px">
+    <button class="btn bp" style="flex:1;justify-content:center" onclick="mor2Calc()">🔢 Calculate</button>
+    <button class="btn bs" style="flex:1;justify-content:center" onclick="mor2Reset()">🔄 Reset</button>
+  </div>
+
+  <!-- Result Table -->
+  <div id="mor2_result" style="display:none;margin-top:14px">
+    <div style="border:1.5px solid var(--accent);border-radius:12px;overflow:hidden">
+      <!-- Header Row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--surface2);border-bottom:1px solid var(--border)">
+        <div style="padding:10px 8px;font-size:11px;color:var(--text2);font-weight:700;border-right:1px solid var(--border)"></div>
+        <div style="padding:10px 6px;font-size:11px;color:var(--text2);font-weight:700;text-align:center;border-right:1px solid var(--border)">No<br>Moratorium</div>
+        <div style="padding:10px 6px;font-size:11px;color:var(--accent);font-weight:700;text-align:center">Moratorium<br>Revise EMI</div>
+      </div>
+      <!-- Total Principal -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--border)">
+        <div style="padding:10px 8px;font-size:11px;color:var(--text2);border-right:1px solid var(--border);display:flex;align-items:center">Total Principal</div>
+        <div id="mor2_orig_principal" style="padding:10px 6px;font-size:12px;font-weight:600;text-align:center;border-right:1px solid var(--border);display:flex;align-items:center;justify-content:center">—</div>
+        <div id="mor2_new_principal" style="padding:10px 6px;font-size:12px;font-weight:700;color:var(--red);text-align:center;display:flex;align-items:center;justify-content:center">—</div>
+      </div>
+      <!-- Monthly EMI -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--border)">
+        <div style="padding:10px 8px;font-size:11px;color:var(--text2);border-right:1px solid var(--border);display:flex;align-items:center">Monthly EMI</div>
+        <div id="mor2_orig_emi" style="padding:10px 6px;font-size:12px;font-weight:600;text-align:center;border-right:1px solid var(--border);display:flex;align-items:center;justify-content:center">—</div>
+        <div id="mor2_new_emi" style="padding:10px 6px;font-size:12px;font-weight:700;color:var(--accent);text-align:center;display:flex;align-items:center;justify-content:center">—</div>
+      </div>
+      <!-- Tenure -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--border)">
+        <div style="padding:10px 8px;font-size:11px;color:var(--text2);border-right:1px solid var(--border);display:flex;align-items:center">Tenure (Months)</div>
+        <div id="mor2_orig_tenure" style="padding:10px 6px;font-size:12px;font-weight:600;text-align:center;border-right:1px solid var(--border);display:flex;align-items:center;justify-content:center">—</div>
+        <div id="mor2_new_tenure" style="padding:10px 6px;font-size:13px;font-weight:800;color:var(--accent);text-align:center;display:flex;align-items:center;justify-content:center">—</div>
+      </div>
+      <!-- Total Interest -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--border)">
+        <div style="padding:10px 8px;font-size:11px;color:var(--text2);border-right:1px solid var(--border);display:flex;align-items:center">Total Interest</div>
+        <div id="mor2_orig_interest" style="padding:10px 6px;font-size:12px;font-weight:600;text-align:center;border-right:1px solid var(--border);display:flex;align-items:center;justify-content:center">—</div>
+        <div id="mor2_new_interest" style="padding:10px 6px;font-size:13px;font-weight:800;color:var(--red);text-align:center;display:flex;align-items:center;justify-content:center">—</div>
+      </div>
+      <!-- Total Payment -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr">
+        <div style="padding:10px 8px;font-size:11px;color:var(--text2);border-right:1px solid var(--border);display:flex;align-items:center">Total Payment</div>
+        <div id="mor2_orig_total" style="padding:10px 6px;font-size:12px;font-weight:600;text-align:center;border-right:1px solid var(--border);display:flex;align-items:center;justify-content:center">—</div>
+        <div id="mor2_new_total" style="padding:10px 6px;font-size:12px;font-weight:700;color:var(--accent2);text-align:center;display:flex;align-items:center;justify-content:center">—</div>
+      </div>
+    </div>
+    <button class="btn bp bfull" style="margin-top:10px" onclick="mor2Share()">📤 Share Result</button>
   </div>
 </div>
+
+</section>
+
+<!-- ═══ CHECK ELIGIBILITY ═══ -->
+<section class="section" id="sec_check_eligibility">
+
+
+
+<!-- Salaried / Self Employed Toggle -->
+<div style="display:flex;gap:0;margin:12px 12px 0;border-radius:12px;overflow:hidden;border:2px solid var(--accent)">
+  <button id="elig_tab_salaried" onclick="eligSetTab('salaried')" style="flex:1;padding:11px 4px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:'Inter',sans-serif;background:var(--accent);color:#fff;transition:all .2s">👔 Salaried</button>
+  <button id="elig_tab_selfempl" onclick="eligSetTab('selfempl')" style="flex:1;padding:11px 4px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:'Inter',sans-serif;background:var(--surface2);color:var(--text2);transition:all .2s">🏢 Self Employed</button>
+</div>
+
+<!-- ── SALARIED PANEL ── -->
+<div id="elig_panel_salaried">
+<div class="prem-card" style="margin-top:10px">
+  <div class="prem-card-title">💼 Salaried — Loan Eligibility</div>
+
+  <label>Gross Monthly Income (₹)</label>
+  <input class="inp" type="number" id="el_salary" placeholder="Ex: 100000" oninput="eligCalcSalaried()">
+
+  <label>FOIR — Max % of Salary</label>
+  <input class="inp" type="number" id="el_foir" placeholder="Ex: 35" value="35" oninput="eligCalcSalaried()">
+
+  <label>Total Monthly EMIs Already Running (₹)</label>
+  <input class="inp" type="number" id="el_existing_emi" placeholder="Ex: 1000" oninput="eligCalcSalaried()">
+
+  <label>Interest Rate (%)</label>
+  <input class="inp" type="number" id="el_rate" placeholder="Ex: 8.5" oninput="eligCalcSalaried()">
+
+  <label>Loan Period</label>
+  <div style="display:flex;gap:8px;align-items:center">
+    <input class="inp" type="number" id="el_period" placeholder="Ex: 12" style="margin-bottom:0;flex:1" oninput="eligCalcSalaried()">
+    <div class="ptog" style="margin-bottom:0">
+      <button class="ptbtn active" id="el_period_yr" onclick="eligPeriodToggle('yr')">Years</button>
+      <button class="ptbtn" id="el_period_mo" onclick="eligPeriodToggle('mo')">Months</button>
+    </div>
+  </div>
+
+  <div class="btn-row" style="margin-top:14px">
+    <button class="btn bp" style="flex:1;justify-content:center" onclick="eligCalcSalaried()">🔢 Calculate</button>
+    <button class="btn bs" style="flex:1;justify-content:center" onclick="eligResetSalaried()">🔄 Reset</button>
+  </div>
+
+  <div id="elig_sal_result" style="display:none;margin-top:14px">
+    <div style="border:1.5px solid var(--accent);border-radius:12px;overflow:hidden">
+      <div style="display:flex;border-bottom:1px solid var(--border)">
+        <div style="flex:1;padding:12px;border-right:1px solid var(--border)">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:3px">Eligible EMI</div>
+          <div id="el_res_emi" style="font-size:20px;font-weight:800;color:var(--accent);font-family:'Baloo 2',sans-serif">—</div>
+        </div>
+        <div style="flex:1;padding:12px">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:3px">Eligible Loan Amount</div>
+          <div id="el_res_loan" style="font-size:20px;font-weight:800;color:var(--green);font-family:'Baloo 2',sans-serif">—</div>
+        </div>
+      </div>
+    </div>
+    <button class="btn bp bfull" style="margin-top:10px" onclick="eligShareSalaried()">📤 Share Result</button>
+  </div>
+</div>
+</div>
+
+<!-- ── SELF EMPLOYED PANEL (SENP Full Calculator — New Version) ── -->
+<div id="elig_panel_selfempl" style="display:none">
+
+<style>
+/* ── SENP NEW PANEL STYLES ── */
+.senp-new-container {
+  max-width: 100%;
+  margin: 0;
+  background: transparent;
+}
+
+/* Results Strip */
+.senp-new-strip {
+  background: #0b2b3b;
+  padding: 0.8rem;
+  border-radius: 0 0 12px 12px;
+  margin-bottom: 12px;
+  position: sticky;
+  top: 88px; /* header(48px) + nav(40px) */
+  z-index: 180;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+}
+body.dark .senp-new-strip { background: #071520; }
+.senp-new-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 0.5rem;
+  align-items: center;
+}
+.senp-new-result-card {
+  background: rgba(255,255,255,0.1);
+  border-radius: 0.8rem;
+  padding: 0.4rem 0.3rem;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.senp-new-result-card .snrc-label {
+  font-size: 0.5rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #bdd9e6;
+}
+.senp-new-result-card .snrc-value {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: white;
+  font-family: monospace;
+  word-break: break-word;
+}
+.senp-new-result-card .snrc-sub {
+  font-size: 0.4rem;
+  color: #b0cfdf;
+}
+.senp-new-result-card.max-card {
+  background: #f5b042;
+  border: 2px solid #ffffff;
+  transform: scale(1.02);
+}
+.senp-new-result-card.max-card .snrc-label,
+.senp-new-result-card.max-card .snrc-sub {
+  color: #1e3a47;
+  font-weight: 700;
+}
+.senp-new-result-card.max-card .snrc-value {
+  color: #1e3a47;
+  font-size: 0.8rem;
+}
+
+/* Dashboard area */
+.senp-new-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+@media (min-width: 900px) {
+  .senp-new-dashboard { flex-direction: row; }
+  .senp-new-inputs-area { flex: 2; }
+  .senp-new-right-area { flex: 1.2; display: flex; flex-direction: column; gap: 1rem; }
+}
+
+.senp-new-inputs-area,
+.senp-new-chart-area,
+.senp-new-history-area {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.senp-new-section-title {
+  font-weight: 700;
+  font-size: 12px;
+  border-left: 4px solid var(--accent);
+  padding-left: 10px;
+  margin: 0.8rem 0;
+  color: var(--accent);
+  font-family: 'Baloo 2', sans-serif;
+}
+.senp-new-section-title:first-of-type { margin-top: 0; }
+
+/* Applicants scroll */
+.senp-new-scroll-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -0.3rem;
+  padding: 0 0.3rem;
+}
+.senp-new-applicants-row {
+  display: flex;
+  gap: 0.8rem;
+  min-width: min-content;
+}
+.senp-new-applicant-card {
+  flex: 0 0 270px;
+  background: var(--surface2);
+  border-radius: 12px;
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+}
+@media (min-width: 1100px) {
+  .senp-new-applicant-card { flex: 1; min-width: 240px; }
+}
+.senp-new-applicant-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--accent);
+}
+.senp-new-applicant-header input {
+  font-weight: 700;
+  font-size: 13px;
+  background: transparent;
+  border: none;
+  padding: 0.2rem 0;
+  width: 100%;
+  color: var(--text);
+  outline: none;
+  font-family: 'Inter', sans-serif;
+}
+.senp-new-inp-group {
+  margin-bottom: 8px;
+}
+.senp-new-inp-group label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text2);
+  margin-bottom: 3px;
+  display: block;
+}
+.senp-new-inp-group input,
+.senp-new-inp-group select {
+  width: 100%;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  padding: 9px 11px;
+  font-size: 13px;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.senp-new-inp-group input:focus,
+.senp-new-inp-group select:focus { border-color: var(--accent); }
+.senp-new-row { display: flex; gap: 0.5rem; }
+.senp-new-row .senp-new-inp-group { flex: 1; }
+.senp-new-hr { margin: 0.5rem 0; border: none; height: 1px; background: var(--border); }
+
+/* Loan params */
+.senp-new-loan-params {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.senp-new-loan-params .senp-new-inp-group { flex: 1; margin-bottom: 0; }
+
+/* Action Buttons */
+.senp-new-action-buttons {
+  display: flex;
+  gap: 0.8rem;
+  margin: 0.8rem 0;
+  flex-wrap: wrap;
+}
+.senp-new-save-btn, .senp-new-share-btn, .senp-new-calc-btn {
+  flex: 1;
+  padding: 0.65rem;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s;
+}
+.senp-new-calc-btn { background: var(--accent); color: white; flex: 2; }
+.senp-new-save-btn { background: var(--green); color: white; }
+.senp-new-share-btn { background: var(--accent2); color: white; }
+.senp-new-save-btn:hover, .senp-new-share-btn:hover, .senp-new-calc-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.senp-new-note-input {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  font-size: 12px;
+  margin-top: 6px;
+  font-family: 'Inter', sans-serif;
+  background: var(--surface2);
+  color: var(--text);
+  outline: none;
+}
+.senp-new-note-input:focus { border-color: var(--accent); }
+
+/* Formula hint */
+.senp-new-formula-hint {
+  background: rgba(37,99,235,0.07);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 10px;
+  color: var(--text2);
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+/* Chart */
+.senp-new-chart-container { margin-top: 0.8rem; height: 180px; }
+.senp-new-footer-note {
+  background: var(--surface2);
+  border-radius: 0.7rem;
+  padding: 0.5rem;
+  font-size: 10px;
+  text-align: center;
+  margin-top: 0.8rem;
+  color: var(--text2);
+}
+
+/* History */
+.senp-new-history-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+.senp-new-history-item {
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 0.6rem;
+  margin-bottom: 0.6rem;
+  border-left: 3px solid var(--accent);
+  position: relative;
+}
+.senp-new-history-item .snh-date {
+  font-size: 0.55rem;
+  color: var(--text2);
+  margin-bottom: 0.3rem;
+}
+.senp-new-history-item .snh-values {
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.3rem;
+  color: var(--text);
+}
+.senp-new-history-item .snh-note {
+  font-size: 0.55rem;
+  color: var(--accent);
+  font-style: italic;
+}
+.senp-new-del-hist {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--red);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+  min-width: unset;
+}
+.senp-new-clear-all {
+  background: var(--red);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 8px;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+}
+.senp-new-empty-history {
+  text-align: center;
+  color: var(--text2);
+  font-size: 11px;
+  padding: 1rem;
+}
+</style>
+
+<div class="senp-new-container">
+
+  <!-- Results Strip -->
+  <div class="senp-new-strip">
+    <div class="senp-new-results-grid">
+      <div class="senp-new-result-card max-card">
+        <div class="snrc-label">👑 MAX ELIGIBILITY</div>
+        <div class="snrc-value" id="snew_maxVal">₹ 0</div>
+        <div class="snrc-sub">Highest of all</div>
+      </div>
+      <div class="senp-new-result-card">
+        <div class="snrc-label">VANILLA</div>
+        <div class="snrc-value" id="snew_vanillaVal">₹ 0</div>
+        <div class="snrc-sub">PAT+Dep+Int+Rem</div>
+      </div>
+      <div class="senp-new-result-card">
+        <div class="snrc-label">GROSS PROFIT</div>
+        <div class="snrc-value" id="snew_gpVal">₹ 0</div>
+        <div class="snrc-sub">80% MIN(GP,15%Turn)</div>
+      </div>
+      <div class="senp-new-result-card">
+        <div class="snrc-label">GST</div>
+        <div class="snrc-value" id="snew_gstVal">₹ 0</div>
+        <div class="snrc-sub">8%/4% × GST ×80%</div>
+      </div>
+      <div class="senp-new-result-card">
+        <div class="snrc-label">RENTAL</div>
+        <div class="snrc-value" id="snew_rentalVal">₹ 0</div>
+        <div class="snrc-sub">70% Rent - Oblig</div>
+      </div>
+      <div class="senp-new-result-card">
+        <div class="snrc-label">BANKING</div>
+        <div class="snrc-value" id="snew_bankVal">₹ 0</div>
+        <div class="snrc-sub">Avg Bal / Factor</div>
+      </div>
+      <div class="senp-new-result-card">
+        <div class="snrc-label">LOW LTV</div>
+        <div class="snrc-value" id="snew_ltvVal">₹ 0</div>
+        <div class="snrc-sub">Min(1Cr, PV)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="senp-new-dashboard">
+
+    <!-- Inputs Area -->
+    <div class="senp-new-inputs-area">
+      <div class="senp-new-section-title">💰 Loan Parameters</div>
+      <div class="senp-new-loan-params">
+        <div class="senp-new-inp-group">
+          <label>Loan Amount (₹)</label>
+          <input type="number" id="snew_loanAmount" value="10000000" oninput="snewUpdateUI()">
+        </div>
+        <div class="senp-new-inp-group">
+          <label>Tenor (months)</label>
+          <input type="number" id="snew_tenor" value="180" oninput="snewUpdateUI()">
+        </div>
+      </div>
+
+      <div class="senp-new-section-title">👥 3 Applicants (Each has own Rental, Obligation &amp; Banking)</div>
+      <div class="senp-new-scroll-container">
+        <div class="senp-new-applicants-row">
+
+          <!-- Applicant 1 -->
+          <div class="senp-new-applicant-card">
+            <div class="senp-new-applicant-header">👤 <input type="text" id="snew_name1" value="Applicant 1" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Profit After Tax (₹)</label><input type="number" id="snew_pat1" value="400000" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Depreciation (₹)</label><input type="number" id="snew_dep1" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Interest on Loan (₹)</label><input type="number" id="snew_int1" value="1000" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Remuneration (₹)</label><input type="number" id="snew_rem1" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Gross Profit (₹)</label><input type="number" id="snew_gp1" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Turnover (₹)</label><input type="number" id="snew_turn1" value="5000000" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Last 12 Months GST (₹)</label><input type="number" id="snew_gst1" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group">
+              <label>Industry Type</label>
+              <select id="snew_industry1" onchange="snewUpdateUI()">
+                <option value="Manufacturing">Manufacturing</option>
+                <option value="Service Provider">Service Provider</option>
+                <option value="Retail Trader">Retail Trader</option>
+                <option value="Wholesale trader">Wholesale trader</option>
+              </select>
+            </div>
+            <div class="senp-new-hr"></div>
+            <div class="senp-new-inp-group"><label>Net Rental / Month (₹)</label><input type="number" id="snew_rental1" value="100000" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Obligation / Month (₹)</label><input type="number" id="snew_obligation1" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Banking Avg Balance (₹)</label><input type="number" id="snew_bank1" value="10000" oninput="snewUpdateUI()"></div>
+          </div>
+
+          <!-- Applicant 2 -->
+          <div class="senp-new-applicant-card">
+            <div class="senp-new-applicant-header">👤 <input type="text" id="snew_name2" value="Applicant 2" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Profit After Tax (₹)</label><input type="number" id="snew_pat2" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Depreciation (₹)</label><input type="number" id="snew_dep2" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Interest on Loan (₹)</label><input type="number" id="snew_int2" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Remuneration (₹)</label><input type="number" id="snew_rem2" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Gross Profit (₹)</label><input type="number" id="snew_gp2" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Turnover (₹)</label><input type="number" id="snew_turn2" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Last 12 Months GST (₹)</label><input type="number" id="snew_gst2" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group">
+              <label>Industry Type</label>
+              <select id="snew_industry2" onchange="snewUpdateUI()">
+                <option value="Manufacturing">Manufacturing</option>
+                <option value="Service Provider">Service Provider</option>
+                <option value="Retail Trader">Retail Trader</option>
+                <option value="Wholesale trader">Wholesale trader</option>
+              </select>
+            </div>
+            <div class="senp-new-hr"></div>
+            <div class="senp-new-inp-group"><label>Net Rental / Month (₹)</label><input type="number" id="snew_rental2" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Obligation / Month (₹)</label><input type="number" id="snew_obligation2" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Banking Avg Balance (₹)</label><input type="number" id="snew_bank2" value="0" oninput="snewUpdateUI()"></div>
+          </div>
+
+          <!-- Applicant 3 -->
+          <div class="senp-new-applicant-card">
+            <div class="senp-new-applicant-header">👤 <input type="text" id="snew_name3" value="Applicant 3" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Profit After Tax (₹)</label><input type="number" id="snew_pat3" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Depreciation (₹)</label><input type="number" id="snew_dep3" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Interest on Loan (₹)</label><input type="number" id="snew_int3" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Remuneration (₹)</label><input type="number" id="snew_rem3" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Gross Profit (₹)</label><input type="number" id="snew_gp3" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Turnover (₹)</label><input type="number" id="snew_turn3" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Last 12 Months GST (₹)</label><input type="number" id="snew_gst3" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group">
+              <label>Industry Type</label>
+              <select id="snew_industry3" onchange="snewUpdateUI()">
+                <option value="Manufacturing">Manufacturing</option>
+                <option value="Service Provider">Service Provider</option>
+                <option value="Retail Trader">Retail Trader</option>
+                <option value="Wholesale trader">Wholesale trader</option>
+              </select>
+            </div>
+            <div class="senp-new-hr"></div>
+            <div class="senp-new-inp-group"><label>Net Rental / Month (₹)</label><input type="number" id="snew_rental3" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Obligation / Month (₹)</label><input type="number" id="snew_obligation3" value="0" oninput="snewUpdateUI()"></div>
+            <div class="senp-new-inp-group"><label>Banking Avg Balance (₹)</label><input type="number" id="snew_bank3" value="0" oninput="snewUpdateUI()"></div>
+          </div>
+
+        </div><!-- end applicants-row -->
+      </div><!-- end scroll -->
+
+      <!-- Save & Share -->
+      <div class="senp-new-action-buttons" style="margin-top:14px">
+        <button class="senp-new-save-btn" id="snew_saveBtn">💾 Save Result</button>
+        <button class="senp-new-share-btn" id="snew_shareBtn">📤 Share</button>
+      </div>
+      <input type="text" id="snew_noteInput" class="senp-new-note-input" placeholder="Add a note (optional)..." maxlength="100">
+
+      <div class="senp-new-formula-hint">✅ Each applicant has own Rental, Obligation &amp; Banking &nbsp;|&nbsp; Rate: 10% p.a. &nbsp;|&nbsp; Monthly PV method</div>
+    </div>
+
+    <!-- Right Area: Chart + History -->
+    <div class="senp-new-right-area">
+      <div class="senp-new-chart-area">
+        <div class="senp-new-section-title">📊 Comparison (₹ Lakhs)</div>
+        <div class="senp-new-chart-container"><canvas id="snew_eligChart"></canvas></div>
+        <div class="senp-new-footer-note">✅ Matches Excel Sheet2 &nbsp;|&nbsp; 10% p.a. &nbsp;|&nbsp; Monthly PV</div>
+      </div>
+
+      <div class="senp-new-history-area">
+        <div class="senp-new-section-title">📋 Saved History</div>
+        <div id="snew_historyList" class="senp-new-history-list">
+          <div class="senp-new-empty-history">No saved results yet. Click "Save Result" to store calculations.</div>
+        </div>
+        <button id="snew_clearAllBtn" class="senp-new-clear-all">🗑️ Clear All History</button>
+      </div>
+    </div>
+
+  </div><!-- end dashboard -->
+</div><!-- end container -->
+
+</div><!-- end elig_panel_selfempl -->
+
+<script>
+// ═══════════════════════════════════════════════
+//  SENP NEW CALCULATOR — embedded in MyToolkit Pro
+//  All functions/vars prefixed with snew_ to avoid conflicts
+// ═══════════════════════════════════════════════
+
+function snewCalculatePV(annualRate, months, monthlySurplus) {
+  if (monthlySurplus <= 0) return 0;
+  var monthlyRate = annualRate / 12;
+  var factor = (1 - Math.pow(1 + monthlyRate, -months)) / monthlyRate;
+  return monthlySurplus * factor;
+}
+
+function snewGetApplicant(id) {
+  return {
+    pat:      parseFloat(document.getElementById('snew_pat'+id).value) || 0,
+    dep:      parseFloat(document.getElementById('snew_dep'+id).value) || 0,
+    int:      parseFloat(document.getElementById('snew_int'+id).value) || 0,
+    rem:      parseFloat(document.getElementById('snew_rem'+id).value) || 0,
+    gp:       parseFloat(document.getElementById('snew_gp'+id).value) || 0,
+    turnover: parseFloat(document.getElementById('snew_turn'+id).value) || 0,
+    gst:      parseFloat(document.getElementById('snew_gst'+id).value) || 0,
+    industry: document.getElementById('snew_industry'+id).value,
+    rental:   parseFloat(document.getElementById('snew_rental'+id).value) || 0,
+    obligation: parseFloat(document.getElementById('snew_obligation'+id).value) || 0,
+    banking:  parseFloat(document.getElementById('snew_bank'+id).value) || 0,
+    name:     document.getElementById('snew_name'+id).value || 'Applicant '+id
+  };
+}
+
+function snewCalculateAll() {
+  var loanAmt = parseFloat(document.getElementById('snew_loanAmount').value) || 0;
+  var tenor   = parseFloat(document.getElementById('snew_tenor').value) || 180;
+  var applicants = [snewGetApplicant(1), snewGetApplicant(2), snewGetApplicant(3)];
+  var rate = 0.10; // 10% p.a. as per Excel Sheet2 logic
+
+  // ── VANILLA (SCNP / Excel Sheet2 Logic) ──────────────────────────────
+  // Sum PAT+Dep+Int+Rem across ALL applicants (combined annual)
+  var sumVanillaAnnual = 0;
+  var sumRental70 = 0;
+  var sumObligation = 0;
+  var sumGPAnnual = 0;
+  var sumGSTMonthly = 0;
+  var sumBanking = 0;
+
+  applicants.forEach(function(app) {
+    sumVanillaAnnual += app.pat + app.dep + app.int + app.rem;
+    sumRental70      += app.rental * 0.70;
+    sumObligation    += app.obligation;
+    sumBanking       += app.banking;
+
+    // Gross Profit (per applicant capped at 15%)
+    var gpAnnual = 0;
+    if (app.turnover > 0 && app.gp > 0) {
+      var gpPct = (app.gp / app.turnover) * 100;
+      gpAnnual = (gpPct > 15) ? app.turnover * 0.15 : app.gp;
+    } else if (app.gp > 0 && app.turnover === 0) {
+      gpAnnual = app.gp;
+    }
+    sumGPAnnual += gpAnnual;
+
+    // GST
+    var gstRate = (app.industry === 'Wholesale trader') ? 0.04 : 0.08;
+    sumGSTMonthly += (app.gst * gstRate) / 12 * 0.80;
+  });
+
+  // VANILLA: PV( rate/12, tenor, -(sumAnnual/12 + rental70 - obligation) )
+  // i.e. monthly surplus = (sumAnnual/12) + rental70 - obligation
+  var vanillaMonthly = (sumVanillaAnnual / 12) + sumRental70 - sumObligation;
+  var totalVanilla   = snewCalculatePV(rate, tenor, Math.max(0, vanillaMonthly));
+
+  // GROSS PROFIT: combined
+  var gpMonthly = (sumGPAnnual * 0.80) / 12 + sumRental70 - sumObligation;
+  var totalGP   = snewCalculatePV(rate, tenor, Math.max(0, gpMonthly));
+
+  // GST: combined
+  var gstMonthly = sumGSTMonthly + sumRental70 - sumObligation;
+  var totalGST   = snewCalculatePV(rate, tenor, Math.max(0, gstMonthly));
+
+  // RENTAL ONLY: combined
+  var rentalMonthly = sumRental70 - sumObligation;
+  var totalRental   = snewCalculatePV(rate, tenor, Math.max(0, rentalMonthly));
+
+  // BANKING SURROGATE: combined
+  var bankFactor = (loanAmt <= 10000000) ? 1.5 : ((loanAmt <= 30000000) ? 1.75 : 2);
+  var bankMonthly = (sumBanking / bankFactor) - sumObligation;
+  var totalBanking = snewCalculatePV(rate, tenor, Math.max(0, bankMonthly));
+
+  // LOW LTV
+  var lowLtv = Math.min(10000000, snewCalculatePV(rate, tenor, sumBanking));
+  lowLtv = Math.max(0, lowLtv);
+
+  return {
+    vanilla:     Math.round(totalVanilla),
+    grossProfit: Math.round(totalGP),
+    gst:         Math.round(totalGST),
+    rental:      Math.round(totalRental),
+    banking:     Math.round(totalBanking),
+    lowLtv:      Math.round(lowLtv),
+    maxVal:      Math.round(Math.max(totalVanilla, totalGP, totalGST, totalRental, totalBanking, lowLtv))
+  };
+}
+
+function snewFormatINR(val) {
+  return '₹ ' + val.toLocaleString('en-IN');
+}
+
+var snewChart = null;
+
+function snewUpdateUI() {
+  var res = snewCalculateAll();
+  document.getElementById('snew_maxVal').textContent    = snewFormatINR(res.maxVal);
+  document.getElementById('snew_vanillaVal').textContent = snewFormatINR(res.vanilla);
+  document.getElementById('snew_gpVal').textContent      = snewFormatINR(res.grossProfit);
+  document.getElementById('snew_gstVal').textContent     = snewFormatINR(res.gst);
+  document.getElementById('snew_rentalVal').textContent  = snewFormatINR(res.rental);
+  document.getElementById('snew_bankVal').textContent    = snewFormatINR(res.banking);
+  document.getElementById('snew_ltvVal').textContent     = snewFormatINR(res.lowLtv);
+
+  var ctx = document.getElementById('snew_eligChart');
+  if (!ctx) return res;
+  if (snewChart) snewChart.destroy();
+  snewChart = new Chart(ctx.getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: ['Vanilla', 'GP', 'GST', 'Rental', 'Banking', 'Low LTV'],
+      datasets: [{
+        label: '₹ Lakhs',
+        data: [res.vanilla/100000, res.grossProfit/100000, res.gst/100000, res.rental/100000, res.banking/100000, res.lowLtv/100000],
+        backgroundColor: '#2563ebcc',
+        borderRadius: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function(c) { return '₹ ' + (c.raw * 100000).toLocaleString('en-IN'); }
+          }
+        }
+      }
+    }
+  });
+  return res;
+}
+
+// History
+var snewHistory = [];
+try { snewHistory = JSON.parse(localStorage.getItem('snew_eligibility_history') || '[]'); } catch(e) { snewHistory = []; }
+
+function snewSaveToHistory(res, note) {
+  var record = {
+    id: Date.now(),
+    date: new Date().toLocaleString(),
+    maxEligibility: res.maxVal,
+    vanilla: res.vanilla,
+    grossProfit: res.grossProfit,
+    gst: res.gst,
+    rental: res.rental,
+    banking: res.banking,
+    lowLtv: res.lowLtv,
+    note: note || ''
+  };
+  snewHistory.unshift(record);
+  if (snewHistory.length > 20) snewHistory = snewHistory.slice(0, 20);
+  try { localStorage.setItem('snew_eligibility_history', JSON.stringify(snewHistory)); } catch(e) {}
+  snewRenderHistory();
+}
+
+function snewDeleteHistoryItem(id) {
+  snewHistory = snewHistory.filter(function(h) { return h.id !== id; });
+  try { localStorage.setItem('snew_eligibility_history', JSON.stringify(snewHistory)); } catch(e) {}
+  snewRenderHistory();
+}
+window.snewDeleteHistoryItem = snewDeleteHistoryItem;
+
+function snewClearAllHistory() {
+  if (confirm('Are you sure you want to delete all saved history?')) {
+    snewHistory = [];
+    try { localStorage.setItem('snew_eligibility_history', JSON.stringify(snewHistory)); } catch(e) {}
+    snewRenderHistory();
+  }
+}
+
+function snewEscapeHtml(str) {
+  return str.replace(/[&<>]/g, function(m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    return m;
+  });
+}
+
+function snewRenderHistory() {
+  var container = document.getElementById('snew_historyList');
+  if (!container) return;
+  if (snewHistory.length === 0) {
+    container.innerHTML = '<div class="senp-new-empty-history">No saved results yet. Click "Save Result" to store calculations.</div>';
+    return;
+  }
+  container.innerHTML = snewHistory.map(function(h) {
+    return '<div class="senp-new-history-item">' +
+      '<button class="senp-new-del-hist" onclick="snewDeleteHistoryItem(' + h.id + ')">✕</button>' +
+      '<div class="snh-date">📅 ' + h.date + '</div>' +
+      '<div class="snh-values">' +
+        '<span style="color:var(--accent);font-weight:800">MAX: ' + snewFormatINR(h.maxEligibility) + '</span>' +
+        '<span>Vanilla: ' + snewFormatINR(h.vanilla) + '</span>' +
+        '<span>GP: ' + snewFormatINR(h.grossProfit) + '</span>' +
+        '<span>GST: ' + snewFormatINR(h.gst) + '</span>' +
+      '</div>' +
+      (h.note ? '<div class="snh-note">✏️ ' + snewEscapeHtml(h.note) + '</div>' : '') +
+    '</div>';
+  }).join('');
+}
+
+function snewShareResult() {
+  var res = snewCalculateAll();
+  var note = document.getElementById('snew_noteInput').value;
+  var text = 'SENP Eligibility Result (MyToolkit Pro):\n' +
+    'MAX: ' + snewFormatINR(res.maxVal) + '\n' +
+    'Vanilla: ' + snewFormatINR(res.vanilla) + '\n' +
+    'Gross Profit: ' + snewFormatINR(res.grossProfit) + '\n' +
+    'GST: ' + snewFormatINR(res.gst) + '\n' +
+    'Rental: ' + snewFormatINR(res.rental) + '\n' +
+    'Banking: ' + snewFormatINR(res.banking) + '\n' +
+    'Low LTV: ' + snewFormatINR(res.lowLtv) +
+    (note ? '\nNote: ' + note : '') +
+    '\n\nCalculated via MyToolkit Pro 📱';
+  if (navigator.share) {
+    navigator.share({ title: 'SENP Eligibility Result', text: text }).catch(function() {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text);
+    alert('Result copied to clipboard!');
+  }
+}
+
+// Init: called when tab is opened
+function senpInit() {
+  snewRenderHistory();
+  snewUpdateUI();
+}
+
+// Wire up buttons after DOM ready
+document.addEventListener('DOMContentLoaded', function() {
+  var saveBtn = document.getElementById('snew_saveBtn');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', function() {
+      var res = snewUpdateUI();
+      var note = document.getElementById('snew_noteInput').value;
+      snewSaveToHistory(res, note);
+      document.getElementById('snew_noteInput').value = '';
+      alert('Result saved successfully!');
+    });
+  }
+  var shareBtn = document.getElementById('snew_shareBtn');
+  if (shareBtn) shareBtn.addEventListener('click', snewShareResult);
+  var clearBtn = document.getElementById('snew_clearAllBtn');
+  if (clearBtn) clearBtn.addEventListener('click', snewClearAllHistory);
+});
+</script>
+</section>
+
+<!-- ═══ MILEAGE CALCULATOR ═══ -->
+<section class="section" id="sec_mileage">
+
 <div class="prem-card">
   <div class="prem-card-title">🚗 Odometer Readings</div>
   <div class="ibox ig" style="margin-bottom:12px">📌 Fuel fill karte waqt readings daalein. Price optional hai.</div>
@@ -3150,7 +4564,9 @@ function toggleDark(){
   document.body.classList.toggle('dark');
   ss('darkMode',document.body.classList.contains('dark'));
 }
+// Default light mode — only go dark if user explicitly enabled it
 if(gd().darkMode===true) document.body.classList.add('dark');
+else document.body.classList.remove('dark');
 
 // ═══════════ LOGIN SYSTEM ═══════════
 // Auth credentials stored locally + synced to Firebase
@@ -3249,11 +4665,8 @@ function hideLoginScreen(){
   initCash(); buildA2WUI(); convA2W(); setCL('low');
   renderCashHistory();
   setTimeout(()=>{initSigPad();updatePenPreview();},150);
-  const savedTabs=gs('navTabs');
-  if(savedTabs&&savedTabs.length===DEFAULT_TABS.length&&DEFAULT_TABS.every(d=>savedTabs.some(s=>s.id===d.id))){
-    tabs.length=0; savedTabs.forEach(t=>tabs.push(t));
-  }
-  renderNav(); showSection('sec_'+tabs[0].id);
+  visitedTabs = []; // Fresh start — no tabs shown on new login
+  renderNav(); showSection('sec_dashboard');
   resetAutoLogout();
   // ── Start Firebase data sync after login ──
   if(phone) startDataSync(phone);
@@ -3456,37 +4869,57 @@ function logoutUser(){
   auth.currentPhone = null;
   saveLocalAuth(auth);
   stopRealtimeSync();
+  visitedTabs = []; // Reset visited tabs on logout
   lockScreen();
 }
 
-// ═══════════ NAV TABS ═══════════
-const DEFAULT_TABS=[
-  {id:'emi',label:'💰 EMI'},{id:'sip',label:'📈 SIP'},{id:'compare',label:'⚖️ Compare'},
-  {id:'cash',label:'🏦 Cash'},{id:'a2w',label:'🔤 Amt→Word'},
-  {id:'whatsapp',label:'💬 WA'},{id:'signature',label:'✍️ Signature'},{id:'pdf',label:'📄 PDF'},
-  {id:'mileage',label:'⛽ Mileage'}
-];
-let tabs=(()=>{const s=gs('navTabs');if(s&&s.length===DEFAULT_TABS.length&&DEFAULT_TABS.every(d=>s.some(x=>x.id===d.id)))return s;return[...DEFAULT_TABS]})();
-let activeTab=tabs[0].id,dragSrc=null,editMode=false;
+// ═══════════ NAV TABS — Dynamic Visited Tabs ═══════════
+// All possible tabs with their labels
+const ALL_TABS_MAP={
+  emi:'💰 EMI', sip:'📈 SIP', compare:'⚖️ Compare',
+  cash:'🏦 Cash', a2w:'🔤 Amt→Word',
+  revised_emi:'🔁 PrePay/ROI', whatsapp:'💬 WA',
+  signature:'✍️ Signature', pdf:'📄 PDF', mileage:'⛽ Mileage',
+  quick_calc:'⚡ Quick Calc', check_eligibility:'✅ Eligibility',
+  moratorium:'⏸️ Moratorium', sip_overview:'📊 My SIPs',
+  loan_overview:'📁 My Loans'
+};
+
+// Session-only visited tabs (reset on logout/reload)
+let visitedTabs=[];   // array of tab ids visited this session
+let activeTab='dashboard', editMode=false, dragSrc=null;
+
+// Keep old tabs variable for compatibility
+let tabs=[];
+
+function addVisitedTab(tabId){
+  if(tabId==='dashboard') return;
+  if(!ALL_TABS_MAP[tabId]) return;
+  if(!visitedTabs.includes(tabId)) visitedTabs.push(tabId);
+}
 
 function renderNav(){
-  const nb=document.getElementById('navBar');nb.innerHTML='';
-  tabs.forEach((t,i)=>{
+  const nb=document.getElementById('navBar'); nb.innerHTML='';
+  // Always show Home button
+  const hb=document.createElement('button');
+  hb.className='nav-btn'+(activeTab==='dashboard'?' active':'');
+  hb.textContent='🏠 Home';
+  hb.onclick=()=>showSection('sec_dashboard');
+  nb.appendChild(hb);
+  // Only show tabs that have been visited this session
+  visitedTabs.forEach(tabId=>{
+    const label=ALL_TABS_MAP[tabId]; if(!label) return;
     const b=document.createElement('button');
-    b.className='nav-btn'+(t.id===activeTab?' active':'');
-    b.textContent=t.label;b.draggable=editMode;
-    if(!editMode)b.onclick=()=>showSection('sec_'+t.id);
-    b.addEventListener('dragstart',()=>{dragSrc=i;b.style.opacity='.5'});
-    b.addEventListener('dragend',()=>b.style.opacity='1');
-    b.addEventListener('dragover',e=>{e.preventDefault();document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('drag-over'));b.classList.add('drag-over')});
-    b.addEventListener('drop',e=>{e.preventDefault();b.classList.remove('drag-over');if(dragSrc===null||dragSrc===i)return;const m=tabs.splice(dragSrc,1)[0];tabs.splice(i,0,m);dragSrc=null;ss('navTabs',tabs);renderNav()});
+    b.className='nav-btn'+(tabId===activeTab?' active':'');
+    b.textContent=label;
+    b.onclick=()=>showSection('sec_'+tabId);
     nb.appendChild(b);
   });
-  const eb=document.createElement('button');eb.className='nav-btn';eb.textContent=editMode?'✅ Done':'⚙️';eb.onclick=toggleEdit;nb.appendChild(eb);
 }
-function toggleEdit(){editMode=!editMode;document.getElementById('editBar').classList.toggle('show',editMode);renderNav()}
+function toggleEdit(){/* disabled — no edit mode needed */}
 function showSection(id){
   activeTab=id.replace('sec_','');
+  addVisitedTab(activeTab);
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   const el=document.getElementById(id);if(el)el.classList.add('active');
   // Update loan overview if shown
@@ -4725,7 +6158,7 @@ function saveExtractedSig(){
 
 // ═══════════ PDF COMPRESSOR (FIX 8: 500MB + always OCR) ═══════════
 let pdfFile=null,pdfCL='low',pdfDPI=120;
-const CLS={low:{q:.88,label:'Low (88%)',ratio:.55},mid:{q:.68,label:'Medium (68%)',ratio:.33},high:{q:.42,label:'High (42%)',ratio:.17},extreme:{q:.22,label:'Extreme (22%)',ratio:.06}};
+const CLS={low:{q:.88,label:'Low (88%)',ratio:.55},mid:{q:.68,label:'Medium (68%)',ratio:.33},high:{q:.42,label:'High (42%)',ratio:.17},extreme:{q:.22,label:'Extreme (22%)',ratio:.06},ultra:{q:.08,label:'Ultra (8%)',ratio:.02}};
 function showPdfTab(t){
   document.getElementById('pdf_comp_card').style.display=t==='compress'?'block':'none';
   document.getElementById('pdf_edit_card').style.display=t==='edit'?'block':'none';
@@ -5067,13 +6500,14 @@ async function handleConvToCsv(e){
 }
 function setCL(l){
   pdfCL=l;
-  const cols={low:'var(--green)',mid:'var(--accent2)',high:'var(--red)',extreme:'#9333ea'};
-  const bgs={low:'rgba(22,163,74,.07)',mid:'rgba(234,88,12,.07)',high:'rgba(220,38,38,.07)',extreme:'rgba(147,51,234,.07)'};
-  ['low','mid','high','extreme'].forEach(x=>{const b=document.getElementById('cl_'+x);b.style.borderColor='var(--border)';b.style.color='var(--text2)';b.style.background='var(--surface2)'});
-  const b=document.getElementById('cl_'+l);b.style.borderColor=cols[l];b.style.color=cols[l];b.style.background=bgs[l];
+  const cols={low:'var(--green)',mid:'var(--accent2)',high:'var(--red)',extreme:'#9333ea',ultra:'#b91c1c'};
+  const bgs={low:'rgba(22,163,74,.07)',mid:'rgba(234,88,12,.07)',high:'rgba(220,38,38,.07)',extreme:'rgba(147,51,234,.07)',ultra:'rgba(185,28,28,.12)'};
+  ['low','mid','high','extreme','ultra'].forEach(x=>{const b=document.getElementById('cl_'+x);if(b){b.style.borderColor='var(--border)';b.style.color='var(--text2)';b.style.background='var(--surface2)'}});
+  const b=document.getElementById('cl_'+l);if(b){b.style.borderColor=cols[l];b.style.color=cols[l];b.style.background=bgs[l];}
+  const uw=document.getElementById('ultra_warn');if(uw)uw.style.display=(l==='ultra')?'block':'none';
   if(pdfFile)updatePdfInfo();
 }
-function setDPI(d,el){pdfDPI=d;document.querySelectorAll('#dpi_btns button').forEach(b=>{b.className='btn bs';b.style.flex='1';b.style.fontSize='10px'});el.className='btn bp';el.style.flex='1';el.style.fontSize='10px';if(pdfFile)updatePdfInfo()}
+function setDPI(d,el){pdfDPI=d;document.querySelectorAll('#dpi_btns button').forEach(b=>{b.className='btn bs';b.style.width='100%';b.style.fontSize='10px';b.style.padding='6px 2px'});el.className='btn bp';el.style.width='100%';el.style.fontSize='10px';el.style.padding='6px 2px';if(pdfFile)updatePdfInfo()}
 function handlePDF(e){
   pdfFile=e.target.files[0];if(!pdfFile)return;
   // FIX 8: 500MB limit
@@ -6472,10 +7906,12 @@ function setPenMode(m){
   ['pen','highlight','erase'].forEach(x=>{
     const btn=document.getElementById('pe_pen_mode_'+x);
     if(btn)btn.className=x===m?'btn bp':'btn bs';
+    if(btn&&x==='erase')btn.style.background=x===m?'#fff':'';
+    if(btn&&x==='erase')btn.style.color=x===m?'#1e2240':'';
+    if(btn&&x==='erase')btn.style.border=x===m?'2px solid #2563eb':'';
   });
-  if(!penCtx)return;
-  if(m==='erase'){penCtx.globalCompositeOperation='destination-out';}
-  else{penCtx.globalCompositeOperation='source-over';}
+  // Always source-over; erase paints white so original PDF content gets covered permanently
+  if(penCtx) penCtx.globalCompositeOperation='source-over';
 }
 
 async function renderPenCanvas(){
@@ -6538,7 +7974,7 @@ function setupPenEvents(cvs){
     const col=penMode==='highlight'?document.getElementById('pe_hl_color').value:document.getElementById('pe_pen_color').value;
     const sz=parseFloat(document.getElementById('pe_pen_size').value)||3;
     if(penMode==='highlight'){penCtx.globalCompositeOperation='source-over';penCtx.globalAlpha=0.35;penCtx.strokeStyle=col;penCtx.lineWidth=sz*4;}
-    else if(penMode==='erase'){penCtx.globalCompositeOperation='destination-out';penCtx.lineWidth=sz*4;penCtx.globalAlpha=1;}
+    else if(penMode==='erase'){penCtx.globalCompositeOperation='source-over';penCtx.globalAlpha=1;penCtx.strokeStyle='#ffffff';penCtx.lineWidth=sz*5;}
     else{penCtx.globalCompositeOperation='source-over';penCtx.globalAlpha=1;penCtx.strokeStyle=col;penCtx.lineWidth=sz;}
     penCtx.lineCap='round';penCtx.lineJoin='round';
     penCtx.lineTo(p.x,p.y);penCtx.stroke();
@@ -6592,7 +8028,7 @@ downloadEditedPDF=async function(){
         const imgBytes=Uint8Array.from(atob(ann.dataUrl.split(',')[1]),c2=>c2.charCodeAt(0));
         const img=await outDoc.embedPng(imgBytes);
         if(ann.isFullPage){
-          pg.drawImage(img,{x:0,y:0,width:pgW,height:pgH,opacity:0.95});
+          pg.drawImage(img,{x:0,y:0,width:pgW,height:pgH,opacity:1.0});
         } else {
           const dims=img.scale(ann.width/img.width);
           pg.drawImage(img,{x:ann.x,y:ann.y,width:dims.width,height:dims.height});
@@ -8615,7 +10051,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 const _origRenderCmpHistory=renderCmpHistory;
 
 // ═══════════ INIT ═══════════
-renderNav();showSection('sec_'+tabs[0].id);setEmiSolve('emi');
+visitedTabs=[]; renderNav(); showSection('sec_dashboard'); setEmiSolve('emi');
 renderProfiles();renderSigs();renderWAList();startWAScheduler();initCash();buildA2WUI();convA2W();setCL('low');setPPMode('tenure');
 renderCmpHistory();renderMileageHistory();renderCashHistory();renderSipProfiles();
 // Init signature pad after DOM ready
@@ -8628,6 +10064,1486 @@ const nw=new Date();nw.setMinutes(nw.getMinutes()+30);document.getElementById('w
 })();
 // initLogin handles Firebase init + login screen
 initLogin();
+</script>
+
+<!-- ═══════════════════════════════════════════════
+  DOC VIEWER OVERLAY — Full Screen PDF Viewer
+  Triggered after PDF upload in PDF section
+═══════════════════════════════════════════════ -->
+<div id="docViewerOverlay">
+
+  <!-- Top Bar -->
+  <div class="dv-topbar">
+    <button class="dv-topbar-btn" id="dvBackBtn" title="Back" onclick="closeDvViewer()">←</button>
+    <div class="dv-doc-title" id="dvDocTitle">Document</div>
+    <div class="dv-page-info" id="dvPageInfo"></div>
+    <button class="dv-topbar-btn" title="Share" onclick="dvShareDoc()">↑</button>
+  </div>
+
+  <!-- Document Area -->
+  <div id="dvDocArea">
+    <div class="dv-loading" id="dvLoading">
+      <div class="dv-spinner"></div>
+      <span>PDF load ho raha hai...</span>
+    </div>
+  </div>
+
+  <!-- Zoom FAB -->
+  <div class="dv-zoom-fab">
+    <button class="dv-zoom-btn" id="dvZoomIn">+</button>
+    <button class="dv-zoom-btn" id="dvZoomOut">−</button>
+  </div>
+  <div class="dv-page-ind" id="dvPageInd">1 / 1</div>
+
+  <!-- Edit Toolbar -->
+  <div class="dv-bottom-bar">
+    <div class="dv-tool-tabs">
+      <button class="dv-ttab active" data-dvtab="annotate">✏️ Annotate</button>
+      <button class="dv-ttab" data-dvtab="draw">🖊️ Draw</button>
+      <button class="dv-ttab" data-dvtab="erase">🧹 Erase</button>
+      <button class="dv-ttab" data-dvtab="insert">📎 Insert</button>
+      <button class="dv-ttab" data-dvtab="sign">✍️ Sign</button>
+      <button class="dv-ttab" data-dvtab="tools">🛠️ PDF Tools</button>
+    </div>
+    <div class="dv-tool-panels">
+
+      <!-- ANNOTATE -->
+      <div class="dv-tpanel active" id="dvp-annotate">
+        <div class="dv-tool-row">
+          <button class="dv-tbtn active" onclick="dvActivateTool('text',this)"><span class="ti">T</span><span class="tl">Text</span></button>
+          <button class="dv-tbtn" onclick="dvActivateTool('highlight',this)"><span class="ti">🖍</span><span class="tl">Highlight</span></button>
+          <button class="dv-tbtn" onclick="dvInsertStamp('APPROVED')"><span class="ti">✅</span><span class="tl">Approved</span></button>
+          <button class="dv-tbtn" onclick="dvInsertStamp('REJECTED')"><span class="ti">❌</span><span class="tl">Rejected</span></button>
+          <button class="dv-tbtn" onclick="dvInsertStamp('PAID')"><span class="ti">💰</span><span class="tl">Paid</span></button>
+          <button class="dv-tbtn" onclick="dvInsertStamp('COPY')"><span class="ti">📋</span><span class="tl">Copy</span></button>
+        </div>
+      </div>
+
+      <!-- DRAW -->
+      <div class="dv-tpanel" id="dvp-draw">
+        <div class="dv-tool-row" style="margin-bottom:7px">
+          <button class="dv-tbtn active" onclick="dvSetDrawMode('pen',this)"><span class="ti">✒️</span><span class="tl">Pen</span></button>
+          <button class="dv-tbtn" onclick="dvSetDrawMode('marker',this)"><span class="ti">🖌️</span><span class="tl">Marker</span></button>
+          <button class="dv-tbtn" onclick="dvSetDrawMode('arrow',this)"><span class="ti">↗️</span><span class="tl">Arrow</span></button>
+          <button class="dv-tbtn" onclick="dvSetDrawMode('rect',this)"><span class="ti">⬜</span><span class="tl">Rect</span></button>
+          <button class="dv-tbtn" onclick="dvUndoLast()"><span class="ti">↩️</span><span class="tl">Undo</span></button>
+        </div>
+        <div class="dv-color-row" id="dvDrawColors">
+          <div class="dv-cdot sel" style="background:#4f8eff" data-color="#4f8eff" onclick="dvSetDrawColor(this)"></div>
+          <div class="dv-cdot" style="background:#ff5565" data-color="#ff5565" onclick="dvSetDrawColor(this)"></div>
+          <div class="dv-cdot" style="background:#3dd68c" data-color="#3dd68c" onclick="dvSetDrawColor(this)"></div>
+          <div class="dv-cdot" style="background:#ffb547" data-color="#ffb547" onclick="dvSetDrawColor(this)"></div>
+          <div class="dv-cdot" style="background:#ff69b4" data-color="#ff69b4" onclick="dvSetDrawColor(this)"></div>
+          <div class="dv-cdot" style="background:#000000" data-color="#000000" onclick="dvSetDrawColor(this)"></div>
+          <div class="dv-cdot" style="background:#fff;border:1px solid #555" data-color="#ffffff" onclick="dvSetDrawColor(this)"></div>
+        </div>
+        <div class="dv-size-row">
+          <label>Size:</label>
+          <input type="range" id="dvBrushSize" min="1" max="20" value="3" oninput="dvBrushSz=parseInt(this.value)">
+        </div>
+      </div>
+
+      <!-- ERASE -->
+      <div class="dv-tpanel" id="dvp-erase">
+        <div class="dv-tool-row" style="margin-bottom:6px">
+          <button class="dv-tbtn active" onclick="dvSetTool('erase',this)"><span class="ti">🧹</span><span class="tl">Erase</span></button>
+          <button class="dv-tbtn" onclick="dvClearAll()"><span class="ti">🗑️</span><span class="tl">Clear All</span></button>
+          <button class="dv-tbtn" onclick="dvUndoLast()"><span class="ti">↩️</span><span class="tl">Undo</span></button>
+        </div>
+        <div class="dv-size-row">
+          <label>Eraser:</label>
+          <input type="range" id="dvEraseSize" min="10" max="60" value="22" oninput="dvEraseSz=parseInt(this.value)">
+        </div>
+      </div>
+
+      <!-- INSERT -->
+      <div class="dv-tpanel" id="dvp-insert">
+        <div class="dv-tool-row">
+          <button class="dv-tbtn" onclick="document.getElementById('dvImgInput').click()"><span class="ti">🖼️</span><span class="tl">Image</span></button>
+          <button class="dv-tbtn" onclick="dvInsertStamp('APPROVED')"><span class="ti">✅</span><span class="tl">Approved</span></button>
+          <button class="dv-tbtn" onclick="dvInsertStamp('REJECTED')"><span class="ti">❌</span><span class="tl">Rejected</span></button>
+          <button class="dv-tbtn" onclick="dvInsertStamp('PAID')"><span class="ti">💰</span><span class="tl">Paid</span></button>
+          <button class="dv-tbtn" onclick="dvInsertStamp('COPY')"><span class="ti">📋</span><span class="tl">Copy</span></button>
+          <input type="file" id="dvImgInput" accept="image/*" style="display:none" onchange="dvHandleInsertImg(event)">
+        </div>
+      </div>
+
+      <!-- SIGN -->
+      <div class="dv-tpanel" id="dvp-sign">
+        <div class="dv-tool-row">
+          <button class="dv-tbtn active" onclick="dvOpenSignModal()"><span class="ti">✍️</span><span class="tl">Draw Sign</span></button>
+          <button class="dv-tbtn" onclick="dvPlaceFromSavedSig()"><span class="ti">💾</span><span class="tl">Saved Sigs</span></button>
+          <button class="dv-tbtn" onclick="dvClearAll()"><span class="ti">🗑️</span><span class="tl">Clear All</span></button>
+        </div>
+      </div>
+
+      <!-- PDF TOOLS -->
+      <div class="dv-tpanel" id="dvp-tools">
+        <div class="dv-tool-row">
+          <button class="dv-tbtn compress" onclick="closeDvViewerGoTool('compress')"><span class="ti">🗜️</span><span class="tl">Compress</span></button>
+          <button class="dv-tbtn edit" onclick="closeDvViewerGoTool('edit')"><span class="ti">✏️</span><span class="tl">Edit PDF</span></button>
+          <button class="dv-tbtn convert" onclick="closeDvViewerGoTool('convert')"><span class="ti">🔄</span><span class="tl">Convert</span></button>
+          <button class="dv-tbtn word" onclick="closeDvViewerGoTool('word')"><span class="ti">📝</span><span class="tl">→ Word</span></button>
+          <button class="dv-tbtn ocr" onclick="closeDvViewerGoTool('ocr')"><span class="ti">🔍</span><span class="tl">OCR</span></button>
+          <button class="dv-tbtn pptx" onclick="closeDvViewerGoTool('pptx')"><span class="ti">📊</span><span class="tl">→ PPT</span></button>
+          <button class="dv-tbtn epub" onclick="closeDvViewerGoTool('epub')"><span class="ti">📖</span><span class="tl">→ ePub</span></button>
+        </div>
+      </div>
+
+    </div><!-- /dv-tool-panels -->
+  </div><!-- /dv-bottom-bar -->
+</div><!-- /docViewerOverlay -->
+
+<!-- DV Sign Modal -->
+<div id="dvSignModal">
+  <div class="dv-sign-sheet">
+    <div style="font-size:.95rem;font-weight:700;color:#e8eaf6;text-align:center;margin-bottom:10px">✍️ Signature Draw Karein</div>
+    <canvas id="dvSignCanvas"></canvas>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button onclick="dvClearSign()" style="flex:1;padding:10px;border-radius:10px;border:none;background:#1e2235;color:#8896b8;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer">Clear</button>
+      <button onclick="dvSaveSign()" style="flex:1;padding:10px;border-radius:10px;border:none;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer">Add to Doc</button>
+      <button onclick="dvCloseSign()" style="flex:1;padding:10px;border-radius:10px;border:none;background:#1e2235;color:#8896b8;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- DV Text Modal -->
+<div id="dvTextModal">
+  <div class="dv-text-sheet">
+    <div style="font-size:.95rem;font-weight:700;color:#e8eaf6;text-align:center;margin-bottom:10px">✏️ Text Add Karein</div>
+    <textarea id="dvTextInput" placeholder="Yahan text likhein..."></textarea>
+    <div style="display:flex;gap:6px;margin-bottom:8px" id="dvTxtColors">
+      <div class="dv-cdot sel" style="background:#000" data-color="#000" onclick="dvSetTxtColor(this)"></div>
+      <div class="dv-cdot" style="background:#ff5565" data-color="#ff5565" onclick="dvSetTxtColor(this)"></div>
+      <div class="dv-cdot" style="background:#4f8eff" data-color="#4f8eff" onclick="dvSetTxtColor(this)"></div>
+      <div class="dv-cdot" style="background:#3dd68c" data-color="#3dd68c" onclick="dvSetTxtColor(this)"></div>
+      <div class="dv-cdot" style="background:#ff6600" data-color="#ff6600" onclick="dvSetTxtColor(this)"></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <label style="font-size:.72rem;color:#8896b8">Font Size:</label>
+      <input type="range" id="dvFontSz" min="10" max="32" value="14" style="flex:1;accent-color:#4f8eff">
+      <span id="dvFontSzVal" style="font-size:.72rem;color:#8896b8">14px</span>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button onclick="dvCloseTextModal()" style="flex:1;padding:10px;border-radius:10px;border:none;background:#1e2235;color:#8896b8;font-family:'Inter',sans-serif;font-weight:600;cursor:pointer">Cancel</button>
+      <button onclick="dvPlaceText()" style="flex:1;padding:10px;border-radius:10px;border:none;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-family:'Inter',sans-serif;font-weight:600;cursor:pointer">Add Text</button>
+    </div>
+  </div>
+</div>
+
+<!-- DV Toast -->
+<div class="dv-toast" id="dvToast"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+//  DOC VIEWER JS
+// ═══════════════════════════════════════════════
+
+// State
+let dvCurrentTool='text', dvDrawColor='#4f8eff', dvBrushSz=3, dvEraseSz=22;
+let dvDrawMode='pen', dvIsDrawing=false, dvCurrentCtx=null, dvCurrentCanvas=null;
+let dvLastX=0, dvLastY=0, dvZoom=1, dvTxtColor='#000', dvFontSz=14;
+let dvPendingText=false, dvSignCtx=null, dvSignDrawing=false, dvSignLX=0, dvSignLY=0;
+let dvCurrentPdfFile=null, dvPdfDoc=null;
+
+// ── Open viewer ──
+async function openDvViewer(file) {
+  dvCurrentPdfFile = file;
+  const overlay = document.getElementById('docViewerOverlay');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('dvDocArea').innerHTML = '<div class="dv-loading"><div class="dv-spinner"></div><span>PDF render ho raha hai...</span></div>';
+  document.getElementById('dvDocTitle').textContent = file.name;
+
+  try {
+    const ab = await file.arrayBuffer();
+    // Reuse pdfjsLib already loaded in the app
+    if (typeof pdfjsLib === 'undefined') {
+      dvToast('PDF.js load nahi hua, refresh karein'); return;
+    }
+    dvPdfDoc = await pdfjsLib.getDocument({ data: new Uint8Array(ab) }).promise;
+    const n = dvPdfDoc.numPages;
+    document.getElementById('dvPageInfo').textContent = n + ' pages';
+    document.getElementById('dvPageInd').textContent = '1 / ' + n;
+
+    const area = document.getElementById('dvDocArea');
+    area.innerHTML = '';
+
+    for (let i = 1; i <= n; i++) {
+      const page = await dvPdfDoc.getPage(i);
+      const viewport = page.getViewport({ scale: 1.6 });
+
+      const wrap = document.createElement('div');
+      wrap.className = 'dv-page-wrap';
+      wrap.dataset.page = i;
+
+      const renderCanvas = document.createElement('canvas');
+      renderCanvas.className = 'dv-render';
+      renderCanvas.width = viewport.width;
+      renderCanvas.height = viewport.height;
+      renderCanvas.style.width = '100%';
+      renderCanvas.style.display = 'block';
+
+      const annoCanvas = document.createElement('canvas');
+      annoCanvas.className = 'dv-anno-canvas';
+      annoCanvas.dataset.page = i;
+
+      wrap.appendChild(renderCanvas);
+      wrap.appendChild(annoCanvas);
+      area.appendChild(wrap);
+
+      // Render PDF page
+      await page.render({ canvasContext: renderCanvas.getContext('2d'), viewport }).promise;
+
+      // Set annotation canvas size after render
+      annoCanvas.width = renderCanvas.width;
+      annoCanvas.height = renderCanvas.height;
+      annoCanvas.style.width = '100%';
+      annoCanvas.style.height = '100%';
+
+      dvSetupCanvas(annoCanvas, wrap);
+    }
+
+    dvToast('PDF loaded! ✅ ' + n + ' pages');
+  } catch(err) {
+    document.getElementById('dvDocArea').innerHTML = '<div class="dv-loading"><span style="color:#ff5565">❌ PDF load failed: ' + err.message + '</span></div>';
+  }
+}
+
+function closeDvViewer() {
+  document.getElementById('docViewerOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeDvViewerGoTool(tool) {
+  closeDvViewer();
+  // Navigate to PDF section and show the tool
+  showSection('sec_pdf');
+  setTimeout(() => showPdfTab(tool), 100);
+}
+
+function dvShareDoc() {
+  if (dvCurrentPdfFile && navigator.share) {
+    navigator.share({ title: dvCurrentPdfFile.name, files: [dvCurrentPdfFile] })
+      .catch(() => dvToast('Share nahi hua'));
+  } else {
+    dvToast('Share feature browser mein supported nahi hai');
+  }
+}
+
+// ── Tab Switching ──
+document.querySelectorAll('.dv-ttab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.dv-ttab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.dv-tpanel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    const panel = document.getElementById('dvp-' + tab.dataset.dvtab);
+    if (panel) panel.classList.add('active');
+    // Enable canvas if draw/erase tab
+    const t = tab.dataset.dvtab;
+    if (t === 'draw') { dvCurrentTool = 'draw'; dvEnableCanvases(); }
+    else if (t === 'erase') { dvCurrentTool = 'erase'; dvEnableCanvases(); }
+  });
+});
+
+// ── Zoom ──
+document.getElementById('dvZoomIn').onclick = () => {
+  dvZoom = Math.min(3, dvZoom + 0.2);
+  dvApplyZoom();
+};
+document.getElementById('dvZoomOut').onclick = () => {
+  dvZoom = Math.max(0.5, dvZoom - 0.2);
+  dvApplyZoom();
+};
+function dvApplyZoom() {
+  document.querySelectorAll('.dv-page-wrap').forEach(w => {
+    w.style.transform = 'scale(' + dvZoom + ')';
+    w.style.transformOrigin = 'top center';
+  });
+  dvToast('Zoom: ' + Math.round(dvZoom * 100) + '%');
+}
+
+// ── Scroll page indicator ──
+document.getElementById('dvDocArea').addEventListener('scroll', () => {
+  const pages = document.querySelectorAll('.dv-page-wrap');
+  if (!pages.length) return;
+  let cur = 1;
+  pages.forEach((p, i) => {
+    const rect = p.getBoundingClientRect();
+    if (rect.top < window.innerHeight / 2) cur = i + 1;
+  });
+  document.getElementById('dvPageInd').textContent = cur + ' / ' + pages.length;
+});
+
+// ── Canvas Events ──
+function dvSetupCanvas(canvas, wrap) {
+  canvas.addEventListener('pointerdown', e => {
+    if (dvCurrentTool !== 'draw' && dvCurrentTool !== 'erase' && dvCurrentTool !== 'highlight') return;
+    e.preventDefault();
+    dvIsDrawing = true;
+    dvCurrentCanvas = canvas;
+    dvCurrentCtx = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+    const sx = canvas.width / rect.width;
+    const sy = canvas.height / rect.height;
+    dvLastX = (e.clientX - rect.left) * sx;
+    dvLastY = (e.clientY - rect.top) * sy;
+    dvCurrentCtx.beginPath();
+    dvCurrentCtx.moveTo(dvLastX, dvLastY);
+  });
+
+  canvas.addEventListener('pointermove', e => {
+    if (!dvIsDrawing || dvCurrentCanvas !== canvas) return;
+    e.preventDefault();
+    const rect = canvas.getBoundingClientRect();
+    const sx = canvas.width / rect.width;
+    const sy = canvas.height / rect.height;
+    const x = (e.clientX - rect.left) * sx;
+    const y = (e.clientY - rect.top) * sy;
+    const ctx = dvCurrentCtx;
+    if (dvCurrentTool === 'erase') {
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(x, y, dvEraseSz, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalCompositeOperation = 'source-over';
+    } else if (dvCurrentTool === 'highlight') {
+      ctx.globalAlpha = 0.3;
+      ctx.strokeStyle = '#ffff00';
+      ctx.lineWidth = 20;
+      ctx.lineCap = 'butt';
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      ctx.globalAlpha = 1.0;
+    } else {
+      ctx.strokeStyle = dvDrawColor;
+      ctx.lineWidth = dvDrawMode === 'marker' ? dvBrushSz * 3 : dvBrushSz;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.globalAlpha = dvDrawMode === 'marker' ? 0.45 : 1.0;
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      ctx.globalAlpha = 1.0;
+    }
+    dvLastX = x; dvLastY = y;
+  });
+
+  const endDraw = () => {
+    if (!dvIsDrawing) return;
+    dvIsDrawing = false;
+    if (dvCurrentCtx) dvCurrentCtx.beginPath();
+  };
+  canvas.addEventListener('pointerup', endDraw);
+  canvas.addEventListener('pointerleave', endDraw);
+
+  // Text / stamp click placement
+  canvas.addEventListener('click', e => {
+    if (dvCurrentTool === 'text' && dvPendingText) {
+      const rect = wrap.getBoundingClientRect();
+      dvPlaceTextAt(e.clientX - rect.left, e.clientY - rect.top, wrap);
+      dvPendingText = false;
+    } else if (dvCurrentTool === 'stamp') {
+      const rect = wrap.getBoundingClientRect();
+      dvPlaceStampAt(e.clientX - rect.left, e.clientY - rect.top, wrap, window._dvPendingStamp || 'APPROVED');
+    }
+  });
+}
+
+function dvEnableCanvases() {
+  document.querySelectorAll('.dv-anno-canvas').forEach(c => c.classList.add('active'));
+}
+
+// ── Tools ──
+function dvActivateTool(tool, btn) {
+  dvCurrentTool = tool;
+  document.querySelectorAll('#dvp-annotate .dv-tbtn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  if (tool === 'text') { dvOpenTextModal(); }
+  else if (tool === 'highlight') { dvToast('Document pe swipe karein highlight ke liye'); dvEnableCanvases(); }
+}
+function dvSetTool(tool, btn) {
+  dvCurrentTool = tool;
+  document.querySelectorAll('.dv-tbtn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  dvEnableCanvases();
+}
+function dvSetDrawMode(mode, btn) {
+  dvDrawMode = mode;
+  dvCurrentTool = 'draw';
+  document.querySelectorAll('#dvp-draw .dv-tbtn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  dvEnableCanvases();
+}
+function dvSetDrawColor(el) {
+  document.querySelectorAll('#dvDrawColors .dv-cdot').forEach(d => d.classList.remove('sel'));
+  el.classList.add('sel');
+  dvDrawColor = el.dataset.color;
+}
+function dvSetTxtColor(el) {
+  document.querySelectorAll('#dvTxtColors .dv-cdot').forEach(d => d.classList.remove('sel'));
+  el.classList.add('sel');
+  dvTxtColor = el.dataset.color;
+}
+function dvUndoLast() { dvToast('Undo — clear all use karein agar annotations bahut hain'); }
+function dvClearAll() {
+  document.querySelectorAll('.dv-anno-canvas').forEach(c => {
+    const ctx = c.getContext('2d');
+    ctx.clearRect(0, 0, c.width, c.height);
+  });
+  document.querySelectorAll('.dv-text-anno, .dv-sig-img').forEach(el => el.remove());
+  dvToast('All annotations cleared ✅');
+}
+
+// ── Text ──
+function dvOpenTextModal() {
+  document.getElementById('dvTextModal').classList.add('open');
+  setTimeout(() => document.getElementById('dvTextInput').focus(), 320);
+}
+function dvCloseTextModal() { document.getElementById('dvTextModal').classList.remove('open'); }
+document.getElementById('dvFontSz').oninput = function() {
+  dvFontSz = this.value;
+  document.getElementById('dvFontSzVal').textContent = this.value + 'px';
+};
+function dvPlaceText() {
+  const txt = document.getElementById('dvTextInput').value.trim();
+  if (!txt) { dvToast('Kuch text likhein pehle!'); return; }
+  dvCloseTextModal();
+  dvPendingText = true;
+  dvCurrentTool = 'text';
+  dvEnableCanvases();
+  dvToast('Document pe tap karein text daalne ke liye');
+}
+function dvPlaceTextAt(x, y, wrap) {
+  const txt = document.getElementById('dvTextInput').value.trim();
+  const el = document.createElement('div');
+  el.className = 'dv-text-anno';
+  el.textContent = txt;
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  el.style.color = dvTxtColor;
+  el.style.fontSize = dvFontSz + 'px';
+  dvMakeDraggable(el, wrap);
+  el.addEventListener('dblclick', () => { el.contentEditable = 'true'; el.focus(); el.classList.add('selected'); });
+  el.addEventListener('blur', () => { el.contentEditable = 'false'; el.classList.remove('selected'); });
+  wrap.appendChild(el);
+  document.getElementById('dvTextInput').value = '';
+  dvToast('Text added! ✅');
+}
+
+// ── Stamps ──
+function dvInsertStamp(type) {
+  dvCurrentTool = 'stamp';
+  window._dvPendingStamp = type;
+  dvEnableCanvases();
+  dvToast('Document pe tap karein stamp daalne ke liye');
+}
+function dvPlaceStampAt(x, y, wrap, type) {
+  const colors = { APPROVED: '#3dd68c', REJECTED: '#ff5565', PAID: '#4f8eff', COPY: '#ffb547' };
+  const el = document.createElement('div');
+  el.className = 'dv-text-anno';
+  el.textContent = type;
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  el.style.color = colors[type] || '#333';
+  el.style.fontSize = '18px';
+  el.style.fontWeight = '700';
+  el.style.border = '2px solid ' + (colors[type] || '#333');
+  el.style.background = 'rgba(255,255,255,0.92)';
+  el.style.padding = '3px 10px';
+  el.style.borderRadius = '4px';
+  el.style.letterSpacing = '2px';
+  el.style.transform = 'rotate(-10deg)';
+  dvMakeDraggable(el, wrap);
+  wrap.appendChild(el);
+  dvToast(type + ' stamp added!');
+}
+
+// ── Insert Image ──
+function dvHandleInsertImg(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const wrap = document.querySelector('.dv-page-wrap');
+    if (!wrap) return;
+    const img = document.createElement('img');
+    img.src = ev.target.result;
+    img.className = 'dv-sig-img';
+    img.style.left = '40px';
+    img.style.top = '40px';
+    img.style.width = '100px';
+    img.style.height = 'auto';
+    dvMakeDraggable(img, wrap);
+    wrap.appendChild(img);
+    dvToast('Image inserted!');
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── Draggable ──
+function dvMakeDraggable(el, wrap) {
+  let sX, sY, iL, iT;
+  el.addEventListener('pointerdown', e => {
+    if (el.contentEditable === 'true') return;
+    e.stopPropagation();
+    el.setPointerCapture(e.pointerId);
+    sX = e.clientX; sY = e.clientY;
+    iL = parseInt(el.style.left) || 0;
+    iT = parseInt(el.style.top) || 0;
+    el.classList.add('selected');
+  });
+  el.addEventListener('pointermove', e => {
+    if (!el.hasPointerCapture(e.pointerId)) return;
+    el.style.left = (iL + e.clientX - sX) + 'px';
+    el.style.top = (iT + e.clientY - sY) + 'px';
+  });
+  el.addEventListener('pointerup', e => { el.releasePointerCapture(e.pointerId); });
+}
+
+// ── Signature ──
+function dvOpenSignModal() {
+  const modal = document.getElementById('dvSignModal');
+  modal.classList.add('open');
+  const canvas = document.getElementById('dvSignCanvas');
+  canvas.width = canvas.offsetWidth || 320;
+  canvas.height = 160;
+  dvSignCtx = canvas.getContext('2d');
+  dvSignCtx.fillStyle = '#fff';
+  dvSignCtx.fillRect(0, 0, canvas.width, canvas.height);
+  dvSignCtx.strokeStyle = '#1a1a2e';
+  dvSignCtx.lineWidth = 2;
+  dvSignCtx.lineCap = 'round';
+  dvSignDrawing = false;
+
+  canvas.onpointerdown = e => {
+    e.preventDefault();
+    dvSignDrawing = true;
+    const r = canvas.getBoundingClientRect();
+    dvSignLX = e.clientX - r.left;
+    dvSignLY = e.clientY - r.top;
+    dvSignCtx.beginPath();
+    dvSignCtx.moveTo(dvSignLX, dvSignLY);
+  };
+  canvas.onpointermove = e => {
+    if (!dvSignDrawing) return;
+    e.preventDefault();
+    const r = canvas.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    dvSignCtx.lineTo(x, y);
+    dvSignCtx.stroke();
+    dvSignLX = x; dvSignLY = y;
+  };
+  canvas.onpointerup = () => { dvSignDrawing = false; };
+}
+function dvClearSign() {
+  const canvas = document.getElementById('dvSignCanvas');
+  dvSignCtx.fillStyle = '#fff';
+  dvSignCtx.fillRect(0, 0, canvas.width, canvas.height);
+}
+function dvSaveSign() {
+  const canvas = document.getElementById('dvSignCanvas');
+  const dataURL = canvas.toDataURL();
+  dvCloseSign();
+  const wrap = document.querySelector('.dv-page-wrap');
+  if (!wrap) return;
+  const img = document.createElement('img');
+  img.src = dataURL;
+  img.className = 'dv-sig-img';
+  img.style.left = '60px';
+  img.style.top = '60px';
+  img.style.width = '140px';
+  img.style.height = 'auto';
+  dvMakeDraggable(img, wrap);
+  wrap.appendChild(img);
+  dvToast('Signature added! ✅');
+}
+function dvCloseSign() { document.getElementById('dvSignModal').classList.remove('open'); }
+
+// ══════════════════════════════════════════════
+//  QUICK CALCULATOR
+// ══════════════════════════════════════════════
+var _qcTab = 'emi';
+
+function qcSetTab(tab) {
+  _qcTab = tab;
+  ['emi','amount','period','interest'].forEach(t => {
+    var btn = document.getElementById('qc_tab_' + t);
+    var panel = document.getElementById('qc_panel_' + (t === 'amount' ? 'amount' : t === 'period' ? 'period' : t === 'interest' ? 'interest' : 'emi'));
+    if (btn) {
+      if (t === tab) {
+        btn.style.background = 'var(--accent)';
+        btn.style.color = '#fff';
+      } else {
+        btn.style.background = 'var(--surface2)';
+        btn.style.color = 'var(--text2)';
+      }
+    }
+  });
+  document.getElementById('qc_panel_emi').style.display      = tab === 'emi'      ? '' : 'none';
+  document.getElementById('qc_panel_amount').style.display   = tab === 'amount'   ? '' : 'none';
+  document.getElementById('qc_panel_period').style.display   = tab === 'period'   ? '' : 'none';
+  document.getElementById('qc_panel_interest').style.display = tab === 'interest' ? '' : 'none';
+  qcCalc();
+}
+
+function qcSliderSync(prefix, field) {
+  var slId = 'qc_' + prefix + '_' + field + '_sl';
+  var inpId = 'qc_' + prefix + '_' + field;
+  var sl = document.getElementById(slId);
+  var inp = document.getElementById(inpId);
+  if (sl && inp) { inp.value = sl.value; }
+  qcCalc();
+}
+
+function qcNumWords(n) {
+  if (isNaN(n) || n === '') return '';
+  n = Math.round(Number(n));
+  if (n >= 10000000) return (n / 10000000).toFixed(2).replace(/\.?0+$/, '') + ' Crore';
+  if (n >= 100000)   return (n / 100000).toFixed(2).replace(/\.?0+$/, '') + ' Lakh';
+  if (n >= 1000)     return (n / 1000).toFixed(2).replace(/\.?0+$/, '') + ' Thousand';
+  return n.toString();
+}
+
+var _ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine',
+             'Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen',
+             'Seventeen','Eighteen','Nineteen'];
+var _tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+function _w(n) {
+  if (n < 20) return _ones[n];
+  if (n < 100) return _tens[Math.floor(n/10)] + (n % 10 ? ' ' + _ones[n % 10] : '');
+  if (n < 1000) return _ones[Math.floor(n/100)] + ' Hundred' + (n % 100 ? ' ' + _w(n % 100) : '');
+  if (n < 100000) return _w(Math.floor(n/1000)) + ' Thousand' + (n % 1000 ? ' ' + _w(n % 1000) : '');
+  if (n < 10000000) return _w(Math.floor(n/100000)) + ' Lakh' + (n % 100000 ? ' ' + _w(n % 100000) : '');
+  return _w(Math.floor(n/10000000)) + ' Crore' + (n % 10000000 ? ' ' + _w(n % 10000000) : '');
+}
+function qcWords(n) {
+  n = Math.round(Number(n));
+  if (!n) return '';
+  return _w(n).trim();
+}
+
+function qcDrawPie(principal, interest) {
+  var canvas = document.getElementById('qcPieCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  var total = principal + interest;
+  if (!total || total <= 0) return;
+  var cx = W / 2, cy = H / 2, r = Math.min(W, H) / 2 - 4;
+  var fracI = interest / total;
+  var fracP = principal / total;
+  var startAngle = -Math.PI / 2;
+  // Loan amount (orange)
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.arc(cx, cy, r, startAngle, startAngle + 2 * Math.PI * fracP);
+  ctx.closePath();
+  ctx.fillStyle = '#f59e0b';
+  ctx.fill();
+  // Interest (teal)
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.arc(cx, cy, r, startAngle + 2 * Math.PI * fracP, startAngle + 2 * Math.PI);
+  ctx.closePath();
+  ctx.fillStyle = '#14b8a6';
+  ctx.fill();
+  // Labels inside
+  function labelAt(ang, frac, text) {
+    if (frac < 0.05) return;
+    var midAng = startAngle + ang + Math.PI * frac;
+    var lx = cx + r * 0.62 * Math.cos(midAng);
+    var ly = cy + r * 0.62 * Math.sin(midAng);
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 10px Inter,sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(Math.round(frac * 100) + '%', lx, ly);
+  }
+  labelAt(0, fracP, '');
+  labelAt(2 * Math.PI * fracP, fracI, '');
+}
+
+function qcFmt(n) { return Math.round(n).toLocaleString('en-IN'); }
+
+function qcUpdateWordEl(elId, val) {
+  var el = document.getElementById(elId);
+  if (el) el.textContent = qcWords(val);
+}
+function qcSyncSlider(slId, val) {
+  var sl = document.getElementById(slId);
+  if (sl) { if (val >= sl.min && val <= sl.max) sl.value = val; }
+}
+
+function qcCalc() {
+  var tab = _qcTab;
+  var principal, rate, months, emi, totalPay, totalInt, solvedVal, solvedLabel, solvedWords;
+
+  if (tab === 'emi') {
+    principal = parseFloat(document.getElementById('qc_emi_amount').value) || 0;
+    rate      = parseFloat(document.getElementById('qc_emi_rate').value) || 0;
+    var yrs   = parseFloat(document.getElementById('qc_emi_period').value) || 0;
+    months    = Math.round(yrs * 12);
+    // Sync sliders
+    qcSyncSlider('qc_emi_amount_sl', principal);
+    qcSyncSlider('qc_emi_rate_sl', rate);
+    qcSyncSlider('qc_emi_period_sl', yrs);
+    qcUpdateWordEl('qc_emi_amount_words', principal);
+    document.getElementById('qc_emi_period_months').textContent = months + ' months';
+    // Compute EMI
+    var r = rate / 12 / 100;
+    if (r > 0 && months > 0 && principal > 0) {
+      emi = principal * r * Math.pow(1+r, months) / (Math.pow(1+r, months) - 1);
+    } else if (months > 0 && principal > 0) {
+      emi = principal / months;
+    } else { emi = 0; }
+    totalPay = emi * months;
+    totalInt = totalPay - principal;
+    solvedLabel = 'Monthly EMI';
+    solvedVal   = emi;
+    solvedWords = qcWords(Math.round(emi));
+
+  } else if (tab === 'amount') {
+    rate    = parseFloat(document.getElementById('qc_amt_rate').value) || 0;
+    var yrs = parseFloat(document.getElementById('qc_amt_period').value) || 0;
+    emi     = parseFloat(document.getElementById('qc_amt_emi').value) || 0;
+    months  = Math.round(yrs * 12);
+    qcSyncSlider('qc_amt_rate_sl', rate);
+    qcSyncSlider('qc_amt_period_sl', yrs);
+    qcSyncSlider('qc_amt_emi_sl', emi);
+    document.getElementById('qc_amt_period_months').textContent = months + ' months';
+    qcUpdateWordEl('qc_amt_emi_words', emi);
+    // Compute principal
+    var r = rate / 12 / 100;
+    if (r > 0 && months > 0 && emi > 0) {
+      principal = emi * (1 - Math.pow(1+r, -months)) / r;
+    } else if (months > 0 && emi > 0) {
+      principal = emi * months;
+    } else { principal = 0; }
+    totalPay = emi * months;
+    totalInt = totalPay - principal;
+    solvedLabel = 'Loan Amount';
+    solvedVal   = principal;
+    solvedWords = qcWords(Math.round(principal));
+
+  } else if (tab === 'period') {
+    principal = parseFloat(document.getElementById('qc_per_amount').value) || 0;
+    rate      = parseFloat(document.getElementById('qc_per_rate').value) || 0;
+    emi       = parseFloat(document.getElementById('qc_per_emi').value) || 0;
+    qcSyncSlider('qc_per_amount_sl', principal);
+    qcSyncSlider('qc_per_rate_sl', rate);
+    qcSyncSlider('qc_per_emi_sl', emi);
+    qcUpdateWordEl('qc_per_amount_words', principal);
+    qcUpdateWordEl('qc_per_emi_words', emi);
+    // Compute months
+    var r = rate / 12 / 100;
+    if (r > 0 && emi > 0 && principal > 0 && emi > principal * r) {
+      months = Math.ceil(-Math.log(1 - principal * r / emi) / Math.log(1 + r));
+    } else if (emi > 0 && principal > 0) {
+      months = Math.ceil(principal / emi);
+    } else { months = 0; }
+    totalPay = emi * months;
+    totalInt = totalPay - principal;
+    solvedLabel = 'Period (Months)';
+    solvedVal   = months;
+    solvedWords = qcWords(months) + ' months';
+
+  } else if (tab === 'interest') {
+    principal = parseFloat(document.getElementById('qc_int_amount').value) || 0;
+    var yrs   = parseFloat(document.getElementById('qc_int_period').value) || 0;
+    emi       = parseFloat(document.getElementById('qc_int_emi').value) || 0;
+    months    = Math.round(yrs * 12);
+    qcSyncSlider('qc_int_amount_sl', principal);
+    qcSyncSlider('qc_int_period_sl', yrs);
+    qcSyncSlider('qc_int_emi_sl', emi);
+    qcUpdateWordEl('qc_int_amount_words', principal);
+    document.getElementById('qc_int_period_months').textContent = months + ' months';
+    qcUpdateWordEl('qc_int_emi_words', emi);
+    // Compute rate via bisection
+    totalPay = emi * months;
+    totalInt = totalPay - principal;
+    var computedRate = 0;
+    if (emi > 0 && months > 0 && principal > 0) {
+      var lo = 0, hi = 100, mid;
+      for (var i = 0; i < 60; i++) {
+        mid = (lo + hi) / 2;
+        var rm = mid / 12 / 100;
+        var emiTest = rm > 0 ? principal * rm * Math.pow(1+rm, months) / (Math.pow(1+rm, months) - 1) : principal / months;
+        if (emiTest < emi) lo = mid; else hi = mid;
+      }
+      computedRate = mid;
+    }
+    solvedLabel = 'Interest';
+    solvedVal   = computedRate;
+    solvedWords = qcWords(Math.round(computedRate * 10) / 10) + ' percent';
+  }
+
+  // Update UI
+  if (totalInt !== undefined && totalInt >= 0) {
+    document.getElementById('qc_res_interest').textContent = qcFmt(Math.round(totalInt));
+    document.getElementById('qc_res_total').textContent    = qcFmt(Math.round(totalPay));
+    document.getElementById('qc_res_label').textContent    = 'Total Interest';
+    qcDrawPie(principal, totalInt);
+  }
+
+  var solvedWrap = document.getElementById('qc_solved_wrap');
+  if (solvedVal !== undefined && solvedVal > 0) {
+    solvedWrap.style.display = '';
+    document.getElementById('qc_solved_label').textContent = solvedLabel;
+    if (tab === 'interest') {
+      document.getElementById('qc_solved_value').textContent = (Math.round(solvedVal * 10) / 10) + '%';
+      document.getElementById('qc_solved_words').textContent = (Math.round(solvedVal * 10) / 10) + ' percent';
+    } else if (tab === 'period') {
+      document.getElementById('qc_solved_value').textContent = solvedVal + ' months';
+      document.getElementById('qc_solved_words').textContent = qcWords(solvedVal) + ' months';
+    } else {
+      document.getElementById('qc_solved_value').textContent = '₹ ' + qcFmt(Math.round(solvedVal));
+      document.getElementById('qc_solved_words').textContent = qcWords(Math.round(solvedVal));
+    }
+  } else {
+    solvedWrap.style.display = 'none';
+  }
+}
+
+function qcViewFullDetails() {
+  // Populate main EMI calculator with current values and show it
+  var tab = _qcTab;
+  var amount = 0, rate = 0, period = 0;
+  if (tab === 'emi') {
+    amount = document.getElementById('qc_emi_amount').value;
+    rate   = document.getElementById('qc_emi_rate').value;
+    period = document.getElementById('qc_emi_period').value;
+  } else if (tab === 'amount') {
+    rate   = document.getElementById('qc_amt_rate').value;
+    period = document.getElementById('qc_amt_period').value;
+  } else if (tab === 'period') {
+    amount = document.getElementById('qc_per_amount').value;
+    rate   = document.getElementById('qc_per_rate').value;
+  } else if (tab === 'interest') {
+    amount = document.getElementById('qc_int_amount').value;
+    period = document.getElementById('qc_int_period').value;
+  }
+  if (amount && document.getElementById('emi_amount')) document.getElementById('emi_amount').value = amount;
+  if (rate   && document.getElementById('emi_rate'))   document.getElementById('emi_rate').value = rate;
+  if (period && document.getElementById('emi_period')) { document.getElementById('emi_period').value = period; }
+  showSection('sec_emi');
+  setTimeout(() => { if (typeof calcEMI === 'function') calcEMI(); }, 100);
+}
+
+
+// ═══════════════════════════════════════════════
+//  REVISED EMI & TENURE CALCULATOR
+// ═══════════════════════════════════════════════
+
+var reCurrentTab = 'prepay';
+
+function reSetTab(tab) {
+  reCurrentTab = tab;
+  var prepayBtn = document.getElementById('re_tab_prepay');
+  var roiBtn = document.getElementById('re_tab_roi');
+  var prepayField = document.getElementById('re_prepay_field');
+  var roiField = document.getElementById('re_roi_field');
+  if (tab === 'prepay') {
+    prepayBtn.style.background = 'var(--accent)';
+    prepayBtn.style.color = '#fff';
+    roiBtn.style.background = 'var(--surface2)';
+    roiBtn.style.color = 'var(--text2)';
+    prepayField.style.display = 'block';
+    roiField.style.display = 'none';
+  } else {
+    roiBtn.style.background = 'var(--accent)';
+    roiBtn.style.color = '#fff';
+    prepayBtn.style.background = 'var(--surface2)';
+    prepayBtn.style.color = 'var(--text2)';
+    roiField.style.display = 'block';
+    prepayField.style.display = 'none';
+  }
+  document.getElementById('re_result').style.display = 'none';
+}
+
+// Calculate remaining tenure from outstanding, rate, emi
+function reCalcTenure(outstanding, annualRate, emi) {
+  var r = annualRate / 12 / 100;
+  if (r === 0) return outstanding / emi;
+  // n = -ln(1 - P*r/EMI) / ln(1+r)
+  var val = 1 - (outstanding * r / emi);
+  if (val <= 0) return 0;
+  return -Math.log(val) / Math.log(1 + r);
+}
+
+// Calculate total interest for given outstanding, rate, emi, tenure
+function reCalcInterest(outstanding, annualRate, emi, tenureMonths) {
+  return (emi * tenureMonths) - outstanding;
+}
+
+// Calculate new EMI for given outstanding, rate, tenure
+function reCalcEMI(outstanding, annualRate, tenureMonths) {
+  var r = annualRate / 12 / 100;
+  if (r === 0) return outstanding / tenureMonths;
+  return outstanding * r * Math.pow(1 + r, tenureMonths) / (Math.pow(1 + r, tenureMonths) - 1);
+}
+
+function reCalc() {
+  var outstanding = parseFloat(document.getElementById('re_outstanding').value);
+  var curRate = parseFloat(document.getElementById('re_cur_rate').value);
+  var curEmi = parseFloat(document.getElementById('re_cur_emi').value);
+
+  if (!outstanding || !curRate || !curEmi) {
+    alert('Kripya saare fields bharein'); return;
+  }
+
+  // Old tenure (months)
+  var oldTenure = reCalcTenure(outstanding, curRate, curEmi);
+  if (oldTenure <= 0 || !isFinite(oldTenure)) {
+    alert('EMI bahut chhota hai, loan kabhi khatam nahi hoga. EMI badhayein.'); return;
+  }
+  var oldInterest = reCalcInterest(outstanding, curRate, curEmi, oldTenure);
+
+  var newOutstanding, newRate;
+
+  if (reCurrentTab === 'prepay') {
+    var prepay = parseFloat(document.getElementById('re_prepay_amt').value);
+    if (!prepay || prepay >= outstanding) { alert('Valid pre-payment amount darj karein'); return; }
+    newOutstanding = outstanding - prepay;
+    newRate = curRate;
+  } else {
+    newRate = parseFloat(document.getElementById('re_new_rate').value);
+    if (!newRate) { alert('Revised rate darj karein'); return; }
+    newOutstanding = outstanding;
+  }
+
+  // === If EMI same, tenure changes ===
+  var newTenureSameEmi = reCalcTenure(newOutstanding, newRate, curEmi);
+  var newInterestSameEmi = reCalcInterest(newOutstanding, newRate, curEmi, newTenureSameEmi);
+
+  // === If Tenure same, EMI changes ===
+  var newEmiSameTenure = reCalcEMI(newOutstanding, newRate, Math.round(oldTenure));
+  var newInterestSameTenure = reCalcInterest(newOutstanding, newRate, newEmiSameTenure, Math.round(oldTenure));
+
+  // Display
+  document.getElementById('re_result').style.display = 'block';
+
+  // EMI change section
+  var emiDiff = Math.abs(curEmi - newEmiSameTenure);
+  document.getElementById('re_new_emi').textContent = fmt2(newEmiSameTenure);
+  document.getElementById('re_old_emi_show').textContent = fmt2(curEmi);
+  document.getElementById('re_emi_diff').textContent = fmt2(emiDiff);
+  document.getElementById('re_new_int_emi').textContent = fmt2(Math.max(0, newInterestSameTenure));
+  document.getElementById('re_old_int_emi').textContent = fmt2(Math.max(0, oldInterest));
+  var intEmiDiff = oldInterest - newInterestSameTenure;
+  document.getElementById('re_int_emi_diff').textContent = fmt2(Math.abs(intEmiDiff));
+
+  // Tenure change section
+  var tenDiff = Math.abs(oldTenure - newTenureSameEmi);
+  document.getElementById('re_new_months').textContent = newTenureSameEmi.toFixed(2);
+  document.getElementById('re_old_months').textContent = oldTenure.toFixed(2);
+  document.getElementById('re_months_diff').textContent = tenDiff.toFixed(2) + ' Months';
+  document.getElementById('re_new_int_ten').textContent = fmt2(Math.max(0, newInterestSameEmi));
+  document.getElementById('re_old_int_ten').textContent = fmt2(Math.max(0, oldInterest));
+  var intTenDiff = oldInterest - newInterestSameEmi;
+  document.getElementById('re_int_ten_diff').textContent = (intTenDiff < 0 ? '-' : '') + fmt2(Math.abs(intTenDiff));
+
+  // Color logic
+  document.getElementById('re_emi_diff').style.color = (newEmiSameTenure < curEmi) ? 'var(--green)' : 'var(--red)';
+  document.getElementById('re_int_emi_diff').style.color = (intEmiDiff >= 0) ? 'var(--green)' : 'var(--red)';
+  document.getElementById('re_months_diff').style.color = 'var(--accent2)';
+  document.getElementById('re_int_ten_diff').style.color = (intTenDiff >= 0) ? 'var(--green)' : 'var(--red)';
+
+  // Save to history
+  var hist = gs('re_history') || [];
+  hist.unshift({
+    tab: reCurrentTab,
+    outstanding, curRate, curEmi,
+    extra: reCurrentTab === 'prepay' ? parseFloat(document.getElementById('re_prepay_amt').value) : newRate,
+    newEmi: fmt2(newEmiSameTenure),
+    newTenure: newTenureSameEmi.toFixed(2),
+    savedOn: new Date().toLocaleString('en-IN'),
+    intSaved: fmt2(Math.abs(intTenDiff))
+  });
+  if (hist.length > 20) hist = hist.slice(0, 20);
+  ss('re_history', hist);
+
+  // Scroll to result
+  document.getElementById('re_result').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function fmt2(n) {
+  if (!isFinite(n) || isNaN(n)) return '—';
+  return Math.round(n).toLocaleString('en-IN');
+}
+
+function reReset() {
+  ['re_outstanding','re_cur_rate','re_cur_emi','re_prepay_amt','re_new_rate'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('re_result').style.display = 'none';
+}
+
+function reShowHistory() {
+  var hist = gs('re_history') || [];
+  var list = document.getElementById('re_history_list');
+  if (!hist.length) {
+    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px">Koi history nahi hai</div>';
+  } else {
+    list.innerHTML = hist.map(function(h, i) {
+      return '<div style="background:var(--surface2);border-radius:10px;padding:11px;margin-bottom:8px;border:1px solid var(--border)">' +
+        '<div style="font-size:11px;font-weight:700;color:var(--accent2);margin-bottom:4px">' + (h.tab === 'prepay' ? '💳 Pre Payment' : '📊 ROI Change') + ' — ' + h.savedOn + '</div>' +
+        '<div style="font-size:11px;color:var(--text2)">Outstanding: <b>₹' + (h.outstanding||'').toLocaleString('en-IN') + '</b> | Rate: <b>' + h.curRate + '%</b> | EMI: <b>₹' + (h.curEmi||'').toLocaleString('en-IN') + '</b></div>' +
+        '<div style="font-size:11px;color:var(--text);margin-top:3px">' + (h.tab==='prepay' ? 'PrePay: <b>₹'+(h.extra||0).toLocaleString('en-IN')+'</b>' : 'New Rate: <b>'+h.extra+'%</b>') + ' → New EMI: <b>₹'+h.newEmi+'</b> | New Tenure: <b>'+h.newTenure+' M</b></div>' +
+        '<div style="font-size:11px;color:var(--green);margin-top:2px">Interest Saved: ₹' + h.intSaved + '</div>' +
+        '</div>';
+    }).join('');
+  }
+  openM('reHistoryModal');
+}
+
+function reClearHistory() {
+  ss('re_history', []);
+  reShowHistory();
+}
+
+function reShare() {
+  var outstanding = document.getElementById('re_outstanding').value;
+  var curRate = document.getElementById('re_cur_rate').value;
+  var curEmi = document.getElementById('re_cur_emi').value;
+  var extra = reCurrentTab === 'prepay'
+    ? 'Pre Payment: ₹' + document.getElementById('re_prepay_amt').value
+    : 'Revised Rate: ' + document.getElementById('re_new_rate').value + '%';
+
+  var newEmi = document.getElementById('re_new_emi').textContent;
+  var oldEmi = document.getElementById('re_old_emi_show').textContent;
+  var emiDiff = document.getElementById('re_emi_diff').textContent;
+  var newMonths = document.getElementById('re_new_months').textContent;
+  var oldMonths = document.getElementById('re_old_months').textContent;
+  var monthsDiff = document.getElementById('re_months_diff').textContent;
+  var intSaved = document.getElementById('re_int_ten_diff').textContent;
+
+  var text = '🔁 Revised EMI & Tenure\n' +
+    '━━━━━━━━━━━━━━━━━\n' +
+    'Outstanding: ₹' + outstanding + '\n' +
+    'Current Rate: ' + curRate + '% | Current EMI: ₹' + curEmi + '\n' +
+    extra + '\n\n' +
+    '📊 If EMI changes:\n' +
+    'New EMI: ₹' + newEmi + ' | Old: ₹' + oldEmi + ' | Diff: ₹' + emiDiff + '\n\n' +
+    '📅 If Tenure changes:\n' +
+    'New: ' + newMonths + ' M | Old: ' + oldMonths + ' M | Saved: ' + monthsDiff + '\n' +
+    'Interest Saved: ₹' + intSaved + '\n\n' +
+    'Calculated via MyToolkit Pro 📱';
+
+  if (navigator.share) {
+    navigator.share({ text: text });
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text);
+    alert('Result copied to clipboard!');
+  }
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(qcCalc, 300);
+});
+
+// ════════════════════════════════════════════
+//  MORATORIUM CALCULATOR (Standalone)
+// ════════════════════════════════════════════
+var mor2PeriodMode = 'yr';
+var mor2OptMode = 'emi'; // 'emi' = no change in EMI (tenure extends), 'tenure' = no change in tenure (EMI rises)
+
+function mor2PeriodToggle(mode) {
+  mor2PeriodMode = mode;
+  document.getElementById('mor2_yr').classList.toggle('active', mode === 'yr');
+  document.getElementById('mor2_mo').classList.toggle('active', mode === 'mo');
+  mor2Calc();
+}
+
+function mor2SetOpt(opt) {
+  mor2OptMode = opt;
+  var emiBtn    = document.getElementById('mor2_opt_emi');
+  var tenureBtn = document.getElementById('mor2_opt_tenure');
+  emiBtn.style.background    = opt === 'emi'    ? 'var(--accent)' : 'var(--surface2)';
+  emiBtn.style.color         = opt === 'emi'    ? '#fff' : 'var(--text2)';
+  tenureBtn.style.background = opt === 'tenure' ? 'var(--accent)' : 'var(--surface2)';
+  tenureBtn.style.color      = opt === 'tenure' ? '#fff' : 'var(--text2)';
+  mor2Calc();
+}
+
+function mor2PMT(r, n, pv) {
+  if (r === 0) return pv / n;
+  return pv * r * Math.pow(1+r, n) / (Math.pow(1+r, n) - 1);
+}
+
+function mor2PV(r, n, pmt) {
+  if (r === 0) return pmt * n;
+  return pmt * (1 - Math.pow(1+r, -n)) / r;
+}
+
+function mor2FmtINR(n) {
+  if (isNaN(n) || n <= 0) return '\u2014';
+  return Math.round(n).toLocaleString('en-IN');
+}
+
+function mor2Calc() {
+  var P       = parseFloat(document.getElementById('mor2_principal').value) || 0;
+  var rate    = parseFloat(document.getElementById('mor2_rate').value) || 0;
+  var period  = parseFloat(document.getElementById('mor2_period').value) || 0;
+  var paid    = parseFloat(document.getElementById('mor2_paid').value) || 0;
+  var morPer  = parseFloat(document.getElementById('mor2_morperiod').value) || 0;
+  var res     = document.getElementById('mor2_result');
+
+  if (!P || !rate || !period || !morPer) { res.style.display = 'none'; return; }
+
+  var totalMonths = mor2PeriodMode === 'yr' ? period * 12 : period;
+  var r = rate / 12 / 100;
+
+  // Original EMI
+  var origEMI = mor2PMT(r, totalMonths, P);
+
+  // Outstanding principal after 'paid' EMIs
+  var outstandingP = P;
+  for (var i = 0; i < paid; i++) {
+    var intPart = outstandingP * r;
+    var priPart = origEMI - intPart;
+    outstandingP -= priPart;
+  }
+  outstandingP = Math.max(0, outstandingP);
+  var remTenure = Math.max(1, totalMonths - paid);
+
+  // Interest accrued during moratorium on outstanding principal
+  var accruedInt = outstandingP * r * morPer;
+  var newPrincipal = outstandingP + accruedInt;
+
+  var newEMI, newTenure;
+
+  if (mor2OptMode === 'emi') {
+    // No change in EMI → tenure extends
+    newEMI = origEMI;
+    if (r === 0) {
+      newTenure = Math.ceil(newPrincipal / newEMI);
+    } else {
+      newTenure = Math.ceil(-Math.log(1 - (newPrincipal * r / newEMI)) / Math.log(1 + r));
+    }
+  } else {
+    // No change in tenure → EMI increases
+    newTenure = remTenure;
+    newEMI = mor2PMT(r, newTenure, newPrincipal);
+  }
+
+  // Original scenario (no moratorium)
+  var origTotalInterest = origEMI * totalMonths - P;
+  var origTotalPayment  = P + origTotalInterest;
+
+  // New scenario
+  var newTotalInterest = newEMI * (paid + morPer + newTenure) - P;
+  var newTotalPayment  = P + newTotalInterest;
+
+  // Fill table
+  document.getElementById('mor2_orig_principal').textContent = '\u20B9' + mor2FmtINR(P);
+  document.getElementById('mor2_new_principal').textContent  = '\u20B9' + mor2FmtINR(newPrincipal);
+  document.getElementById('mor2_orig_emi').textContent       = '\u20B9' + mor2FmtINR(origEMI);
+  document.getElementById('mor2_new_emi').textContent        = '\u20B9' + mor2FmtINR(newEMI);
+  document.getElementById('mor2_orig_tenure').textContent    = totalMonths;
+  document.getElementById('mor2_new_tenure').textContent     = (paid + morPer + newTenure);
+  document.getElementById('mor2_orig_interest').textContent  = '\u20B9' + mor2FmtINR(origTotalInterest);
+  document.getElementById('mor2_new_interest').textContent   = '\u20B9' + mor2FmtINR(newTotalInterest);
+  document.getElementById('mor2_orig_total').textContent     = '\u20B9' + mor2FmtINR(origTotalPayment);
+  document.getElementById('mor2_new_total').textContent      = '\u20B9' + mor2FmtINR(newTotalPayment);
+
+  res.style.display = '';
+}
+
+function mor2Reset() {
+  ['mor2_principal','mor2_rate','mor2_period','mor2_paid','mor2_morperiod'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('mor2_result').style.display = 'none';
+}
+
+function mor2Share() {
+  var P     = document.getElementById('mor2_orig_principal').textContent;
+  var emiO  = document.getElementById('mor2_orig_emi').textContent;
+  var emiN  = document.getElementById('mor2_new_emi').textContent;
+  var tenO  = document.getElementById('mor2_orig_tenure').textContent;
+  var tenN  = document.getElementById('mor2_new_tenure').textContent;
+  var intO  = document.getElementById('mor2_orig_interest').textContent;
+  var intN  = document.getElementById('mor2_new_interest').textContent;
+  var totO  = document.getElementById('mor2_orig_total').textContent;
+  var totN  = document.getElementById('mor2_new_total').textContent;
+  var opt   = mor2OptMode === 'emi' ? 'No Change in Monthly EMI' : 'No Change in Loan Tenure';
+  var text = '\u23F8\uFE0F Moratorium Calculator\n' +
+    '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n' +
+    'Option: ' + opt + '\n' +
+    'Moratorium: ' + (document.getElementById('mor2_morperiod').value||'--') + ' months\n\n' +
+    '                No Moratorium | With Moratorium\n' +
+    'Total Principal: ' + P + ' | ' + totO.replace(P,'') + '\n' +
+    'Monthly EMI:     ' + emiO + ' | ' + emiN + '\n' +
+    'Tenure (Mo):     ' + tenO + ' | ' + tenN + '\n' +
+    'Total Interest:  ' + intO + ' | ' + intN + '\n' +
+    'Total Payment:   ' + totO + ' | ' + totN + '\n\n' +
+    'Calculated via MyToolkit Pro \uD83D\uDCF1';
+  if (navigator.share) { navigator.share({ text: text }); }
+  else if (navigator.clipboard) { navigator.clipboard.writeText(text); alert('Result copied!'); }
+}
+
+
+var eligPeriodMode = 'yr';
+var sePeriodMode = 'yr';
+
+function eligSetTab(tab) {
+  document.getElementById('elig_panel_salaried').style.display = tab === 'salaried' ? '' : 'none';
+  document.getElementById('elig_panel_selfempl').style.display = tab === 'selfempl' ? '' : 'none';
+  if (tab === 'selfempl') { senpInit(); }
+  var salBtn = document.getElementById('elig_tab_salaried');
+  var seBtn  = document.getElementById('elig_tab_selfempl');
+  salBtn.style.background = tab === 'salaried' ? 'var(--accent)' : 'var(--surface2)';
+  salBtn.style.color      = tab === 'salaried' ? '#fff' : 'var(--text2)';
+  seBtn.style.background  = tab === 'selfempl' ? 'var(--accent)' : 'var(--surface2)';
+  seBtn.style.color       = tab === 'selfempl' ? '#fff' : 'var(--text2)';
+}
+
+function eligPeriodToggle(mode) {
+  eligPeriodMode = mode;
+  document.getElementById('el_period_yr').classList.toggle('active', mode === 'yr');
+  document.getElementById('el_period_mo').classList.toggle('active', mode === 'mo');
+  eligCalcSalaried();
+}
+
+function sePeriodToggle(mode) {
+  sePeriodMode = mode;
+  document.getElementById('se_period_yr').classList.toggle('active', mode === 'yr');
+  document.getElementById('se_period_mo').classList.toggle('active', mode === 'mo');
+  eligCalcSE();
+}
+
+function seToggle(key) {
+  var body = document.getElementById('se_body_' + key);
+  var arr  = document.getElementById('se_arr_' + key);
+  if (!body || !arr) return;
+  var open = body.style.display !== 'none';
+  body.style.display = open ? 'none' : '';
+  arr.textContent    = open ? '\u25BC' : '\u25B2';
+}
+
+function pvAnnuityElig(rate, nper, pmt_val) {
+  if (rate === 0) return pmt_val * nper;
+  return pmt_val * (1 - Math.pow(1 + rate, -nper)) / rate;
+}
+
+function fmtINR2(n) {
+  if (isNaN(n) || n <= 0) return '\u2014';
+  return Math.round(n).toLocaleString('en-IN');
+}
+
+function eligCalcSalaried() {
+  var salary   = parseFloat(document.getElementById('el_salary').value) || 0;
+  var foir     = parseFloat(document.getElementById('el_foir').value) || 0;
+  var existEmi = parseFloat(document.getElementById('el_existing_emi').value) || 0;
+  var rate     = parseFloat(document.getElementById('el_rate').value) || 0;
+  var period   = parseFloat(document.getElementById('el_period').value) || 0;
+  var res = document.getElementById('elig_sal_result');
+  if (!salary || !foir || !rate || !period) { res.style.display = 'none'; return; }
+  var maxEmi      = salary * foir / 100;
+  var eligibleEmi = maxEmi - existEmi;
+  if (eligibleEmi <= 0) { res.style.display = 'none'; return; }
+  var months = eligPeriodMode === 'yr' ? period * 12 : period;
+  var mr     = rate / 12 / 100;
+  var loanAmt = pvAnnuityElig(mr, months, eligibleEmi);
+  document.getElementById('el_res_emi').textContent  = '\u20B9' + fmtINR2(eligibleEmi);
+  document.getElementById('el_res_loan').textContent = '\u20B9' + fmtINR2(loanAmt);
+  res.style.display = '';
+}
+
+function eligResetSalaried() {
+  ['el_salary','el_foir','el_existing_emi','el_rate','el_period'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.value = (id === 'el_foir') ? '35' : '';
+  });
+  document.getElementById('elig_sal_result').style.display = 'none';
+}
+
+function eligShareSalaried() {
+  var emi  = document.getElementById('el_res_emi').textContent;
+  var loan = document.getElementById('el_res_loan').textContent;
+  var text = '\u2705 Loan Eligibility (Salaried)\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\nSalary: \u20B9' + (document.getElementById('el_salary').value||'--') +
+    '\nFOIR: ' + (document.getElementById('el_foir').value||'--') + '%' +
+    '\nExisting EMIs: \u20B9' + (document.getElementById('el_existing_emi').value||'0') +
+    '\nRate: ' + (document.getElementById('el_rate').value||'--') + '% | Period: ' +
+    (document.getElementById('el_period').value||'--') + (eligPeriodMode==='yr'?' Yrs':' Mo') +
+    '\n\nEligible EMI: ' + emi + '\nEligible Loan: ' + loan + '\n\nCalculated via MyToolkit Pro \uD83D\uDCF1';
+  if (navigator.share) { navigator.share({ text: text }); }
+  else if (navigator.clipboard) { navigator.clipboard.writeText(text); alert('Result copied!'); }
+}
+
+function eligCalcSE() {
+  var rate     = parseFloat(document.getElementById('se_rate').value) || 0;
+  var period   = parseFloat(document.getElementById('se_period').value) || 0;
+  var existEmi = parseFloat(document.getElementById('se_existing_emi').value) || 0;
+  var np    = parseFloat(document.getElementById('se_net_profit').value)||0;
+  var npPct = parseFloat(document.getElementById('se_net_profit_pct').value)||0;
+  var npM   = (np * npPct / 100) / 12;
+  var gp    = parseFloat(document.getElementById('se_gross_profit').value)||0;
+  var gpPct = parseFloat(document.getElementById('se_gross_profit_pct').value)||0;
+  var gpM   = (gp * gpPct / 100) / 12;
+  var gr    = parseFloat(document.getElementById('se_gross_receipt').value)||0;
+  var grPct = parseFloat(document.getElementById('se_gross_receipt_pct').value)||0;
+  var grM   = (gr * grPct / 100) / 12;
+  var bkAvg = parseFloat(document.getElementById('se_banking_avg').value)||0;
+  var bkMul = parseFloat(document.getElementById('se_banking_mult').value)||0;
+  var bkM   = bkAvg * bkMul;
+  var ltvV  = parseFloat(document.getElementById('se_ltv_value').value)||0;
+  var ltvP  = parseFloat(document.getElementById('se_ltv_pct').value)||0;
+  var ltvLoan = ltvV * ltvP / 100;
+  var rent  = parseFloat(document.getElementById('se_rental_monthly').value)||0;
+  var rentP = parseFloat(document.getElementById('se_rental_pct').value)||0;
+  var rentM = rent * rentP / 100;
+  var rtrE  = parseFloat(document.getElementById('se_rtr_emi').value)||0;
+  var rtrMul= parseFloat(document.getElementById('se_rtr_mult').value)||0;
+  var rtrM  = rtrE * rtrMul;
+  var lipA  = parseFloat(document.getElementById('se_lip_annual').value)||0;
+  var lipMul= parseFloat(document.getElementById('se_lip_mult').value)||0;
+  var lipM  = (lipA * lipMul) / 12;
+  var totalM = npM + gpM + grM + bkM + rentM + rtrM + lipM;
+  var res = document.getElementById('elig_se_result');
+  if (totalM === 0 && ltvLoan === 0) { res.style.display='none'; return; }
+  if (!rate || !period) { res.style.display='none'; return; }
+  var months = sePeriodMode === 'yr' ? period * 12 : period;
+  var mr = rate / 12 / 100;
+  var eligEmi = Math.max(0, totalM * 0.50 - existEmi);
+  var loanFromIncome = pvAnnuityElig(mr, months, eligEmi);
+  var finalLoan = (ltvLoan > 0) ? Math.min(loanFromIncome, ltvLoan) : loanFromIncome;
+  var bk = '';
+  if (npM > 0)   bk += '<div class="rrow"><span>Net Profit/mo</span><span class="rv">\u20B9'+fmtINR2(npM)+'</span></div>';
+  if (gpM > 0)   bk += '<div class="rrow"><span>Gross Profit/mo</span><span class="rv">\u20B9'+fmtINR2(gpM)+'</span></div>';
+  if (grM > 0)   bk += '<div class="rrow"><span>Gross Receipts/mo</span><span class="rv">\u20B9'+fmtINR2(grM)+'</span></div>';
+  if (bkM > 0)   bk += '<div class="rrow"><span>Banking Surrogate/mo</span><span class="rv">\u20B9'+fmtINR2(bkM)+'</span></div>';
+  if (rentM > 0) bk += '<div class="rrow"><span>Rental Income/mo</span><span class="rv">\u20B9'+fmtINR2(rentM)+'</span></div>';
+  if (rtrM > 0)  bk += '<div class="rrow"><span>RTR Income/mo</span><span class="rv">\u20B9'+fmtINR2(rtrM)+'</span></div>';
+  if (lipM > 0)  bk += '<div class="rrow"><span>LIP/mo</span><span class="rv">\u20B9'+fmtINR2(lipM)+'</span></div>';
+  if (ltvLoan>0) bk += '<div class="rrow"><span>Low LTV Cap</span><span class="rv">\u20B9'+fmtINR2(ltvLoan)+'</span></div>';
+  document.getElementById('se_income_breakdown').innerHTML = bk;
+  document.getElementById('se_res_income').textContent = '\u20B9' + fmtINR2(totalM);
+  document.getElementById('se_res_emi').textContent    = '\u20B9' + fmtINR2(eligEmi);
+  document.getElementById('se_res_loan').textContent   = '\u20B9' + fmtINR2(finalLoan);
+  res.style.display = '';
+}
+
+function eligResetSE() {
+  ['se_net_profit','se_net_profit_pct','se_gross_profit','se_gross_profit_pct',
+   'se_gross_receipt','se_gross_receipt_pct','se_banking_avg','se_banking_mult',
+   'se_ltv_value','se_ltv_pct','se_rental_monthly','se_rental_pct',
+   'se_rtr_emi','se_rtr_mult','se_lip_annual','se_lip_mult',
+   'se_existing_emi','se_rate','se_period'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('elig_se_result').style.display = 'none';
+}
+
+function eligShareSE() {
+  var income = document.getElementById('se_res_income').textContent;
+  var emi    = document.getElementById('se_res_emi').textContent;
+  var loan   = document.getElementById('se_res_loan').textContent;
+  var text = '\u2705 Loan Eligibility (Self Employed)\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n' +
+    'Total Monthly Income: '+income+'\nEligible EMI: '+emi+'\nEligible Loan: '+loan+
+    '\nRate: '+(document.getElementById('se_rate').value||'--')+'% | Period: '+
+    (document.getElementById('se_period').value||'--')+(sePeriodMode==='yr'?' Yrs':' Mo')+
+    '\n\nCalculated via MyToolkit Pro \uD83D\uDCF1';
+  if (navigator.share) { navigator.share({ text: text }); }
+  else if (navigator.clipboard) { navigator.clipboard.writeText(text); alert('Result copied!'); }
+}
+
+// Place from saved signatures library
+function dvPlaceFromSavedSig() {
+  const sigs = gs('signatures') || [];
+  if (!sigs.length) { dvToast('Koi saved signature nahi — pehle sign tab mein signature banao'); return; }
+  const latest = sigs[sigs.length - 1];
+  const wrap = document.querySelector('.dv-page-wrap');
+  if (!wrap) return;
+  const img = document.createElement('img');
+  img.src = latest.data;
+  img.className = 'dv-sig-img';
+  img.style.left = '60px';
+  img.style.top = '60px';
+  img.style.width = '140px';
+  img.style.height = 'auto';
+  dvMakeDraggable(img, wrap);
+  wrap.appendChild(img);
+  dvToast('Signature placed! ✅ (Latest saved)');
+}
+
+// ── Toast ──
+function dvToast(msg, ms = 2500) {
+  const t = document.getElementById('dvToast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), ms);
+}
+
+// ═══════════════════════════════════════════════
+//  HOOK: PDF upload ke baad "View PDF" button dikhao
+//  Input element pe direct onchange listener
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+  // Hook: Compressor PDF input
+  const pdfInp = document.getElementById('pdfInput');
+  if (pdfInp) {
+    pdfInp.addEventListener('change', function(e) {
+      const f = e.target.files[0];
+      if (!f) return;
+      // Show view button after small delay (let handlePDF run first)
+      setTimeout(() => {
+        dvShowViewBtn('dvViewPdfBtn', 'pdf_comp_card', f);
+      }, 300);
+    });
+  }
+
+  // Hook: Edit PDF input
+  const editInp = document.getElementById('pdfEditInput');
+  if (editInp) {
+    editInp.addEventListener('change', function(e) {
+      const f = e.target.files[0];
+      if (!f) return;
+      setTimeout(() => {
+        dvShowViewBtn('dvViewEditPdfBtn', 'pdf_edit_card', f);
+      }, 800);
+    });
+  }
+
+  // Hook: Converter PDF input
+  const convInp = document.getElementById('convFromPdfInput');
+  if (convInp) {
+    convInp.addEventListener('change', function(e) {
+      const f = e.target.files[0];
+      if (!f) return;
+      setTimeout(() => {
+        dvShowViewBtn('dvViewConvPdfBtn', 'pdf_conv_card', f);
+      }, 400);
+    });
+  }
+});
+
+function dvShowViewBtn(btnId, cardId, file) {
+  let btn = document.getElementById(btnId);
+  if (!btn) {
+    btn = document.createElement('button');
+    btn.id = btnId;
+    btn.style.cssText = 'width:100%;margin-top:10px;padding:12px;border:none;border-radius:12px;background:linear-gradient(135deg,#1e40af,#2563eb);color:#fff;font-family:\'Inter\',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.3px;box-shadow:0 4px 16px rgba(37,99,235,.4)';
+    btn.innerHTML = '👁️ View PDF — Full Screen';
+    const card = document.getElementById(cardId);
+    if (card) {
+      // Insert after the uarea upload zone
+      const uarea = card.querySelector('.uarea');
+      if (uarea && uarea.nextSibling) {
+        card.insertBefore(btn, uarea.nextSibling);
+      } else {
+        card.appendChild(btn);
+      }
+    }
+  }
+  btn.onclick = () => openDvViewer(file);
+  btn.style.display = 'flex';
+}
 </script>
 </body>
 </html>
