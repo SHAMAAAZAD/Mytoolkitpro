@@ -11453,16 +11453,100 @@ function dvShowViewBtn(btnId, cardId, file) {
   
   var _sfLoaded = false;
   
-  // ── localStorage bridge for Notes iframe (srcdoc = null origin) ──
+  // ── Notes Firebase Realtime Sync Bridge ──
+  // Notes ab localStorage + Firebase dono mein sync hongi
   var _SF_NOTES_KEY = 'secureflow_notes_v3';
+  var _notesRef = null;
+  var _lastNotesWrite = 0;
+  var _notesWriteTimer = null;
+
+  // Push notes to Firebase (debounced 600ms)
+  function _fbPushNotes(dataStr) {
+    if(typeof _db === 'undefined' || !_db || typeof _currentPhone === 'undefined' || !_currentPhone) return;
+    clearTimeout(_notesWriteTimer);
+    _notesWriteTimer = setTimeout(function() {
+      try {
+        _lastNotesWrite = Date.now();
+        _db.ref('users/' + _currentPhone + '/notes').set(dataStr).catch(function(e) {
+          console.warn('Notes FB push failed:', e.message);
+        });
+      } catch(e) { console.warn('Notes push error:', e); }
+    }, 600);
+  }
+
+  // Pull notes from Firebase once
+  function _fbPullNotes(callback) {
+    if(typeof _db === 'undefined' || !_db || typeof _currentPhone === 'undefined' || !_currentPhone) {
+      callback(localStorage.getItem(_SF_NOTES_KEY));
+      return;
+    }
+    _db.ref('users/' + _currentPhone + '/notes').once('value').then(function(snap) {
+      var remote = snap.val();
+      if(remote) {
+        // Remote notes win — save locally and return
+        localStorage.setItem(_SF_NOTES_KEY, remote);
+        callback(remote);
+      } else {
+        // No remote data — use local
+        callback(localStorage.getItem(_SF_NOTES_KEY));
+      }
+    }).catch(function() {
+      callback(localStorage.getItem(_SF_NOTES_KEY));
+    });
+  }
+
+  // Start realtime listener for notes (called after login)
+  function _startNotesListen(phone) {
+    if(typeof _db === 'undefined' || !_db || !phone) return;
+    if(_notesRef) { _notesRef.off(); _notesRef = null; }
+    _notesRef = _db.ref('users/' + phone + '/notes');
+    _notesRef.on('value', function(snap) {
+      var remote = snap.val();
+      if(!remote) return;
+      if(Date.now() - _lastNotesWrite < 1500) return; // skip own echo
+      // Update local cache
+      localStorage.setItem(_SF_NOTES_KEY, remote);
+      // Push fresh data to iframe if it's open
+      var overlay = document.getElementById('notesOverlay');
+      if(overlay && overlay.style.display !== 'none') {
+        var iframe = document.getElementById('notesIframe');
+        if(iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage({ type: 'SF_NOTES_DATA', data: remote }, '*');
+        }
+      }
+    });
+  }
+
+  // Hook into startDataSync — patch it to also start notes listener
+  var _origStartDataSync = window.startDataSync;
+  window.startDataSync = async function(phone) {
+    await _origStartDataSync.call(this, phone);
+    // Pull latest notes from Firebase on login
+    _fbPullNotes(function(data) {
+      if(data) localStorage.setItem(_SF_NOTES_KEY, data);
+    });
+    // Start realtime notes listener
+    _startNotesListen(phone);
+  };
+
+  // Message bridge for Notes iframe
   window.addEventListener('message', function(e) {
     if(!e.data || typeof e.data.type !== 'string') return;
     var iframe = document.getElementById('notesIframe');
     if(e.data.type === 'SF_LOAD_NOTES') {
-      var stored = localStorage.getItem(_SF_NOTES_KEY);
-      iframe.contentWindow.postMessage({ type: 'SF_NOTES_DATA', data: stored }, '*');
+      // Pull fresh from Firebase, then send to iframe
+      _fbPullNotes(function(stored) {
+        if(iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage({ type: 'SF_NOTES_DATA', data: stored }, '*');
+        }
+      });
     } else if(e.data.type === 'SF_SAVE_NOTES') {
-      if(e.data.data) localStorage.setItem(_SF_NOTES_KEY, e.data.data);
+      if(e.data.data) {
+        _lastNotesWrite = Date.now();
+        localStorage.setItem(_SF_NOTES_KEY, e.data.data);
+        // Sync to Firebase
+        _fbPushNotes(e.data.data);
+      }
     }
   });
 
@@ -11476,13 +11560,15 @@ function dvShowViewBtn(btnId, cardId, file) {
       var html = _b64decode(_sfb64);
       iframe.srcdoc = html;
       _sfLoaded = true;
+      // Data will be sent via SF_LOAD_NOTES message from iframe after it loads
     } else {
-      // Re-send data to already-loaded iframe every time overlay opens
-      var stored = localStorage.getItem(_SF_NOTES_KEY);
-      var iframe = document.getElementById('notesIframe');
-      if(iframe.contentWindow) {
-        iframe.contentWindow.postMessage({ type: 'SF_NOTES_DATA', data: stored }, '*');
-      }
+      // Pull latest from Firebase and send to already-loaded iframe
+      _fbPullNotes(function(stored) {
+        var iframe2 = document.getElementById('notesIframe');
+        if(iframe2 && iframe2.contentWindow) {
+          iframe2.contentWindow.postMessage({ type: 'SF_NOTES_DATA', data: stored }, '*');
+        }
+      });
     }
   };
   
