@@ -3744,48 +3744,123 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </section>
 
-<!-- ═══ MILEAGE CALCULATOR ═══ -->
+<!-- ═══ MILEAGE CALCULATOR (Advanced) ═══ -->
 <section class="section" id="sec_mileage">
+<style>
+/* ── Mileage Advanced Styles (bright-mode safe via CSS vars) ── */
+#sec_mileage .mil-form-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:14px;margin-bottom:11px;box-shadow:var(--shadow)}
+#sec_mileage .mil-section-title{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:6px}
+#sec_mileage .mil-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+@media(max-width:420px){#sec_mileage .mil-grid{grid-template-columns:1fr}}
+#sec_mileage .mil-fg{display:flex;flex-direction:column;gap:3px}
+#sec_mileage .mil-fg label{font-size:11px;color:var(--text2);font-weight:600;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+#sec_mileage .mil-auto-tag{font-size:9px;background:rgba(37,99,235,0.12);color:var(--accent);border:1px solid rgba(37,99,235,0.25);border-radius:4px;padding:1px 5px}
+#sec_mileage .mil-opt-tag{font-size:9px;background:rgba(234,88,12,0.1);color:var(--accent2);border:1px solid rgba(234,88,12,0.25);border-radius:4px;padding:1px 5px}
+#sec_mileage .mil-fg .mil-inp{background:var(--surface2);border:1.5px solid var(--border);border-radius:9px;color:var(--text);font-size:13px;font-family:'Inter',sans-serif;padding:9px 12px;width:100%;transition:border .15s;outline:none}
+#sec_mileage .mil-fg .mil-inp:focus{border-color:var(--accent)}
+#sec_mileage .mil-fg .mil-inp::placeholder{color:var(--text2);opacity:.5}
+#sec_mileage .mil-fg select.mil-inp option{background:var(--surface)}
+#sec_mileage .mil-hint{font-size:10px;color:var(--text2);opacity:.7;margin-top:1px}
+#sec_mileage .mil-edit-banner{background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:7px;padding:7px 12px;margin-bottom:9px;font-size:12px;color:var(--accent);display:none}
+#sec_mileage .mil-edit-banner.show{display:block}
+/* Summary row */
+#sec_mileage .mil-sum-row{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:11px}
+@media(max-width:420px){#sec_mileage .mil-sum-row{grid-template-columns:1fr 1fr}}
+#sec_mileage .mil-sum-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:11px 12px;box-shadow:var(--shadow)}
+#sec_mileage .mil-slbl{font-size:10px;color:var(--text2);font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:3px}
+#sec_mileage .mil-sval{font-size:19px;font-weight:800;color:var(--text)}
+#sec_mileage .mil-sval.acc{color:var(--accent)}
+/* Records */
+#sec_mileage .mil-record{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:12px 13px;margin-bottom:9px;transition:border .2s;box-shadow:var(--shadow)}
+#sec_mileage .mil-record.draft{border-left:3px solid var(--accent2);background:linear-gradient(90deg,rgba(234,88,12,.06) 0%,var(--surface) 70px)}
+#sec_mileage .mil-record.complete{border-left:3px solid var(--green);background:linear-gradient(90deg,rgba(22,163,74,.06) 0%,var(--surface) 70px)}
+#sec_mileage .mil-rec-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;gap:7px}
+#sec_mileage .mil-rec-name{font-size:14px;font-weight:700;color:var(--text)}
+#sec_mileage .mil-rec-purpose{font-size:11px;color:var(--text2);margin-top:2px}
+#sec_mileage .mil-badge{font-size:10px;padding:3px 9px;border-radius:5px;font-weight:700;letter-spacing:.05em;white-space:nowrap}
+#sec_mileage .mil-badge.draft{background:rgba(234,88,12,.1);color:var(--accent2);border:1px solid rgba(234,88,12,.25)}
+#sec_mileage .mil-badge.complete{background:rgba(22,163,74,.1);color:var(--green);border:1px solid rgba(22,163,74,.25)}
+#sec_mileage .mil-rec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:7px;margin-bottom:9px}
+#sec_mileage .mil-rf{background:var(--surface2);border-radius:8px;padding:8px 10px;border:1px solid var(--border)}
+#sec_mileage .mil-rl{font-size:10px;color:var(--text2);font-weight:600;letter-spacing:.04em;margin-bottom:3px}
+#sec_mileage .mil-rv{font-size:12px;font-weight:700;color:var(--text)}
+#sec_mileage .mil-rv.missing{color:var(--text2);font-style:italic;font-weight:400}
+#sec_mileage .mil-rv.acc{color:var(--accent)}
+#sec_mileage .mil-rv.ora{color:var(--accent2)}
+#sec_mileage .mil-empty{text-align:center;padding:2.5rem 1rem;color:var(--text2)}
+#sec_mileage .mil-empty .eico{font-size:36px;margin-bottom:10px;opacity:.5}
+#sec_mileage .mil-cnt{font-size:11px;color:var(--text2);margin-bottom:9px;font-weight:500}
+</style>
 
-<div class="prem-card">
-  <div class="prem-card-title">🚗 Odometer Readings</div>
-  <div class="ibox ig" style="margin-bottom:12px">📌 Fuel fill karte waqt readings daalein. Price optional hai.</div>
-  <div class="sip-inp-wrap">
-    <span class="sip-inp-label">Starting Odometer (km)</span>
-    <input class="sip-inp-field" type="number" id="mil_start" placeholder="Ex: 12000">
-  </div>
-  <div class="sip-inp-wrap">
-    <span class="sip-inp-label">Ending Odometer (km)</span>
-    <input class="sip-inp-field" type="number" id="mil_end" placeholder="Ex: 12350">
-  </div>
-  <div class="sip-inp-wrap">
-    <span class="sip-inp-label">Fuel Added (Litres)</span>
-    <input class="sip-inp-field" type="number" id="mil_fuel" placeholder="Ex: 20">
-  </div>
-  <div class="sip-inp-wrap">
-    <span class="sip-inp-label">Fuel Price per Litre (₹) — Optional</span>
-    <div class="sip-inp-with-prefix">
-      <div class="sip-inp-prefix">₹</div>
-      <input class="sip-inp-field" type="number" id="mil_price" placeholder="Ex: 106.50" style="border-radius:0 11px 11px 0">
+<div class="mil-form-card">
+  <div class="mil-section-title">⛽ Nayi Entry</div>
+  <div class="mil-edit-banner" id="mil_edit_banner">✏️ Edit mode — changes karein aur Save dabayein</div>
+  <div class="mil-grid">
+
+    <div class="mil-fg">
+      <label>Vehicle / Driver Name *</label>
+      <input class="mil-inp" id="mil_name" placeholder="e.g. Ramesh - Bolero">
     </div>
+
+    <div class="mil-fg">
+      <label>Fuel Type</label>
+      <select class="mil-inp" id="mil_ftype">
+        <option value="">-- Select --</option>
+        <option>Petrol</option>
+        <option>Diesel</option>
+        <option>CNG</option>
+        <option>Electric</option>
+      </select>
+    </div>
+
+    <div class="mil-fg">
+      <label>KM In Date * <span class="mil-auto-tag">Auto-filled</span></label>
+      <input type="date" class="mil-inp" id="mil_kin_date">
+      <span class="mil-hint">Aaj ki date auto-fill · change kar sakte hain</span>
+    </div>
+
+    <div class="mil-fg">
+      <label>KM In (Odometer) *</label>
+      <input type="number" class="mil-inp" id="mil_kin" placeholder="e.g. 12500">
+    </div>
+
+    <div class="mil-fg">
+      <label>KM Out Date <span class="mil-auto-tag">Auto-filled</span> <span class="mil-opt-tag">Baad mein bhi</span></label>
+      <input type="date" class="mil-inp" id="mil_kout_date">
+      <span class="mil-hint">Blank chhod sakte hain → Draft save</span>
+    </div>
+
+    <div class="mil-fg">
+      <label>KM Out (Odometer) <span class="mil-opt-tag">Baad mein bhi</span></label>
+      <input type="number" class="mil-inp" id="mil_kout" placeholder="e.g. 12950">
+      <span class="mil-hint">Blank → Draft save hoga</span>
+    </div>
+
+    <div class="mil-fg">
+      <label>Fuel Added (Litres)</label>
+      <input type="number" class="mil-inp" id="mil_fuel_l" placeholder="e.g. 40" step="0.1">
+    </div>
+
+    <div class="mil-fg">
+      <label>Purpose / Route</label>
+      <input class="mil-inp" id="mil_purpose" placeholder="e.g. Delhi to Agra delivery">
+    </div>
+
   </div>
-  <div class="btn-row" style="margin-top:4px">
-    <button class="prem-calc-btn" onclick="calcMileage()" style="flex:1">⛽ Calculate Mileage</button>
-    <button class="btn bg" onclick="saveMileageEntry()" style="padding:9px 12px">💾</button>
-    <button class="btn bs" onclick="resetMileage()" style="padding:9px 12px">↺</button>
+  <div class="btn-row" style="margin-top:12px">
+    <button class="btn bp" onclick="milSaveRecord()" style="flex:1">💾 Save Entry</button>
+    <button class="btn bs" onclick="milClearForm()">✕ Clear</button>
   </div>
-  <div id="mil_result" style="display:none;margin-top:12px;animation:prem-res-pop .4s cubic-bezier(.34,1.56,.64,1)"></div>
+  <div style="font-size:11px;color:var(--text2);margin-top:7px" id="mil_form_hint">KM Out blank → Draft save hoga</div>
 </div>
-<div class="prem-card">
-  <div class="prem-card-title">📊 Mileage History
-    <button class="btn br" style="padding:3px 9px;font-size:10px;margin-left:auto;border-radius:18px" onclick="clearMileageHistory()">🗑️ Clear All</button>
-  </div>
-  <div id="mil_history"><div style="text-align:center;color:var(--text2);padding:12px;font-size:12px">No entries yet</div></div>
-</div>
-<div class="prem-card">
-  <div class="prem-card-title">📈 Summary</div>
-  <div id="mil_summary"><div style="text-align:center;color:var(--text2);padding:12px;font-size:12px">Entries save karein to summary dikhega</div></div>
-</div>
+
+<!-- Summary Cards -->
+<div class="mil-sum-row" id="mil_sum_row" style="display:none"></div>
+<div class="mil-cnt" id="mil_rec_count"></div>
+
+<!-- Records List -->
+<div id="mil_records_list"></div>
+
 </section>
 
 <!-- ═══ MODALS ═══ -->
@@ -7580,92 +7655,165 @@ function saveFirebaseConfig(){
   closeM('firebaseSetupModal');
 }
 
-// ═══════════ MILEAGE CALCULATOR ═══════════
-function calcMileage(){
-  const start=parseFloat(document.getElementById('mil_start').value)||0;
-  const end=parseFloat(document.getElementById('mil_end').value)||0;
-  const fuel=parseFloat(document.getElementById('mil_fuel').value)||0;
-  const price=parseFloat(document.getElementById('mil_price').value)||0;
-  if(!start||!end||!fuel){alert('Odometer readings aur fuel litres daalo');return}
-  if(end<=start){alert('Ending odometer starting se zyada honi chahiye');return}
-  const dist=end-start;
-  const mileage=dist/fuel;
-  const cost=fuel*price;
-  const costPerKm=price>0?cost/dist:0;
-  document.getElementById('mil_result').innerHTML=`
-    <div class="prem-result-hero" style="background:linear-gradient(135deg,#1c0a00,#431407,#7c2d12)">
-      <div class="prem-res-tag">⛽ Mileage Result</div>
-      <div class="prem-res-big-label">Fuel Efficiency</div>
-      <div class="prem-res-big-amt">${mileage.toFixed(2)} <span style="font-size:18px">km/L</span></div>
-      <div class="prem-res-grid" style="margin-top:14px">
-        <div class="prem-res-cell prem-res-cell-blue"><div class="prem-res-cell-label">Distance</div><div class="prem-res-cell-val">${dist.toFixed(1)} km</div><div class="prem-res-cell-icon">🗺️</div></div>
-        <div class="prem-res-cell prem-res-cell-orange"><div class="prem-res-cell-label">Fuel Used</div><div class="prem-res-cell-val">${fuel} L</div><div class="prem-res-cell-icon">⛽</div></div>
-        ${price>0?`<div class="prem-res-cell prem-res-cell-green"><div class="prem-res-cell-label">Fuel Cost</div><div class="prem-res-cell-val">₹${fmt(cost)}</div><div class="prem-res-cell-icon">💸</div></div><div class="prem-res-cell prem-res-cell-purple"><div class="prem-res-cell-label">Cost/km</div><div class="prem-res-cell-val">₹${costPerKm.toFixed(2)}</div><div class="prem-res-cell-icon">📍</div></div>`:''}
-      </div>
-    </div>`;
-  document.getElementById('mil_result').style.display='block';
-}
-function saveMileageEntry(){
-  const start=parseFloat(document.getElementById('mil_start').value)||0;
-  const end=parseFloat(document.getElementById('mil_end').value)||0;
-  const fuel=parseFloat(document.getElementById('mil_fuel').value)||0;
-  const price=parseFloat(document.getElementById('mil_price').value)||0;
-  if(!start||!end||!fuel){alert('Pehle calculate karein');return}
-  if(end<=start){alert('Ending odometer starting se zyada honi chahiye');return}
-  const dist=end-start;const mileage=dist/fuel;const cost=fuel*price;
-  const entries=gs('mileageHistory')||[];
-  entries.unshift({id:Date.now(),date:new Date().toLocaleDateString('en-IN'),start,end,dist:dist.toFixed(1),fuel,price,mileage:mileage.toFixed(2),cost:cost.toFixed(0)});
-  ss('mileageHistory',entries);
-  renderMileageHistory();
-  alert(`✅ Entry saved! Mileage: ${mileage.toFixed(2)} km/L`);
-}
-function resetMileage(){
-  ['mil_start','mil_end','mil_fuel','mil_price'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('mil_result').style.display='none';
-}
-function renderMileageHistory(){
-  const entries=gs('mileageHistory')||[];
-  const el=document.getElementById('mil_history');
-  if(!el)return;
-  if(!entries.length){el.innerHTML='<div style="text-align:center;color:var(--text2);padding:12px;font-size:12px">No entries yet</div>';return}
-  el.innerHTML=entries.map(e=>`
-    <div class="prem-mil-entry" style="display:flex;align-items:center;gap:8px">
-      <div style="flex:1;min-width:0">
-        <div style="font-size:12px;font-weight:700;color:var(--accent)">${e.date} &nbsp; <span style="color:var(--green)">⛽ ${e.mileage} km/L</span></div>
-        <div style="font-size:11px;color:var(--text2);margin-top:2px">${e.start}→${e.end} km &nbsp;|&nbsp; ${e.dist} km &nbsp;|&nbsp; ${e.fuel} L</div>
-        ${e.price>0?`<div style="font-size:11px;color:var(--accent2)">₹${fmt(e.cost)} &nbsp;|&nbsp; ₹${(e.cost/e.dist).toFixed(2)}/km</div>`:''}
-      </div>
-      <button onclick="delMileageEntry(${e.id})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:18px;padding:0">×</button>
-    </div>`).join('');
-  // Summary
-  const sumEl=document.getElementById('mil_summary');
-  if(sumEl&&entries.length>0){
-    const avgMil=(entries.reduce((a,b)=>a+parseFloat(b.mileage),0)/entries.length).toFixed(2);
-    const totalDist=entries.reduce((a,b)=>a+parseFloat(b.dist),0).toFixed(1);
-    const totalFuel=entries.reduce((a,b)=>a+b.fuel,0).toFixed(1);
-    const totalCost=entries.reduce((a,b)=>a+parseFloat(b.cost||0),0);
-    const best=entries.reduce((a,b)=>parseFloat(b.mileage)>parseFloat(a.mileage)?b:a,entries[0]);
-    const worst=entries.reduce((a,b)=>parseFloat(b.mileage)<parseFloat(a.mileage)?b:a,entries[0]);
-    sumEl.innerHTML=`<div class="rbox">
-      <div class="rrow"><span>Total Trips</span><span class="rv">${entries.length}</span></div>
-      <div class="rrow"><span>Total Distance</span><span class="rv">${totalDist} km</span></div>
-      <div class="rrow"><span>Total Fuel Used</span><span class="rv">${totalFuel} L</span></div>
-      <div class="rrow"><span>Average Mileage</span><span class="rv grn">${avgMil} km/L</span></div>
-      <div class="rrow"><span>Best Mileage</span><span class="rv grn">🏆 ${best.mileage} km/L (${best.date})</span></div>
-      <div class="rrow"><span>Worst Mileage</span><span class="rv red">📉 ${worst.mileage} km/L (${worst.date})</span></div>
-      ${totalCost>0?`<div class="rrow"><span>Total Fuel Cost</span><span class="rv red">₹${fmt(totalCost)}</span></div>`:''}
-    </div>`;
+// ═══════════ MILEAGE CALCULATOR (Advanced) ═══════════
+var _milEditId=null;
+var _milRecords=[];
+(function(){
+  var saved=localStorage.getItem('mile_v2_pro');
+  _milRecords=saved?JSON.parse(saved):[];
+})();
+function _milPersist(){localStorage.setItem('mile_v2_pro',JSON.stringify(_milRecords));}
+function _milTodayStr(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function _milFmt(d){if(!d)return '—';var p=d.split('-');return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:'—';}
+function _milDist(r){return r.kout!=null?(r.kout-r.kin):null;}
+function _milMileage(r){var d=_milDist(r);return(d!=null&&r.fuelL&&r.fuelL>0)?(d/r.fuelL).toFixed(2):null;}
+function _milUid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+// Auto-fill dates on section show — hook into existing showSection
+var _origShowSection=window.showSection;
+window.showSection=function(id){
+  if(typeof _origShowSection==='function')_origShowSection(id);
+  if(id==='sec_mileage'){
+    var t=_milTodayStr();
+    var kin=document.getElementById('mil_kin_date');
+    var kout=document.getElementById('mil_kout_date');
+    if(kin&&!kin.value)kin.value=t;
+    if(kout&&!kout.value)kout.value=t;
+    milRender();
   }
+};
+(function(){
+  var t=_milTodayStr();
+  var kin=document.getElementById('mil_kin_date');
+  var kout=document.getElementById('mil_kout_date');
+  if(kin)kin.value=t;
+  if(kout)kout.value=t;
+})();
+function milSaveRecord(){
+  var name=(document.getElementById('mil_name')||{}).value||'';name=name.trim();
+  var kin=(document.getElementById('mil_kin')||{}).value||'';kin=kin.trim();
+  var kinDate=(document.getElementById('mil_kin_date')||{}).value||'';
+  if(!name){alert('Vehicle / Driver name zaroori hai!');return;}
+  if(!kin){alert('KM In (odometer) zaroori hai!');return;}
+  var koutVal=(document.getElementById('mil_kout')||{}).value||'';
+  var fuelVal=(document.getElementById('mil_fuel_l')||{}).value||'';
+  var obj={
+    id:_milEditId||_milUid(),
+    name:name,
+    fuel:(document.getElementById('mil_ftype')||{}).value||'',
+    kinDate:kinDate,
+    kin:parseFloat(kin)||0,
+    koutDate:(document.getElementById('mil_kout_date')||{}).value||'',
+    kout:koutVal!==''?parseFloat(koutVal):null,
+    fuelL:fuelVal!==''?parseFloat(fuelVal):null,
+    purpose:((document.getElementById('mil_purpose')||{}).value||'').trim(),
+    savedAt:new Date().toISOString()
+  };
+  if(_milEditId){
+    var idx=_milRecords.findIndex(function(r){return r.id===_milEditId;});
+    if(idx>-1)_milRecords[idx]=obj;
+    _milEditId=null;
+  }else{
+    _milRecords.unshift(obj);
+  }
+  _milPersist();milClearForm();milRender();
 }
-function delMileageEntry(id){
-  if(!confirm('Delete this entry?'))return;
-  ss('mileageHistory',(gs('mileageHistory')||[]).filter(e=>e.id!==id));
-  renderMileageHistory();
+function milClearForm(){
+  ['mil_name','mil_kin','mil_kout','mil_fuel_l','mil_purpose'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  var ft=document.getElementById('mil_ftype');if(ft)ft.value='';
+  var t=_milTodayStr();
+  var kd=document.getElementById('mil_kin_date');if(kd)kd.value=t;
+  var kod=document.getElementById('mil_kout_date');if(kod)kod.value=t;
+  _milEditId=null;
+  var ti=document.getElementById('mil_form_title');if(ti)ti.textContent='⛽ Nayi Entry';
+  var hi=document.getElementById('mil_form_hint');if(hi)hi.textContent='KM Out blank → Draft save hoga';
+  var eb=document.getElementById('mil_edit_banner');if(eb)eb.classList.remove('show');
 }
-function clearMileageHistory(){
-  if(!confirm('Sab entries delete karein?'))return;
-  ss('mileageHistory',[]);renderMileageHistory();
+function milEditRecord(id){
+  var r=_milRecords.find(function(x){return x.id===id;});if(!r)return;
+  _milEditId=id;
+  var set=function(eid,val){var el=document.getElementById(eid);if(el)el.value=val!=null?val:'';};
+  set('mil_name',r.name||'');set('mil_kin_date',r.kinDate||'');set('mil_kin',r.kin!=null?r.kin:'');
+  set('mil_kout_date',r.koutDate||'');set('mil_kout',r.kout!=null?r.kout:'');
+  set('mil_fuel_l',r.fuelL!=null?r.fuelL:'');set('mil_purpose',r.purpose||'');set('mil_ftype',r.fuel||'');
+  var ti=document.getElementById('mil_form_title');if(ti)ti.textContent='✏️ Entry Edit Karen';
+  var hi=document.getElementById('mil_form_hint');if(hi)hi.textContent='Changes karke Save dabayein';
+  var eb=document.getElementById('mil_edit_banner');if(eb)eb.classList.add('show');
+  var sec=document.getElementById('sec_mileage');if(sec)sec.scrollIntoView({behavior:'smooth'});
 }
+function milAddKmOut(id){
+  var r=_milRecords.find(function(x){return x.id===id;});if(!r)return;
+  var ko=prompt('KM Out odometer reading darj karein:','');
+  if(ko===null||ko.trim()==='')return;
+  if(isNaN(ko)){alert('Sirf number darj karein');return;}
+  var defDate=_milTodayStr();
+  var kod=prompt('KM Out date (YYYY-MM-DD):\nExample: '+defDate,defDate);
+  r.kout=parseFloat(ko);r.koutDate=kod?kod.trim():'';
+  _milPersist();milRender();
+}
+function milDeleteRecord(id){
+  if(!confirm('Is entry ko permanently delete karein?'))return;
+  _milRecords=_milRecords.filter(function(r){return r.id!==id;});
+  _milPersist();milRender();
+}
+function milRender(){
+  var list=document.getElementById('mil_records_list');
+  var cnt=document.getElementById('mil_rec_count');
+  var sr=document.getElementById('mil_sum_row');
+  if(!list)return;
+  var complete=_milRecords.filter(function(r){return r.kout!=null;});
+  if(cnt)cnt.textContent='Total '+_milRecords.length+' entries — Complete: '+complete.length+' | Draft: '+_milRecords.filter(function(r){return r.kout==null;}).length;
+  if(_milRecords.length===0){
+    if(sr)sr.style.display='none';
+    list.innerHTML='<div class="mil-empty"><div class="eico">📋</div><p style="font-size:13px">Abhi koi entry nahi.<br>Upar form se pehli entry add karein.</p></div>';
+    return;
+  }
+  var totalKm=complete.reduce(function(a,r){return a+(r.kout-r.kin);},0);
+  var totalFuel=_milRecords.reduce(function(a,r){return a+(r.fuelL||0);},0);
+  var mileList=complete.filter(function(r){return r.fuelL&&r.fuelL>0;}).map(function(r){return(r.kout-r.kin)/r.fuelL;});
+  var avgMile=mileList.length>0?(mileList.reduce(function(a,b){return a+b;},0)/mileList.length):null;
+  if(sr){
+    sr.style.display='grid';
+    sr.innerHTML=
+      '<div class="mil-sum-card"><div class="mil-slbl">Total Distance</div><div class="mil-sval acc">'+totalKm.toFixed(0)+'<span style="font-size:11px;color:var(--text2);font-weight:500"> km</span></div></div>'+
+      '<div class="mil-sum-card"><div class="mil-slbl">Total Fuel</div><div class="mil-sval acc">'+totalFuel.toFixed(1)+'<span style="font-size:11px;color:var(--text2);font-weight:500"> L</span></div></div>'+
+      '<div class="mil-sum-card"><div class="mil-slbl">Avg Mileage</div><div class="mil-sval acc">'+(avgMile?avgMile.toFixed(2)+'<span style="font-size:11px;color:var(--text2);font-weight:500"> km/L</span>':'—')+'</div></div>'+
+      '<div class="mil-sum-card"><div class="mil-slbl">Entries</div><div class="mil-sval">'+_milRecords.length+'<span style="font-size:11px;color:var(--text2);font-weight:500"> total</span></div></div>';
+  }
+  list.innerHTML=_milRecords.map(function(r){
+    var isDraft=r.kout==null;
+    var d=_milDist(r);var m=_milMileage(r);
+    return '<div class="mil-record '+(isDraft?'draft':'complete')+'">'+
+      '<div class="mil-rec-top">'+
+        '<div>'+
+          '<div class="mil-rec-name">'+(r.name||'—')+'</div>'+
+          (r.purpose||r.fuel?'<div class="mil-rec-purpose">'+(r.purpose||'')+(r.purpose&&r.fuel?' · ':''+(r.fuel||''))+'</div>':'')+ 
+        '</div>'+
+        '<span class="mil-badge '+(isDraft?'draft':'complete')+'">'+(isDraft?'DRAFT':'COMPLETE')+'</span>'+
+      '</div>'+
+      '<div class="mil-rec-grid">'+
+        '<div class="mil-rf"><div class="mil-rl">KM IN</div><div class="mil-rv">'+r.kin+'<br><span style="font-size:10px;font-weight:400;color:var(--text2)">'+_milFmt(r.kinDate)+'</span></div></div>'+
+        '<div class="mil-rf"><div class="mil-rl">KM OUT</div><div class="mil-rv '+(isDraft?'missing ora':'')+'">'+(isDraft?'Pending...':r.kout+'<br><span style="font-size:10px;font-weight:400;color:var(--text2)">'+_milFmt(r.koutDate)+'</span>')+'</div></div>'+
+        '<div class="mil-rf"><div class="mil-rl">DISTANCE</div><div class="mil-rv '+(d==null?'missing':'')+'">'+(d!=null?d.toFixed(0)+' km':'—')+'</div></div>'+
+        '<div class="mil-rf"><div class="mil-rl">FUEL</div><div class="mil-rv '+(!r.fuelL?'missing':'')+'">'+(r.fuelL?r.fuelL.toFixed(1)+' L':'—')+'</div></div>'+
+        '<div class="mil-rf"><div class="mil-rl">MILEAGE</div><div class="mil-rv '+(!m?'missing':'acc')+'">'+(m?m+' km/L':'—')+'</div></div>'+
+      '</div>'+
+      '<div style="display:flex;gap:6px;flex-wrap:wrap">'+
+        '<button class="btn bs" style="padding:5px 11px;font-size:11px" onclick="milEditRecord(\''+r.id+'\')">✏️ Edit</button>'+
+        (isDraft?'<button class="btn bo" style="padding:5px 11px;font-size:11px" onclick="milAddKmOut(\''+r.id+'\')">⛽ KM Out Add</button>':'')+
+        '<button class="btn br" style="padding:5px 11px;font-size:11px" onclick="milDeleteRecord(\''+r.id+'\')">🗑 Delete</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+// Backward-compat stubs for old calls
+function calcMileage(){}
+function saveMileageEntry(){}
+function resetMileage(){}
+function renderMileageHistory(){milRender();}
+function delMileageEntry(id){milDeleteRecord(String(id));}
+function clearMileageHistory(){if(!confirm('Sab entries delete karein?'))return;_milRecords=[];_milPersist();milRender();}
+// Init render on page load
+milRender();
 
 // ═══════════ SIGNATURE CROP / TRIM TOOLS ═══════════
 function applyCropPreview(){
