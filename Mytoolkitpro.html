@@ -9,7 +9,10 @@
 <meta name="apple-mobile-web-app-title" content="MyToolkit">
 <link rel="manifest" href="./manifest.json">
 <title>MyToolkit Pro</title>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <!-- Chart.js for SENP Eligibility Chart -->
@@ -29,7 +32,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .logo span{color:#fff!important;text-shadow:0 1px 4px rgba(0,0,0,.4)}
 .logo-icon{font-size:22px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
 .hbtns{display:flex;gap:5px;align-items:center}
-.hbtn{padding:5px 10px;border-radius:7px;border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.18);color:#fff;cursor:pointer;font-size:13px;font-weight:700;white-space:nowrap;font-family:'Inter',sans-serif;line-height:1;display:inline-flex;align-items:center;justify-content:center;min-width:32px}
+.hbtn{padding:5px 10px;border-radius:7px;border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.18);color:#fff;cursor:pointer;font-size:13px;font-weight:700;white-space:nowrap;font-family:'Inter',sans-serif;line-height:1;display:inline-flex;align-items:center;justify-content:center;min-width:32px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
 body.dark .hbtn{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff}
 .dm-tog{width:38px;height:21px;border-radius:11px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);cursor:pointer;position:relative;flex-shrink:0}
 .dm-tog::after{content:'☀️';position:absolute;top:1px;left:1px;width:17px;height:17px;border-radius:50%;background:rgba(255,255,255,.9);font-size:9px;line-height:17px;text-align:center;transition:transform .3s}
@@ -37,15 +40,15 @@ body.dark .dm-tog::after{content:'🌙';transform:translateX(17px)}
 /* NAV */
 .nav-bar{display:flex;gap:5px;padding:8px 10px;overflow-x:auto;scrollbar-width:none;background:var(--nav);border-bottom:1px solid var(--border);position:sticky;top:48px;z-index:190}
 .nav-bar::-webkit-scrollbar{display:none}
-.nav-btn{flex-shrink:0;padding:7px 13px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;font-size:11px;font-weight:700;transition:all .2s;white-space:nowrap;font-family:'Inter',sans-serif;letter-spacing:0.2px}
+.nav-btn{flex-shrink:0;padding:7px 13px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;font-size:11px;font-weight:700;transition:background .15s,color .15s;white-space:nowrap;font-family:'Inter',sans-serif;letter-spacing:0.2px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
 .nav-btn.active{background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;border-color:transparent;box-shadow:0 3px 10px rgba(37,99,235,.45)}
 body.dark .nav-btn.active{background:#3b82f6;border-color:#3b82f6}
 .nav-btn.drag-over{border-color:var(--accent);transform:scale(1.05)}
 .edit-bar{display:none;background:var(--surface);padding:6px 12px;border-bottom:1px solid var(--border);font-size:11px;color:var(--text2);gap:8px;align-items:center}
 .edit-bar.show{display:flex}
 /* SECTIONS */
-.section{display:none;padding:12px 12px 24px;animation:fi .2s ease}.section.active{display:block}
-@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.section{display:none;padding:12px 12px 24px;animation:fi .15s ease}.section.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 /* CARDS */
 .card{background:var(--surface);border-radius:var(--radius);padding:14px;margin-bottom:11px;border:1px solid var(--border);box-shadow:var(--shadow)}
 .card-title{font-family:'Baloo 2',sans-serif;font-size:15px;font-weight:700;color:var(--accent);margin-bottom:11px;display:flex;align-items:center;gap:7px}
@@ -54,7 +57,8 @@ body.dark .nav-btn.active{background:#3b82f6;border-color:#3b82f6}
 .inp:focus{border-color:var(--accent)} textarea.inp{resize:vertical}
 label{font-size:11px;color:var(--text2);margin-bottom:3px;display:block;font-weight:500}
 /* BUTTONS */
-.btn{padding:9px 14px;border-radius:9px;border:none;cursor:pointer;font-size:12px;font-weight:700;font-family:'Inter',sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:5px}
+.btn{padding:9px 14px;border-radius:9px;border:none;cursor:pointer;font-size:12px;font-weight:700;font-family:'Inter',sans-serif;transition:transform .1s,opacity .1s;display:inline-flex;align-items:center;gap:5px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.btn:active{transform:scale(.96);opacity:.9}
 .bp{background:var(--accent);color:#fff}.bs{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}.bg{background:var(--green);color:#fff}.br{background:var(--red);color:#fff}.bo{background:var(--accent2);color:#fff}.by{background:var(--yellow);color:#fff}
 .btn-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.bfull{width:100%;justify-content:center}
 /* RESULT */
@@ -86,7 +90,7 @@ body.dark .einp.solve{background:rgba(79,142,247,.1)}
 .lc-name{font-weight:700;color:var(--accent2);font-size:13px;margin-bottom:3px}
 .lc-meta{font-size:11px;color:var(--text2)}
 /* EDIT PROFILE MENU (screenshot style) */
-.ep-menu-item{display:flex;align-items:center;gap:12px;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:11px;margin-bottom:8px;cursor:pointer;transition:all .2s}
+.ep-menu-item{display:flex;align-items:center;gap:12px;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:11px;margin-bottom:8px;cursor:pointer;transition:border-color .15s,background .15s;touch-action:manipulation;user-select:none;-webkit-user-select:none}
 .ep-menu-item:hover{border-color:var(--accent);background:var(--surface2)}
 .ep-menu-icon{font-size:22px;flex-shrink:0}
 .ep-menu-label{font-size:14px;font-weight:600;flex:1}
@@ -153,6 +157,32 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:4px 0}
 ::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-thumb{background:rgba(37,99,235,.2);border-radius:3px}
 body.dark ::-webkit-scrollbar-thumb{background:rgba(79,142,247,.3)}
 
+/* ── PERFORMANCE BOOSTS ── */
+.section{contain:layout style;will-change:opacity}
+.dash-card{will-change:transform;transform:translateZ(0)}
+.nav-btn{will-change:transform}
+.app-header,.nav-bar{will-change:auto}
+*{-webkit-tap-highlight-color:transparent!important}
+
+/* ── PWA INSTALL BANNER ── */
+#pwaInstallBanner{
+  display:none;position:fixed;bottom:72px;left:12px;right:12px;
+  background:linear-gradient(135deg,#1e3a8a,#2563eb);
+  border-radius:16px;padding:13px 14px;z-index:999;
+  box-shadow:0 8px 32px rgba(37,99,235,.5);
+  align-items:center;gap:10px;
+  border:1px solid rgba(255,255,255,.2);
+  animation:slide-up .35s cubic-bezier(.34,1.56,.64,1);
+}
+#pwaInstallBanner.show{display:flex}
+@keyframes slide-up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.pwa-banner-icon{font-size:28px;flex-shrink:0}
+.pwa-banner-text{flex:1}
+.pwa-banner-title{font-family:'Baloo 2',sans-serif;font-size:14px;font-weight:800;color:#fff;line-height:1.2}
+.pwa-banner-sub{font-size:10px;color:rgba(255,255,255,.7);margin-top:1px}
+.pwa-install-btn{background:#fff;color:#1d4ed8;border:none;border-radius:9px;padding:8px 14px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;flex-shrink:0}
+.pwa-close-btn{background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
 /* ═══════════════════════════════════════
    DASHBOARD STYLES
 ═══════════════════════════════════════ */
@@ -186,10 +216,12 @@ body.dark ::-webkit-scrollbar-thumb{background:rgba(79,142,247,.3)}
   padding:14px 8px 10px;
   border:1px solid var(--border);
   box-shadow:0 2px 12px rgba(37,99,235,.07);
-  cursor:pointer;transition:all .18s;
+  cursor:pointer;transition:transform .12s,box-shadow .12s;
   display:flex;flex-direction:column;align-items:center;gap:6px;
   text-align:center;position:relative;overflow:hidden;
   -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+  user-select:none;-webkit-user-select:none;
 }
 .dash-card:active{transform:scale(.94);box-shadow:0 1px 5px rgba(37,99,235,.15)}
 .dash-card::before{
@@ -631,8 +663,8 @@ body.dark .prem-hero{
   background:linear-gradient(135deg,#1d4ed8,#2563eb,#3b82f6);
   color:#fff;font-size:14px;font-weight:800;font-family:'Baloo 2',sans-serif;
   display:flex;align-items:center;justify-content:center;gap:8px;
-  box-shadow:0 4px 20px rgba(37,99,235,0.4);transition:all .25s;letter-spacing:0.3px;
-  position:relative;overflow:hidden;
+  box-shadow:0 4px 20px rgba(37,99,235,0.4);transition:transform .12s,box-shadow .12s;letter-spacing:0.3px;
+  position:relative;overflow:hidden;touch-action:manipulation;user-select:none;-webkit-user-select:none;
 }
 .prem-calc-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);}
 .prem-calc-btn:active{transform:scale(0.98);box-shadow:0 2px 10px rgba(37,99,235,0.3)}
@@ -1101,8 +1133,20 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
   <div class="dot-item" onclick="toggleDark();document.getElementById('dotDrawer').classList.remove('open')">🌓 Toggle Dark Mode</div>
   <div class="dot-item" onclick="showFirebaseSetup();document.getElementById('dotDrawer').classList.remove('open')">🔥 Firebase Setup</div>
   <div class="dot-item" onclick="logoutUser()">🚪 Logout</div>
+  <div class="dot-item" id="pwaInstallMenuItem" style="display:none;color:#2563eb;font-weight:700" onclick="triggerPWAInstall()">📲 Install App (Home Screen)</div>
 </div>
 <nav class="nav-bar" id="navBar"></nav>
+
+<!-- PWA INSTALL BANNER -->
+<div id="pwaInstallBanner">
+  <div class="pwa-banner-icon">📲</div>
+  <div class="pwa-banner-text">
+    <div class="pwa-banner-title">Install MyToolkit Pro</div>
+    <div class="pwa-banner-sub">Home screen pe add karein — app jaisa experience!</div>
+  </div>
+  <button class="pwa-install-btn" onclick="triggerPWAInstall()">Install</button>
+  <button class="pwa-close-btn" onclick="document.getElementById('pwaInstallBanner').classList.remove('show')">✕</button>
+</div>
 
 <!-- DASHBOARD HOME SECTION -->
 <section class="section active" id="sec_dashboard">
@@ -1112,19 +1156,19 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
   <div class="dash-cat">
     <div class="dash-cat-title">💰 EMI Calculators</div>
     <div class="dash-grid">
-      <div class="dash-card" onclick="showSection('sec_emi')">
+      <div class="dash-card" ontouchstart="" onclick="showSection('sec_emi')">
         <div class="dash-icon-wrap ic-blue">🧮</div>
         <div class="dash-card-lbl">EMI Calculator</div>
       </div>
-      <div class="dash-card" onclick="showSection('sec_quick_calc')">
+      <div class="dash-card" ontouchstart="" onclick="showSection('sec_quick_calc')">
         <div class="dash-icon-wrap ic-gold">⚡</div>
         <div class="dash-card-lbl">Quick Calculator</div>
       </div>
-      <div class="dash-card" onclick="showSection('sec_sip')">
+      <div class="dash-card" ontouchstart="" onclick="showSection('sec_sip')">
         <div class="dash-icon-wrap ic-green">📈</div>
         <div class="dash-card-lbl">Advance EMI / SIP</div>
       </div>
-      <div class="dash-card" onclick="showSection('sec_compare')">
+      <div class="dash-card" ontouchstart="" onclick="showSection('sec_compare')">
         <div class="dash-icon-wrap ic-sky">⚖️</div>
         <div class="dash-card-lbl">Compare Loans</div>
       </div>
@@ -1135,19 +1179,19 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
   <div class="dash-cat">
     <div class="dash-cat-title">🏦 Loan Tools</div>
     <div class="dash-grid">
-      <div class="dash-card" onclick="showSection('sec_loan_overview')">
+      <div class="dash-card" ontouchstart="" onclick="showSection('sec_loan_overview')">
         <div class="dash-icon-wrap ic-teal">📋</div>
         <div class="dash-card-lbl">Loan Profile</div>
       </div>
-      <div class="dash-card" onclick="showSection('sec_revised_emi')">
+      <div class="dash-card" ontouchstart="" onclick="showSection('sec_revised_emi')">
         <div class="dash-icon-wrap ic-purple">🔁</div>
         <div class="dash-card-lbl">PrePayment / ROI</div>
       </div>
-      <div class="dash-card" onclick="showSection('sec_check_eligibility')">
+      <div class="dash-card" ontouchstart="" onclick="showSection('sec_check_eligibility')">
         <div class="dash-icon-wrap ic-pink">✅</div>
         <div class="dash-card-lbl">Check Eligibility</div>
       </div>
-      <div class="dash-card" onclick="showSection('sec_moratorium')">
+      <div class="dash-card" ontouchstart="" onclick="showSection('sec_moratorium')">
         <div class="dash-icon-wrap ic-indigo">⏸️</div>
         <div class="dash-card-lbl">Moratorium Calc</div>
       </div>
@@ -1158,19 +1202,19 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
   <div class="dash-cat">
     <div class="dash-cat-title">🏛️ Finance &amp; Banking</div>
     <div class="dash-grid">
-      <div class="dash-card" onclick="showSection('sec_cash')">
+      <div class="dash-card" ontouchstart="" onclick="showSection('sec_cash')">
         <div class="dash-icon-wrap ic-emerald">💵</div>
         <div class="dash-card-lbl">Cash Counter</div>
       </div>
-      <div class="dash-card" onclick="showSection('sec_a2w')">
+      <div class="dash-card" ontouchstart="" onclick="showSection('sec_a2w')">
         <div class="dash-icon-wrap ic-amber">🔤</div>
         <div class="dash-card-lbl">Amount to Word</div>
       </div>
-      <div class="dash-card" onclick="showSection('sec_sip_overview')">
+      <div class="dash-card" ontouchstart="" onclick="showSection('sec_sip_overview')">
         <div class="dash-icon-wrap ic-violet">📊</div>
         <div class="dash-card-lbl">My SIPs</div>
       </div>
-      <div class="dash-card" onclick="showSection('sec_mileage')">
+      <div class="dash-card" ontouchstart="" onclick="showSection('sec_mileage')">
         <div class="dash-icon-wrap ic-orange">⛽</div>
         <div class="dash-card-lbl">Mileage Calc</div>
       </div>
@@ -1181,19 +1225,19 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
   <div class="dash-cat">
     <div class="dash-cat-title">✍️ Productivity &amp; Docs</div>
     <div class="dash-grid">
-      <div class="dash-card" onclick="showSection('sec_signature')">
+      <div class="dash-card" ontouchstart="" onclick="showSection('sec_signature')">
         <div class="dash-icon-wrap ic-rose">✍️</div>
         <div class="dash-card-lbl">Signature</div>
       </div>
-      <div class="dash-card" onclick="showSection('sec_whatsapp')">
+      <div class="dash-card" ontouchstart="" onclick="showSection('sec_whatsapp')">
         <div class="dash-icon-wrap ic-green">💬</div>
         <div class="dash-card-lbl">WA Scheduler</div>
       </div>
-      <div class="dash-card" onclick="showSection('sec_pdf')">
+      <div class="dash-card" ontouchstart="" onclick="showSection('sec_pdf')">
         <div class="dash-icon-wrap ic-cyan">📄</div>
         <div class="dash-card-lbl">PDF Tools</div>
       </div>
-      <div class="dash-card" onclick="openNotesOverlay()">
+      <div class="dash-card" ontouchstart="" onclick="openNotesOverlay()">
         <div class="dash-icon-wrap ic-blue">📝</div>
         <div class="dash-card-lbl">Notes</div>
       </div>
@@ -4343,6 +4387,41 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js').catch(()=>{});
 }
 
+// ── PWA Install Prompt ──
+let _pwaPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  _pwaPrompt = e;
+  // Show banner after 2 seconds (only if not already installed)
+  setTimeout(function() {
+    if(_pwaPrompt) {
+      document.getElementById('pwaInstallBanner').classList.add('show');
+      var mi = document.getElementById('pwaInstallMenuItem');
+      if(mi) mi.style.display = '';
+    }
+  }, 2000);
+});
+window.addEventListener('appinstalled', function() {
+  _pwaPrompt = null;
+  document.getElementById('pwaInstallBanner').classList.remove('show');
+  var mi = document.getElementById('pwaInstallMenuItem');
+  if(mi) mi.style.display = 'none';
+});
+window.triggerPWAInstall = function() {
+  if(!_pwaPrompt) {
+    alert('📲 Install karne ke liye browser ke menu mein "Add to Home Screen" option use karein!');
+    return;
+  }
+  _pwaPrompt.prompt();
+  _pwaPrompt.userChoice.then(function(r) {
+    if(r.outcome === 'accepted') {
+      _pwaPrompt = null;
+      document.getElementById('pwaInstallBanner').classList.remove('show');
+    }
+  });
+  document.getElementById('dotDrawer').classList.remove('open');
+};
+
 // ═══════════ FIREBASE REALTIME SYNC ENGINE ═══════════
 // Primary: Firebase Realtime DB — all devices sync within 1 second
 // Fallback: localStorage — works offline
@@ -5015,39 +5094,55 @@ function addVisitedTab(tabId){
 }
 
 function renderNav(){
-  const nb=document.getElementById('navBar'); nb.innerHTML='';
-  // Always show Home button
-  const hb=document.createElement('button');
-  hb.className='nav-btn'+(activeTab==='dashboard'?' active':'');
-  hb.textContent='🏠 Home';
-  hb.onclick=()=>showSection('sec_dashboard');
-  nb.appendChild(hb);
-  // Only show tabs that have been visited this session
-  visitedTabs.forEach(tabId=>{
-    const label=ALL_TABS_MAP[tabId]; if(!label) return;
-    const b=document.createElement('button');
-    b.className='nav-btn'+(tabId===activeTab?' active':'');
-    b.textContent=label;
-    b.onclick=()=>showSection('sec_'+tabId);
-    nb.appendChild(b);
-  });
+  const nb=document.getElementById('navBar');
+  // Build HTML string — much faster than DOM createElement loop
+  let html='<button class="nav-btn'+(activeTab==='dashboard'?' active':'')+'" ontouchstart="" onclick="showSection(\'sec_dashboard\')">🏠 Home</button>';
+  for(let i=0;i<visitedTabs.length;i++){
+    const tabId=visitedTabs[i];
+    const label=ALL_TABS_MAP[tabId]; if(!label) continue;
+    html+='<button class="nav-btn'+(tabId===activeTab?' active':'')+'" ontouchstart="" onclick="showSection(\'sec_'+tabId+'\')">'+label+'</button>';
+  }
+  nb.innerHTML=html;
 }
 function toggleEdit(){/* disabled — no edit mode needed */}
+
+// Cache all section elements once for fast switching
+let _sectionEls=null;
+function _getSections(){
+  if(!_sectionEls) _sectionEls=document.querySelectorAll('.section');
+  return _sectionEls;
+}
+let _activeSection=null;
 function showSection(id){
+  // Instant visual feedback — swap active class immediately
+  if(_activeSection && _activeSection.id!==id){
+    _activeSection.classList.remove('active');
+  }
+  const el=document.getElementById(id);
+  if(el && el!==_activeSection){
+    el.classList.add('active');
+    _activeSection=el;
+  } else if(!_activeSection && el){
+    // First call
+    _getSections().forEach(s=>s.classList.remove('active'));
+    el.classList.add('active');
+    _activeSection=el;
+  }
   activeTab=id.replace('sec_','');
   addVisitedTab(activeTab);
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  const el=document.getElementById(id);if(el)el.classList.add('active');
-  // Update loan overview if shown
-  if(id==='sec_loan_overview'){
-    renderLoanOverview();
-    // Show default sort indicator
-    const ind=document.getElementById('sort_indicator');
-    if(ind){ind.style.display='block';document.getElementById('sort_indicator_text').textContent='📅 Remaining Tenure (Low→High)'}
-  }
-  // Update SIP overview if shown
-  if(id==='sec_sip_overview') renderSipProfiles();
-  renderNav();
+  // Scroll nav active button into view
+  requestAnimationFrame(function(){
+    renderNav();
+    // Scroll to top of section for better UX
+    el && el.scrollTop && (el.scrollTop=0);
+    // Side-effects for special sections
+    if(id==='sec_loan_overview'){
+      renderLoanOverview();
+      const ind=document.getElementById('sort_indicator');
+      if(ind){ind.style.display='block';document.getElementById('sort_indicator_text').textContent='📅 Remaining Tenure (Low→High)'}
+    }
+    if(id==='sec_sip_overview') renderSipProfiles();
+  });
 }
 function openM(id){document.getElementById(id).classList.add('open')}
 function closeM(id){document.getElementById(id).classList.remove('open')}
