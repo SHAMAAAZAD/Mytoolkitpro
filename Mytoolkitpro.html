@@ -4596,7 +4596,8 @@ async function startDataSync(phone){
   // Start realtime listener
   _fbStartListen(phone);
 
-  // ── Notes: pull latest from Firebase on login ──
+  // ── Notes: clear previous user's notes, then pull latest from Firebase on login ──
+  localStorage.removeItem('secureflow_notes_v3'); // always clear first
   if(_online&&_db){
     try{
       const nsnap=await _db.ref('users/'+phone+'/notes').once('value');
@@ -4640,6 +4641,7 @@ function stopRealtimeSync(){
   if(_bc){ _bc.close(); _bc=null; }
   if(_dataRef){ _dataRef.off(); _dataRef=null; }
   if(_authRef){ _authRef.off(); _authRef=null; }
+  if(window._notesDbRef){ window._notesDbRef.off(); window._notesDbRef=null; }
   _currentPhone=null;
 }
 
@@ -4977,6 +4979,13 @@ function logoutUser(){
   saveLocalAuth(auth);
   stopRealtimeSync();
   visitedTabs = []; // Reset visited tabs on logout
+  // ── Clear notes so next user's data doesn't leak ──
+  localStorage.removeItem('secureflow_notes_v3');
+  window._notesLastWriteTS = 0;
+  var _nIframe = document.getElementById('notesIframe');
+  if(_nIframe){ _nIframe.srcdoc = ''; _nIframe.src = 'about:blank'; }
+  var _sfLoaded_ref = window._sfLoaded;
+  window._sfLoaded = false; // force reload for next user
   lockScreen();
 }
 
@@ -7045,6 +7054,13 @@ function resetAutoLogout(){
     }
     auth2.currentPhone=null;
     saveLocalAuth(auth2);
+    stopRealtimeSync();
+    // Clear notes on auto-logout
+    localStorage.removeItem('secureflow_notes_v3');
+    window._notesLastWriteTS = 0;
+    var _nIframe2 = document.getElementById('notesIframe');
+    if(_nIframe2){ _nIframe2.srcdoc=''; _nIframe2.src='about:blank'; }
+    window._sfLoaded = false;
       lockScreen();
     alert('⏱️ 10 minute inactivity — auto logout. Please login karein.');
   },AUTO_LOGOUT_MS);
