@@ -1299,6 +1299,10 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
         <div class="dash-icon-wrap ic-blue">📝</div>
         <div class="dash-card-lbl">Notes</div>
       </div>
+      <div class="dash-card" ontouchstart="" onclick="showSection('sec_amenities')">
+        <div class="dash-icon-wrap ic-orange">🏠</div>
+        <div class="dash-card-lbl">Amenities Solver</div>
+      </div>
     </div>
   </div>
 
@@ -5135,7 +5139,8 @@ const ALL_TABS_MAP={
   signature:'✍️ Signature', pdf:'📄 PDF', mileage:'⛽ Mileage',
   quick_calc:'⚡ Quick Calc', check_eligibility:'✅ Eligibility',
   moratorium:'⏸️ Moratorium', sip_overview:'📊 My SIPs',
-  loan_overview:'📁 My Loans'
+  loan_overview:'📁 My Loans',
+  amenities:'🏠 Amenities'
 };
 
 // Session-only visited tabs (reset on logout/reload)
@@ -11864,6 +11869,432 @@ function dvShowViewBtn(btnId, cardId, file) {
     document.body.style.overflow = '';
   };
 })();
+</script>
+
+<!-- ═══ AMENITIES RATE SOLVER SECTION ═══ -->
+<section class="section" id="sec_amenities">
+<div style="padding:0 0 24px">
+<div style="background:linear-gradient(135deg,#0f172a,#1e3a8a,#2563eb);border-radius:0 0 20px 20px;padding:16px 16px 20px;margin-bottom:14px;box-shadow:0 4px 20px rgba(37,99,235,.3)">
+  <div style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:2px">🏠 Amenities Rate Solver</div>
+  <div style="font-size:11px;color:rgba(255,255,255,.6)">B1 aur B2 daalo — exact rates automatically milenge</div>
+</div>
+<div style="display:flex;gap:10px;margin:0 12px 10px">
+  <div class="card" style="flex:1;margin:0;padding:12px 14px">
+    <label style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:block">B1 — Build Up Area (sq.ft)</label>
+    <input type="number" id="am_b1" class="inp" style="margin:0;font-size:1.1rem;font-weight:800" value="1500" min="100" step="100" oninput="amOnInput()">
+  </div>
+  <div class="card" style="flex:1;margin:0;padding:12px 14px">
+    <label style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:block">B2 — Target Amount (₹)</label>
+    <input type="number" id="am_b2" class="inp" style="margin:0;font-size:1.1rem;font-weight:800" value="3500000" min="0" step="50000" oninput="amOnInput()">
+  </div>
+</div>
+<div class="card" style="margin:0 12px 10px">
+  <div style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">📊 Target Range Check</div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span style="font-size:0.8rem;font-weight:700;color:var(--red);min-width:80px" id="am_rmin">—</span>
+    <div style="flex:1;height:10px;background:var(--surface2);border-radius:5px;overflow:hidden"><div id="am_progFill" style="height:100%;background:linear-gradient(90deg,#e74c3c,#f39c12,#27ae60);border-radius:5px;width:50%;transition:width .4s"></div></div>
+    <span style="font-size:0.8rem;font-weight:700;color:var(--green);min-width:80px;text-align:right" id="am_rmax">—</span>
+  </div>
+  <div style="display:flex;justify-content:space-between;margin-top:4px">
+    <span style="font-size:0.68rem;color:var(--text2)">Min (sab LOW)</span>
+    <span style="font-size:0.7rem;font-weight:700;color:var(--accent)" id="am_targetShow">Target: —</span>
+    <span style="font-size:0.68rem;color:var(--text2)">Max (sab HIGH)</span>
+  </div>
+  <div id="am_warnBox" style="display:none;background:rgba(220,38,38,.07);border:1.5px solid rgba(220,38,38,.2);border-radius:9px;padding:10px 12px;font-size:0.82rem;color:var(--red);margin-top:10px;line-height:1.6"></div>
+</div>
+<div style="margin:0 12px 10px">
+  <button id="am_solveBtn" onclick="amStartSolve()" class="btn bp bfull" style="padding:14px;font-size:1rem;letter-spacing:.5px;border-radius:12px;justify-content:center;background:linear-gradient(135deg,#2ecc71,#27ae60);box-shadow:0 4px 15px rgba(39,174,96,.3)">🎯 Exact Match Dhundo</button>
+</div>
+<div class="card" style="margin:0 12px 10px;display:flex;align-items:center;gap:10px;min-height:50px">
+  <span style="font-size:1.3rem" id="am_sIcon">💡</span>
+  <span style="font-size:0.9rem;font-weight:600;flex:1;color:var(--text)" id="am_sMsg">B1 aur B2 enter karke button dabao</span>
+  <span style="font-size:0.72rem;color:var(--text2)" id="am_sCount"></span>
+</div>
+<div id="am_summaryRow" style="display:none;flex-wrap:wrap;gap:8px;margin:0 12px 10px">
+  <div class="card" style="flex:1;min-width:60px;margin:0;padding:10px 8px;text-align:center"><div style="font-size:0.65rem;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Target</div><div style="font-size:0.9rem;font-weight:800;color:var(--accent)" id="am_sbT">—</div></div>
+  <div class="card" style="flex:1;min-width:60px;margin:0;padding:10px 8px;text-align:center"><div style="font-size:0.65rem;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Mila</div><div style="font-size:0.9rem;font-weight:800;color:var(--green)" id="am_sbG">—</div></div>
+  <div class="card" style="flex:1;min-width:60px;margin:0;padding:10px 8px;text-align:center"><div style="font-size:0.65rem;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Difference</div><div style="font-size:0.9rem;font-weight:800" id="am_sbD">—</div></div>
+  <div class="card" style="flex:1;min-width:60px;margin:0;padding:10px 8px;text-align:center"><div style="font-size:0.65rem;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Attempts</div><div style="font-size:0.9rem;font-weight:800;color:var(--accent2)" id="am_sbA">—</div></div>
+</div>
+<div id="am_tableWrap" style="display:none;margin:0 12px 10px;background:var(--surface);border-radius:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);box-shadow:var(--shadow)">
+  <table style="width:100%;min-width:480px;border-collapse:collapse;font-size:0.8rem">
+    <thead><tr style="background:#1a1a2e">
+      <th style="padding:9px 7px;color:#fff;font-size:0.68rem;text-transform:uppercase;letter-spacing:1px;text-align:left">#</th>
+      <th style="padding:9px 7px;color:#fff;font-size:0.68rem;text-transform:uppercase;letter-spacing:1px;text-align:left">Description</th>
+      <th style="padding:9px 7px;color:#fff;font-size:0.68rem;text-transform:uppercase;letter-spacing:1px;text-align:left">Units(C)</th>
+      <th style="padding:9px 7px;color:#fff;font-size:0.68rem;text-transform:uppercase;letter-spacing:1px;text-align:left">Rate(D)</th>
+      <th style="padding:9px 7px;color:#fff;font-size:0.68rem;text-transform:uppercase;letter-spacing:1px;text-align:left">Low–High</th>
+      <th style="padding:9px 7px;color:#fff;font-size:0.68rem;text-transform:uppercase;letter-spacing:1px;text-align:left">Amount(E)</th>
+    </tr></thead>
+    <tbody id="am_tbody"></tbody>
+    <tfoot><tr style="background:#1a1a2e"><td colspan="5" style="padding:10px 9px;text-align:right;color:#2ecc71;font-weight:800;font-size:0.9rem">AMENITIES VALUE</td><td style="padding:10px 9px;color:#2ecc71;font-weight:800;font-size:0.9rem;font-family:monospace" id="am_grandTotal">—</td></tr></tfoot>
+  </table>
+</div>
+<div style="margin:0 12px">
+  <button id="am_btnAdd" onclick="amOpenAddModal()" class="btn bs bfull" style="display:none;border:2px dashed var(--accent);margin-bottom:8px;justify-content:center">➕ Naya Description Add Karo</button>
+  <button id="am_btnExcel" onclick="amExportExcel()" class="btn bfull" style="display:none;background:linear-gradient(135deg,#1d7044,#1a6b3e);color:#fff;margin-bottom:8px;justify-content:center">📊 Excel Mein Export Karo</button>
+</div>
+</div>
+
+<!-- Amenities Modal -->
+<div id="am_modalOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1100;align-items:center;justify-content:center;padding:16px">
+  <div style="background:var(--surface);border-radius:16px;padding:18px;width:100%;max-width:400px;box-shadow:0 10px 40px rgba(0,0,0,.25);border:1px solid var(--border)">
+    <h3 id="am_modalTitle" style="font-size:1rem;margin-bottom:6px;color:var(--accent)">➕ Naya Item Add Karo</h3>
+    <div id="am_modalHint" style="font-size:0.75rem;color:var(--text2);margin-bottom:14px;background:var(--surface2);border-radius:8px;padding:8px 10px;line-height:1.5">💡 Sirf <b>Description name</b> type karo — baaki details auto-fill ho jaayengi!</div>
+    <div style="margin-bottom:10px">
+      <label style="font-size:0.7rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;display:block">Description Name</label>
+      <input type="text" id="am_mName" class="inp" style="margin:0" placeholder="Type karo ya list se choose karo..." oninput="amOnNameInput()" list="am_descList" autocomplete="off">
+      <datalist id="am_descList"></datalist>
+    </div>
+    <div id="am_autoPreview" style="display:none;background:rgba(22,163,74,.06);border:1.5px solid rgba(22,163,74,.2);border-radius:10px;padding:10px 12px;margin-bottom:12px">
+      <div style="font-size:0.65rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px">✅ Auto-filled details</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap">
+        <div style="flex:1;min-width:60px;background:var(--surface);border-radius:7px;padding:7px 9px;text-align:center;border:1px solid var(--border)"><div style="font-size:0.6rem;color:var(--text2);margin-bottom:2px">Unit</div><div style="font-size:0.82rem;font-weight:800" id="am_pvUnit">—</div></div>
+        <div style="flex:1;min-width:60px;background:var(--surface);border-radius:7px;padding:7px 9px;text-align:center;border:1px solid var(--border)"><div style="font-size:0.6rem;color:var(--text2);margin-bottom:2px">Base Units</div><div style="font-size:0.82rem;font-weight:800" id="am_pvUnits">—</div></div>
+        <div style="flex:1;min-width:60px;background:var(--surface);border-radius:7px;padding:7px 9px;text-align:center;border:1px solid var(--border)"><div style="font-size:0.6rem;color:var(--text2);margin-bottom:2px">Low Rate</div><div style="font-size:0.82rem;font-weight:800" id="am_pvLo">—</div></div>
+        <div style="flex:1;min-width:60px;background:var(--surface);border-radius:7px;padding:7px 9px;text-align:center;border:1px solid var(--border)"><div style="font-size:0.6rem;color:var(--text2);margin-bottom:2px">High Rate</div><div style="font-size:0.82rem;font-weight:800" id="am_pvHi">—</div></div>
+      </div>
+    </div>
+    <span id="am_customToggle" onclick="amToggleCustom()" style="display:none;font-size:0.75rem;color:var(--accent);cursor:pointer;text-decoration:underline;margin-bottom:8px">✏️ Manually edit karna chahte ho?</span>
+    <div id="am_customFields" style="display:none">
+      <div style="margin-bottom:8px"><label style="font-size:0.7rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;display:block">Unit of Measurement</label><input type="text" id="am_mUnit" class="inp" style="margin:0" placeholder="Sq.fts / Running fts / Units"></div>
+      <div style="margin-bottom:8px"><label style="font-size:0.7rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;display:block">Base Units (at B1=1500)</label><input type="number" id="am_mUnits" class="inp" style="margin:0" placeholder="e.g. 500" min="1"></div>
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <div style="flex:1"><label style="font-size:0.7rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;display:block">Low Rate (₹)</label><input type="number" id="am_mLo" class="inp" style="margin:0" placeholder="e.g. 100" min="1"></div>
+        <div style="flex:1"><label style="font-size:0.7rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;display:block">High Rate (₹)</label><input type="number" id="am_mHi" class="inp" style="margin:0" placeholder="e.g. 500" min="1"></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button onclick="amCloseModal()" class="btn bs" style="flex:1;justify-content:center">❌ Cancel</button>
+      <button onclick="amSaveModal()" class="btn bp" style="flex:1;justify-content:center">✅ Save</button>
+    </div>
+  </div>
+</div>
+</section>
+<!-- ═══ END AMENITIES SECTION ═══ -->
+
+<script>
+// ================================================================
+// AMENITIES SOLVER — namespaced with am_ prefix
+// ================================================================
+const AM_BASE_B1 = 1500;
+const AM_DESC_DB = {
+  "Painting":                  {unit:"Sq.fts",      baseU:917,  lo:45,    hi:150   },
+  "Flooring / Tiles":          {unit:"Sq.fts",      baseU:922,  lo:180,   hi:1000  },
+  "Fixed Electrical Fixtures": {unit:"Running fts", baseU:823,  lo:250,   hi:450   },
+  "Plumbing Lines":            {unit:"Running fts", baseU:337,  lo:150,   hi:250   },
+  "Doors":                     {unit:"Units/Nos",   baseU:6,    lo:6000,  hi:20000 },
+  "Windows":                   {unit:"Units/Nos",   baseU:7,    lo:7000,  hi:15000 },
+  "Kitchen Platform":          {unit:"Sq.fts",      baseU:221,  lo:400,   hi:600   },
+  "Wall Coverings/Panelling":  {unit:"Sq.fts",      baseU:647,  lo:500,   hi:800   },
+  "Balcony Wall Cladding":     {unit:"Sq.fts",      baseU:69,   lo:150,   hi:250   },
+  "Plumbing Fixtures":         {unit:"Units/Nos",   baseU:51,   lo:1500,  hi:5000  },
+  "Safety Grills":             {unit:"Sq.fts",      baseU:301,  lo:120,   hi:200   },
+  "False Ceiling":             {unit:"Sq.fts",      baseU:921,  lo:120,   hi:180   },
+  "Modular Kitchen":           {unit:"Sq.fts",      baseU:364,  lo:1200,  hi:2500  },
+  "Wardrobes":                 {unit:"Units/Nos",   baseU:4,    lo:15000, hi:50000 },
+  "AC Units":                  {unit:"Units/Nos",   baseU:3,    lo:25000, hi:60000 },
+  "Curtains / Blinds":         {unit:"Sq.fts",      baseU:600,  lo:80,    hi:250   },
+  "Light Fixtures":            {unit:"Units/Nos",   baseU:20,   lo:500,   hi:5000  },
+  "Tiles (Bathroom)":          {unit:"Sq.fts",      baseU:180,  lo:150,   hi:600   },
+  "Bathroom Fittings":         {unit:"Units/Nos",   baseU:2,    lo:20000, hi:80000 },
+  "Geyser / Water Heater":     {unit:"Units/Nos",   baseU:2,    lo:5000,  hi:15000 },
+  "Security System / CCTV":    {unit:"Units/Nos",   baseU:4,    lo:3000,  hi:12000 },
+  "Landscaping / Garden":      {unit:"Sq.fts",      baseU:100,  lo:200,   hi:800   },
+  "Parking / Driveway":        {unit:"Sq.fts",      baseU:200,  lo:150,   hi:400   },
+  "Staircase Railing":         {unit:"Running fts", baseU:40,   lo:800,   hi:3000  },
+  "Main Door (Premium)":       {unit:"Units/Nos",   baseU:1,    lo:25000, hi:80000 },
+  "Ceiling Fans":              {unit:"Units/Nos",   baseU:6,    lo:2000,  hi:8000  },
+  "Exhaust Fans":              {unit:"Units/Nos",   baseU:3,    lo:800,   hi:3000  },
+  "Water Proofing":            {unit:"Sq.fts",      baseU:300,  lo:50,    hi:150   },
+  "Wood Work / Carpentry":     {unit:"Sq.fts",      baseU:400,  lo:500,   hi:1500  },
+};
+
+let AM_ITEMS = Object.entries(AM_DESC_DB).slice(0,13).map(([name,d])=>({name,unit:d.unit,u:d.baseU,lo:d.lo,hi:d.hi}));
+let amEditIndex=-1, amAutoFilledItem=null, amCustomOpen=false, amRunning=false;
+let amLastRates=null, amLastTotal=0;
+
+function amInr(n){return '₹'+Math.round(n).toLocaleString('en-IN');}
+function amSc(b1){return AM_ITEMS.map(i=>({...i,u:Math.round(i.u*b1/AM_BASE_B1)}));}
+function amMm(items){return{min:items.reduce((s,i)=>s+i.u*i.lo,0),max:items.reduce((s,i)=>s+i.u*i.hi,0)};}
+function amSuggestB1(target){for(let b=100;b<=30000;b+=100){const{min,max}=amMm(amSc(b));if(target>=min&&target<=max)return b;}return null;}
+
+function amSetS(icon,msg,count){
+  document.getElementById('am_sIcon').textContent=icon;
+  document.getElementById('am_sMsg').textContent=msg;
+  document.getElementById('am_sCount').textContent=count||'';
+}
+
+function amOnInput(){
+  const b1=+document.getElementById('am_b1').value||1500;
+  const b2=+document.getElementById('am_b2').value||0;
+  const items=amSc(b1);
+  const{min,max}=amMm(items);
+  document.getElementById('am_rmin').textContent=amInr(min);
+  document.getElementById('am_rmax').textContent=amInr(max);
+  document.getElementById('am_targetShow').textContent='Target: '+amInr(b2);
+  const pct=max>min?Math.min(100,Math.max(0,(b2-min)/(max-min)*100)):0;
+  document.getElementById('am_progFill').style.width=pct+'%';
+  const wb=document.getElementById('am_warnBox');
+  if(b2<min){
+    const sug=amSuggestB1(b2);
+    wb.style.display='block';
+    wb.innerHTML=`⚠ <b>Target bahut kam hai!</b><br>B1=${b1} ke liye min: <b>${amInr(min)}</b><br>${sug?`✅ Fix: B1 ko <b style="color:#27ae60">${sug} sq.ft</b> karo`:'Target badhao'}`;
+  } else if(b2>max){
+    const sug=amSuggestB1(b2);
+    wb.style.display='block';
+    wb.innerHTML=`⚠ <b>Target bahut zyada hai!</b><br>B1=${b1} ke liye max: <b>${amInr(max)}</b><br>${sug?`✅ Fix: B1 ko <b style="color:#27ae60">${sug} sq.ft</b> karo`:'B1 badhao'}`;
+  } else {
+    wb.style.display='none';
+  }
+}
+
+function amStartSolve(){
+  if(amRunning) return;
+  const b1=+document.getElementById('am_b1').value;
+  const b2=+document.getElementById('am_b2').value;
+  if(!b1||!b2){amSetS('❌','B1 aur B2 dono daalo');return;}
+  const items=amSc(b1);
+  amRunning=true;
+  const btn=document.getElementById('am_solveBtn');
+  btn.disabled=true; btn.textContent='⏳ Dhundh raha hoon...';
+  document.getElementById('am_tableWrap').style.display='none';
+  document.getElementById('am_summaryRow').style.display='none';
+  document.getElementById('am_btnAdd').style.display='none';
+  document.getElementById('am_btnExcel').style.display='none';
+  amSetS('🔄','Combinations check kar raha hoon...','');
+
+  const{min,max}=amMm(items);
+  const outOfRange=b2<min||b2>max;
+  let best=null, bestDiff=Infinity, attempts=0;
+  const MAX=100000, CHUNK=5000;
+
+  if(outOfRange){
+    const boundRates=items.map(it=>b2<min?it.lo:it.hi);
+    const boundTotal=items.reduce((s,it,j)=>s+it.u*boundRates[j],0);
+    best={rates:boundRates,total:boundTotal};
+    bestDiff=Math.abs(boundTotal-b2);
+  }
+
+  function run(){
+    for(let i=0;i<CHUNK;i++){
+      attempts++;
+      const rates=[];
+      for(let j=0;j<items.length-1;j++){
+        rates.push(Math.floor(Math.random()*(items[j].hi-items[j].lo+1))+items[j].lo);
+      }
+      const partial=items.slice(0,-1).reduce((s,it,j)=>s+it.u*rates[j],0);
+      const last=items[items.length-1];
+      const lr=(b2-partial)/last.u;
+      const lrClamped=Math.min(last.hi,Math.max(last.lo,Math.round(lr)));
+      rates.push(lrClamped);
+      const total=items.reduce((s,it,j)=>s+it.u*rates[j],0);
+      const diff=Math.abs(total-b2);
+      if(diff<bestDiff){bestDiff=diff;best={rates:[...rates],total};}
+      if(diff===0){done();return;}
+    }
+    amSetS('🔄',`Best diff: ${bestDiff===0?'✅ Zero!':'₹'+bestDiff.toLocaleString('en-IN')}`,`${attempts.toLocaleString()} attempts`);
+    if(attempts<MAX){requestAnimationFrame(run);}else{done();}
+  }
+
+  function done(){
+    amRunning=false;
+    btn.disabled=false; btn.textContent='🔁 Naya Combination Try Karo';
+    document.getElementById('am_btnAdd').style.display='block';
+    if(!best){amSetS('❌','Solution nahi mila. B1 badhao.');return;}
+    amLastRates=best.rates; amLastTotal=best.total;
+    const isExact=bestDiff===0;
+    const sug=outOfRange?amSuggestB1(b2):null;
+    const outMsg=sug?`Range bahar — Closest match! B1 ko ${sug} sq.ft karo exact ke liye`:`Range bahar — Closest match mila`;
+    amSetS(isExact?'✅':(outOfRange?'⚠️':'⚡'),isExact?'Exact match mil gaya!':(outOfRange?outMsg:'Best match — "Naya Try" dabao'),`${attempts.toLocaleString()} attempts`);
+    document.getElementById('am_summaryRow').style.display='flex';
+    document.getElementById('am_sbT').textContent=amInr(b2);
+    document.getElementById('am_sbG').textContent=amInr(best.total);
+    const d=best.total-b2;
+    const de=document.getElementById('am_sbD');
+    de.textContent=d===0?'✅ Zero':(d>0?'+':'')+amInr(d);
+    de.style.color=d===0?'var(--green)':Math.abs(d)<500?'var(--yellow)':'var(--red)';
+    document.getElementById('am_sbA').textContent=attempts.toLocaleString();
+    const tbody=document.getElementById('am_tbody');
+    tbody.innerHTML='';
+    items.forEach((item,i)=>{
+      const rate=best.rates[i];
+      const total=item.u*rate;
+      const pct=item.hi>item.lo?Math.round((rate-item.lo)/(item.hi-item.lo)*100):50;
+      const tr=document.createElement('tr');
+      tr.innerHTML=`
+        <td style="color:var(--text2);font-size:0.7rem;padding:8px 7px">${i+1}</td>
+        <td style="padding:8px 7px">
+          <div style="font-weight:600;font-size:0.82rem;color:var(--accent);cursor:pointer;border-bottom:1px dashed var(--accent)" onclick="amOpenEditModal(${i})">${item.name} ✏️</div>
+          <div style="font-size:0.68rem;color:var(--text2)">${item.unit}</div>
+        </td>
+        <td style="font-family:monospace;font-weight:700;padding:8px 7px">${item.u.toLocaleString()}</td>
+        <td style="color:var(--accent2);font-weight:800;font-family:monospace;padding:8px 7px">₹${rate.toLocaleString()}</td>
+        <td style="font-size:0.7rem;color:var(--text2);padding:8px 7px">${item.lo.toLocaleString()}–${item.hi.toLocaleString()}<div style="height:3px;background:var(--surface2);border-radius:2px;margin-top:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:2px"></div></div></td>
+        <td style="font-weight:700;font-family:monospace;padding:8px 7px;border-bottom:1px solid var(--border)">₹${total.toLocaleString('en-IN')}</td>`;
+      tbody.appendChild(tr);
+    });
+    document.getElementById('am_grandTotal').textContent=amInr(best.total);
+    document.getElementById('am_tableWrap').style.display='block';
+    document.getElementById('am_btnExcel').style.display='block';
+  }
+  requestAnimationFrame(run);
+}
+
+// Modal
+function amPopulateDatalist(){
+  const dl=document.getElementById('am_descList');
+  dl.innerHTML='';
+  const existing=AM_ITEMS.map(i=>i.name.toLowerCase());
+  Object.keys(AM_DESC_DB).forEach(name=>{
+    if(!existing.includes(name.toLowerCase())){
+      const opt=document.createElement('option');opt.value=name;dl.appendChild(opt);
+    }
+  });
+}
+function amOnNameInput(){
+  const raw=document.getElementById('am_mName').value.trim();
+  const b1=+document.getElementById('am_b1').value||AM_BASE_B1;
+  const matchKey=Object.keys(AM_DESC_DB).find(k=>k.toLowerCase()===raw.toLowerCase());
+  if(matchKey){
+    const d=AM_DESC_DB[matchKey];
+    const scaledU=Math.round(d.baseU*b1/AM_BASE_B1);
+    amAutoFilledItem={name:matchKey,unit:d.unit,u:scaledU,lo:d.lo,hi:d.hi};
+    document.getElementById('am_pvUnit').textContent=d.unit;
+    document.getElementById('am_pvUnits').textContent=scaledU.toLocaleString();
+    document.getElementById('am_pvLo').textContent='₹'+d.lo.toLocaleString();
+    document.getElementById('am_pvHi').textContent='₹'+d.hi.toLocaleString();
+    document.getElementById('am_autoPreview').style.display='block';
+    document.getElementById('am_customToggle').style.display='inline-block';
+    document.getElementById('am_mUnit').value=d.unit;
+    document.getElementById('am_mUnits').value=scaledU;
+    document.getElementById('am_mLo').value=d.lo;
+    document.getElementById('am_mHi').value=d.hi;
+  } else {
+    amAutoFilledItem=null;
+    document.getElementById('am_autoPreview').style.display='none';
+    document.getElementById('am_customToggle').style.display=raw.length>0?'inline-block':'none';
+  }
+}
+function amToggleCustom(){
+  amCustomOpen=!amCustomOpen;
+  document.getElementById('am_customFields').style.display=amCustomOpen?'block':'none';
+  document.getElementById('am_customToggle').textContent=amCustomOpen?'🔼 Custom fields band karo':'✏️ Manually edit karna chahte ho?';
+}
+function amOpenAddModal(){
+  amEditIndex=-1;amAutoFilledItem=null;amCustomOpen=false;
+  document.getElementById('am_modalTitle').textContent='➕ Naya Item Add Karo';
+  document.getElementById('am_modalHint').style.display='block';
+  document.getElementById('am_mName').value='';
+  document.getElementById('am_mUnit').value='';
+  document.getElementById('am_mUnits').value='';
+  document.getElementById('am_mLo').value='';
+  document.getElementById('am_mHi').value='';
+  document.getElementById('am_autoPreview').style.display='none';
+  document.getElementById('am_customFields').style.display='none';
+  document.getElementById('am_customToggle').style.display='none';
+  amPopulateDatalist();
+  const ov=document.getElementById('am_modalOverlay');
+  ov.style.display='flex';
+  document.getElementById('am_mName').focus();
+}
+function amOpenEditModal(idx){
+  amEditIndex=idx;amAutoFilledItem=null;amCustomOpen=true;
+  const it=AM_ITEMS[idx];
+  document.getElementById('am_modalTitle').textContent='✏️ Edit: '+it.name;
+  document.getElementById('am_modalHint').style.display='none';
+  document.getElementById('am_mName').value=it.name;
+  document.getElementById('am_mUnit').value=it.unit;
+  document.getElementById('am_mUnits').value=it.u;
+  document.getElementById('am_mLo').value=it.lo;
+  document.getElementById('am_mHi').value=it.hi;
+  document.getElementById('am_autoPreview').style.display='none';
+  document.getElementById('am_customFields').style.display='block';
+  document.getElementById('am_customToggle').style.display='none';
+  document.getElementById('am_modalOverlay').style.display='flex';
+}
+function amCloseModal(){document.getElementById('am_modalOverlay').style.display='none';}
+document.getElementById('am_modalOverlay').addEventListener('click',function(e){if(e.target===this)amCloseModal();});
+
+function amSaveModal(){
+  const nameRaw=document.getElementById('am_mName').value.trim();
+  if(!nameRaw){alert('Description name daalo!');return;}
+  let item;
+  if(amEditIndex>=0){
+    const unit=document.getElementById('am_mUnit').value.trim();
+    const u=+document.getElementById('am_mUnits').value;
+    const lo=+document.getElementById('am_mLo').value;
+    const hi=+document.getElementById('am_mHi').value;
+    if(!unit||!u||!lo||!hi){alert('Saare fields bharo!');return;}
+    if(lo>=hi){alert('Low rate, High rate se kam honi chahiye!');return;}
+    item={name:nameRaw,unit,u,lo,hi};
+  } else if(amAutoFilledItem&&!amCustomOpen){
+    item={...amAutoFilledItem,name:nameRaw};
+  } else if(amAutoFilledItem&&amCustomOpen){
+    const unit=document.getElementById('am_mUnit').value.trim()||amAutoFilledItem.unit;
+    const u=+document.getElementById('am_mUnits').value||amAutoFilledItem.u;
+    const lo=+document.getElementById('am_mLo').value||amAutoFilledItem.lo;
+    const hi=+document.getElementById('am_mHi').value||amAutoFilledItem.hi;
+    if(lo>=hi){alert('Low rate, High rate se kam honi chahiye!');return;}
+    item={name:nameRaw,unit,u,lo,hi};
+  } else {
+    if(!amCustomOpen){
+      amCustomOpen=true;
+      document.getElementById('am_customFields').style.display='block';
+      document.getElementById('am_customToggle').textContent='🔼 Custom fields band karo';
+      document.getElementById('am_customToggle').style.display='inline-block';
+      alert('Yeh description database mein nahi hai.\nNeeche apni details manually bharo aur phir Save karo.');
+      return;
+    }
+    const unit=document.getElementById('am_mUnit').value.trim();
+    const u=+document.getElementById('am_mUnits').value;
+    const lo=+document.getElementById('am_mLo').value;
+    const hi=+document.getElementById('am_mHi').value;
+    if(!unit||!u||!lo||!hi){alert('Saare fields bharo!');return;}
+    if(lo>=hi){alert('Low rate, High rate se kam honi chahiye!');return;}
+    item={name:nameRaw,unit,u,lo,hi};
+  }
+  if(amEditIndex===-1)AM_ITEMS.push(item);else AM_ITEMS[amEditIndex]=item;
+  amCloseModal();
+  amOnInput();
+  if(document.getElementById('am_tableWrap').style.display!=='none'){
+    amSetS('💡','Item update hua — dobara solve karo','');
+    document.getElementById('am_tableWrap').style.display='none';
+    document.getElementById('am_summaryRow').style.display='none';
+    document.getElementById('am_solveBtn').textContent='🎯 Exact Match Dhundo';
+  }
+}
+
+function amExportExcel(){
+  const b1=+document.getElementById('am_b1').value||AM_BASE_B1;
+  const b2=+document.getElementById('am_b2').value||0;
+  const items=amSc(b1);
+  let csv='\uFEFF';
+  csv+='Amenities Rate Solver — Export\n';
+  csv+=`B1 (Build Up Area),${b1} sq.ft\n`;
+  csv+=`B2 (Target Amount),₹${b2.toLocaleString('en-IN')}\n\n`;
+  csv+='#,Description,Unit,Units (C),Rate (D),Low Rate,High Rate,Amount (E)\n';
+  if(amLastRates){
+    items.forEach((item,i)=>{
+      const rate=amLastRates[i]||'—';
+      const amt=typeof rate==='number'?item.u*rate:'—';
+      csv+=`${i+1},"${item.name}",${item.unit},${item.u},${rate},${item.lo},${item.hi},${amt}\n`;
+    });
+    csv+=`,,,,,,TOTAL,${amLastTotal||''}\n`;
+  } else {
+    items.forEach((item,i)=>{csv+=`${i+1},"${item.name}",${item.unit},${item.u},—,${item.lo},${item.hi},—\n`;});
+    csv+=',,,,,,TOTAL,—\n';
+  }
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download=`Amenities_B1${b1}_B2${b2}.csv`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// Init
+amOnInput();
 </script>
 
 <!-- ===================== PWA ENGINE ===================== -->
