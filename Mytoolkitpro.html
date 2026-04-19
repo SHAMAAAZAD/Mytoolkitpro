@@ -1079,19 +1079,19 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 
       <div id="loginError" style="color:#dc2626;font-size:11px;margin-bottom:8px;display:none"></div>
 
-      <!-- Remember Device Toggle -->
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:10px 12px;background:#eff6ff;border-radius:10px;border:1px solid rgba(37,99,235,0.2);cursor:pointer" onclick="document.getElementById('rememberDeviceCb').click()">
-        <input type="checkbox" id="rememberDeviceCb" style="width:18px;height:18px;cursor:pointer;accent-color:#2563eb;flex-shrink:0" onclick="event.stopPropagation()">
-        <div>
-          <div style="font-size:12px;font-weight:700;color:#1e2240">🔒 Remember this device</div>
-          <div style="font-size:10px;color:#5a6490;margin-top:1px">Next time this device won't ask for password</div>
-        </div>
-      </div>
-
       <button onclick="doLogin()"
         style="width:100%;background:linear-gradient(135deg,#1e40af,#2563eb);color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-bottom:14px">
         Login →
       </button>
+
+      <!-- Remember Device checkbox -->
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;background:#f0f7ff;border-radius:8px;padding:10px 12px;border:1px solid #dbeafe">
+        <input type="checkbox" id="rememberDevice" style="width:18px;height:18px;accent-color:#2563eb;cursor:pointer;flex-shrink:0">
+        <label for="rememberDevice" style="font-size:12px;color:#1e40af;cursor:pointer;font-weight:600;line-height:1.4">
+          📱 Is device par yaad rakho<br>
+          <span style="font-weight:400;color:#5a6490;font-size:11px">Next time auto-login hoga — same browser mein</span>
+        </label>
+      </div>
 
       <!-- Single link — Change Password (secure) -->
       <div style="text-align:center">
@@ -1106,7 +1106,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
     <div id="panel_changepass" style="display:none;background:#fff;border-radius:20px;padding:24px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
       <div style="font-family:'Baloo 2',sans-serif;font-size:17px;font-weight:800;color:#1e2240;margin-bottom:6px">🔑 Change Password</div>
       <div style="font-size:12px;color:#5a6490;margin-bottom:16px;line-height:1.6;background:#eff6ff;border-radius:8px;padding:10px;border-left:3px solid #2563eb">
-        First verify your <strong>current phone number</strong> and <strong>current password</strong> — only then you can set a new password.
+        Pehle apna <strong>current phone number</strong> aur <strong>current password</strong> verify karo — tabhi naya password set hoga.
       </div>
 
       <!-- Step 1: Verify current -->
@@ -1144,7 +1144,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
             onkeydown="if(event.key==='Enter')doChangePassword()">
           <button onclick="togglePassVis('cp_confirm_pass')" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:14px">👁️</button>
         </div>
-        <div style="font-size:10px;color:#9ca3af;margin-top:6px">Letters, numbers & special chars (!@#$%^Letters, numbers & special chars (!@#$%^&*) use kar sakte hain*) can be used</div>
+        <div style="font-size:10px;color:#9ca3af;margin-top:6px">Letters, numbers & special chars (!@#$%^&*) use kar sakte hain</div>
       </div>
 
       <div id="cpError" style="color:#dc2626;font-size:11px;margin-bottom:8px;display:none;background:#fef2f2;padding:8px;border-radius:7px;border-left:3px solid #dc2626"></div>
@@ -1209,7 +1209,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
   <div class="pwa-banner-icon">📲</div>
   <div class="pwa-banner-text">
     <div class="pwa-banner-title">Install MyToolkit Pro</div>
-    <div class="pwa-banner-sub">Add to home screen — app-like experience!</div>
+    <div class="pwa-banner-sub">Home screen pe add karein — app jaisa experience!</div>
   </div>
   <button class="pwa-install-btn" onclick="triggerPWAInstall()">Install</button>
   <button class="pwa-close-btn" onclick="document.getElementById('pwaInstallBanner').classList.remove('show')">✕</button>
@@ -1852,7 +1852,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
     </div>
   </div>
 
-  <div id="sip_profiles_list"><div style="text-align:center;color:var(--text2);padding:15px;font-size:12px">No SIP profiles yet. Calculate and Save.</div></div>
+  <div id="sip_profiles_list"><div style="text-align:center;color:var(--text2);padding:15px;font-size:12px">No SIP profiles yet. Calculate karein aur Save karein.</div></div>
 </div>
 </section>
 
@@ -2017,7 +2017,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 <div id="sig_panel_scan" style="display:none">
 <div class="prem-card" style="padding:10px">
   <div class="card-title" style="margin-bottom:8px">📷 Scan & Extract Signature</div>
-  <div class="ibox io" style="margin-bottom:10px">📸 Upload photo → remove background → adjust → save</div>
+  <div class="ibox io" style="margin-bottom:10px">📸 Photo upload karo → background hatao → adjust karo → save karo</div>
   <div style="display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap">
     <div class="schip as" id="estep1">1️⃣ Upload</div>
     <div class="schip" id="estep2">2️⃣ Fix Scan</div>
@@ -2154,7 +2154,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
     <div class="cl-btn" id="cl_extreme" onclick="setCL('extreme')">⚡ Extreme<br><span style="font-size:9px;font-weight:400">~22%</span></div>
     <div class="cl-btn" id="cl_ultra" onclick="setCL('ultra')" style="border-color:rgba(220,38,38,.5);background:rgba(220,38,38,.06);color:var(--red);font-weight:800">🔥 Ultra<br><span style="font-size:9px;font-weight:400">~2–5%</span></div>
   </div>
-  <div id="ultra_warn" style="display:none;background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.3);border-radius:9px;padding:8px 11px;font-size:11px;color:var(--red);margin-bottom:8px">⚠️ <strong>Ultra Mode:</strong> Maximum compression — images may pixelate, text stays readable. Use only to minimize file size.</div>
+  <div id="ultra_warn" style="display:none;background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.3);border-radius:9px;padding:8px 11px;font-size:11px;color:var(--red);margin-bottom:8px">⚠️ <strong>Ultra Mode:</strong> Maximum compression — images pixelated honge, text readable rahega. Sirf size minimize karne ke liye use karein.</div>
   <label>DPI (Resolution):</label>
   <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:10px" id="dpi_btns">
     <button class="btn bs" style="font-size:10px;padding:6px 2px;width:100%" id="dpi48" onclick="setDPI(48,this)">48<br><span style="font-size:9px">Ultra Min</span></button>
@@ -2232,7 +2232,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 
     <!-- Add Text panel -->
     <div id="pe_panel_text" style="display:none">
-      <div class="ibox ig" style="font-size:11px">✍️ Enter text, select page, set position — text will be added or removed from PDF.</div>
+      <div class="ibox ig" style="font-size:11px">✍️ Text enter karein, page select karein, position set karein — PDF mein text add ya remove hoga.</div>
       <label>Text to Add</label>
       <input class="inp" id="pe_text_content" placeholder="Ex: APPROVED, Signature here, etc.">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px">
@@ -2270,7 +2270,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 
     <!-- Replace Text panel -->
     <div id="pe_panel_replace" style="display:none">
-      <div class="ibox io" style="font-size:11px">🔁 PDF text will be extracted → replace old text with new text. Font, size, color will automatically match (white rectangle covers old text, then new text at same position).</div>
+      <div class="ibox io" style="font-size:11px">🔁 PDF ka text extract hoga → purana text replace karein new text se. Font, size, color automatically match hoga (white rectangle se pehla text cover, phir same position mein new text).</div>
       <div id="pe_replace_extract_area" style="display:none">
         <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px">📋 Extracted Text Blocks (page wise)</div>
         <div id="pe_replace_blocks" style="max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:9px;padding:8px;background:var(--surface2);font-size:11px;margin-bottom:10px"></div>
@@ -2280,12 +2280,12 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
         <label>Page Number</label>
         <input class="inp" id="pe_rep_page" type="number" placeholder="1" value="1">
         <label>Old Text (exact, jo PDF mein hai)</label>
-        <input class="inp" id="pe_rep_old" placeholder="Enter old text here...">
+        <input class="inp" id="pe_rep_old" placeholder="Purana text yahan likhein...">
         <label>New Text (replacement)</label>
-        <input class="inp" id="pe_rep_new" placeholder="Enter new text here...">
+        <input class="inp" id="pe_rep_new" placeholder="Naya text yahan likhein...">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px">
           <div>
-            <label>Font Size (match original)</label>
+            <label>Font Size (original match karein)</label>
             <input class="inp" id="pe_rep_size" type="number" placeholder="12" value="12" style="margin-bottom:0">
           </div>
           <div>
@@ -2305,7 +2305,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
         </div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
           <input type="checkbox" id="pe_rep_whitebox" checked style="width:16px;height:16px;cursor:pointer">
-          <label style="margin:0;font-size:12px">Cover old text with white box (recommended)</label>
+          <label style="margin:0;font-size:12px">White box se purana text cover karo (recommended)</label>
         </div>
         <div class="btn-row">
           <button class="btn bp" onclick="addTextReplacement()">🔁 Add Replacement</button>
@@ -2317,9 +2317,9 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 
     <!-- Pen Draw panel -->
     <div id="pe_panel_pen" style="display:none">
-      <div class="ibox ig" style="font-size:11px">🖊️ Draw/write freehand on PDF page canvas — handwriting, annotations, arrows, corrections and more.<br>⬜ <strong>White Erase mode:</strong> Permanently cover original PDF content with white.</div>
+      <div class="ibox ig" style="font-size:11px">🖊️ PDF page ka preview canvas par free-hand pen se draw/write karein — handwriting, annotations, arrows, corrections sab kuch.<br>⬜ <strong>White Erase mode:</strong> Original PDF content ko permanently white se cover karein.</div>
       <div style="background:rgba(234,88,12,0.07);border:1px solid rgba(234,88,12,0.25);border-radius:8px;padding:7px 10px;font-size:10px;color:var(--accent2);margin-bottom:8px">
-        💡 <strong>To erase original content:</strong> Select "⬜ White Erase" → Brush over content → Click "✅ Apply to PDF" → Download.
+        💡 <strong>Original content erase karne ke liye:</strong> "⬜ White Erase" select karein → Content pe brush chalayein → "✅ Apply to PDF" click karein → Download.
       </div>
       <div style="display:flex;gap:7px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
         <div>
@@ -2346,7 +2346,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
       </div>
       <div style="border:2px solid var(--border);border-radius:9px;overflow:hidden;position:relative;margin-bottom:8px;background:#f5f5f5">
         <canvas id="pe_pen_canvas" style="display:block;width:100%;touch-action:none;cursor:crosshair"></canvas>
-        <div id="pe_pen_loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--surface2);font-size:12px;color:var(--text2)">⬆️ First upload a PDF and set the page number</div>
+        <div id="pe_pen_loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--surface2);font-size:12px;color:var(--text2)">⬆️ Pehle PDF upload karein aur page no. set karein</div>
       </div>
       <div class="btn-row">
         <button class="btn bs" onclick="clearPenCanvas()">🗑️ Clear Drawing</button>
@@ -2357,7 +2357,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 
     <!-- Sign PDF panel -->
     <div id="pe_panel_sign" style="display:none">
-      <div class="ibox ig" style="font-size:11px">🖊️ Select your saved signature or draw a new one — place it on the PDF page.</div>
+      <div class="ibox ig" style="font-size:11px">🖊️ Apna saved signature select karein ya nayi draw karein — PDF page par place karein.</div>
       <label>Select Saved Signature</label>
       <div id="pe_sign_list" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;min-height:44px;background:var(--surface2);border-radius:9px;padding:8px;border:1px solid var(--border)">
         <div style="font-size:11px;color:var(--text2);align-self:center">Loading signatures...</div>
@@ -2417,11 +2417,11 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 
   <!-- PDF → Other Format Panel -->
   <div id="conv_from_panel">
-    <div class="ibox ig" style="margin-bottom:12px">📄 Upload a PDF and choose output format below — Image (JPG/PNG/WebP), Text, Word-style HTML, or Excel-style CSV.</div>
+    <div class="ibox ig" style="margin-bottom:12px">📄 PDF upload karein aur neeche se output format choose karein — Image (JPG/PNG/WebP), Text, Word-style HTML, ya Excel-style CSV.</div>
 
     <div class="uarea prem-drop-zone" onclick="document.getElementById('convFromInput').click()" id="conv_from_drop">
       <div style="font-size:28px;margin-bottom:4px">📄</div>
-      <div style="font-size:12px;color:var(--text2)">Select PDF<br><strong style="color:var(--text)">Drag & drop or tap to browse</strong></div>
+      <div style="font-size:12px;color:var(--text2)">PDF select karein<br><strong style="color:var(--text)">Drag & drop or tap to browse</strong></div>
     </div>
     <input type="file" id="convFromInput" accept=".pdf,application/pdf" style="display:none" onchange="handleConvFromFile(event)">
     <div id="conv_from_fileinfo" style="display:none;margin-bottom:10px" class="rbox">
@@ -2480,7 +2480,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
 
   <!-- File → PDF Panel -->
   <div id="conv_to_panel" style="display:none">
-    <div class="ibox ig" style="margin-bottom:12px">📁 Select any file — Image (JPG/PNG/WebP/BMP/GIF/TIFF), Text, HTML — and it will be converted to PDF.</div>
+    <div class="ibox ig" style="margin-bottom:12px">📁 Koi bhi file select karein — Image (JPG/PNG/WebP/BMP/GIF/TIFF), Text, HTML — aur PDF mein convert ho jaayega.</div>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
       <div style="background:var(--surface2);border:1.5px solid rgba(37,99,235,.3);border-radius:12px;padding:10px;text-align:center;cursor:pointer" onclick="document.getElementById('convToImgInput').click()">
@@ -2511,7 +2511,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
     <!-- Paste / Type Text to PDF -->
     <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px">
       <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:7px">✍️ Type / Paste Text → PDF</div>
-      <textarea class="inp" id="conv_paste_text" placeholder="Type or paste text here..." rows="4" style="margin-bottom:7px;resize:vertical"></textarea>
+      <textarea class="inp" id="conv_paste_text" placeholder="Yahan text type ya paste karein..." rows="4" style="margin-bottom:7px;resize:vertical"></textarea>
       <input class="inp" id="conv_paste_title" placeholder="PDF Title (optional)" style="margin-bottom:7px">
       <button class="btn bp bfull" onclick="textToPdf()" style="font-size:12px">📄 Convert to PDF & Download</button>
     </div>
@@ -2537,10 +2537,10 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
       <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('html')">🌐 HTML</button>
     </div>
   </div>
-  <div class="ibox ig">📝 Upload PDF → text will be extracted → Word-compatible <strong>.docx</strong> file will be downloaded. Formatting is preserved.</div>
+  <div class="ibox ig">📝 PDF upload karein → text extract hoga → Word-compatible <strong>.docx</strong> file download hogi. Formatting preserve hoti hai.</div>
   <div class="uarea prem-drop-zone" onclick="document.getElementById('wordPdfInput').click()">
     <div style="font-size:28px;margin-bottom:4px">📝</div>
-    <div style="font-size:12px;color:var(--text2)">Select PDF (will be converted to Word)<br><strong style="color:var(--text)">Tap to browse or drag & drop</strong></div>
+    <div style="font-size:12px;color:var(--text2)">PDF select karein (Word mein convert hoga)<br><strong style="color:var(--text)">Tap to browse or drag & drop</strong></div>
   </div>
   <input type="file" id="wordPdfInput" accept=".pdf,application/pdf" style="display:none" onchange="handleWordPdf(event)">
   <div id="word_file_info" style="display:none;margin-bottom:10px" class="rbox">
@@ -2582,7 +2582,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
   <div class="ibox ig">📊 Har PDF page ek PowerPoint slide ban jaata hai. Image-based slides (page ka screenshot) + optional text overlay.</div>
   <div class="uarea prem-drop-zone" onclick="document.getElementById('pptxPdfInput').click()">
     <div style="font-size:28px;margin-bottom:4px">📊</div>
-    <div style="font-size:12px;color:var(--text2)">Select PDF (PowerPoint slides will be created)<br><strong style="color:var(--text)">Tap to browse or drag & drop</strong></div>
+    <div style="font-size:12px;color:var(--text2)">PDF select karein (PowerPoint slides banengi)<br><strong style="color:var(--text)">Tap to browse or drag & drop</strong></div>
   </div>
   <input type="file" id="pptxPdfInput" accept=".pdf,application/pdf" style="display:none" onchange="handlePptxPdf(event)">
   <div id="pptx_file_info" style="display:none;margin-bottom:10px" class="rbox">
@@ -2627,10 +2627,10 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
       <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('html')">🌐 HTML</button>
     </div>
   </div>
-  <div class="ibox ig">📖 Extract PDF text and convert to <strong>.epub</strong> eBook format. Read on Kindle, Apple Books, and all readers.</div>
+  <div class="ibox ig">📖 PDF text extract karke <strong>.epub</strong> eBook format mein convert karein. Kindle, Apple Books, aur sabhi readers pe read karo.</div>
   <div class="uarea prem-drop-zone" onclick="document.getElementById('epubPdfInput').click()">
     <div style="font-size:28px;margin-bottom:4px">📖</div>
-    <div style="font-size:12px;color:var(--text2)">Select PDF (ePub eBook will be created)<br><strong style="color:var(--text)">Tap to browse or drag & drop</strong></div>
+    <div style="font-size:12px;color:var(--text2)">PDF select karein (ePub eBook banega)<br><strong style="color:var(--text)">Tap to browse or drag & drop</strong></div>
   </div>
   <input type="file" id="epubPdfInput" accept=".pdf,application/pdf" style="display:none" onchange="handleEpubPdf(event)">
   <div id="epub_file_info" style="display:none;margin-bottom:10px" class="rbox">
@@ -2678,11 +2678,11 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
       <button class="btn bs" style="padding:3px 7px;font-size:10px" onclick="showPdfTab('html')">🌐 HTML</button>
     </div>
   </div>
-  <div class="ibox ig">🔍 Upload scanned or image-based PDF → OCR will extract text → Download as <strong>Searchable PDF</strong> or plain text.</div>
+  <div class="ibox ig">🔍 Scanned ya image-based PDF upload karein → OCR se text extract hoga → <strong>Searchable PDF</strong> ya plain text download karein.</div>
 
   <div class="uarea prem-drop-zone" onclick="document.getElementById('ocrPdfInput').click()">
     <div style="font-size:28px;margin-bottom:4px">🔍</div>
-    <div style="font-size:12px;color:var(--text2)">Select Scanned or Image-based PDF<br><strong style="color:var(--text)">Tap to browse or drag & drop</strong></div>
+    <div style="font-size:12px;color:var(--text2)">Scanned PDF ya Image-based PDF select karein<br><strong style="color:var(--text)">Tap to browse or drag & drop</strong></div>
   </div>
   <input type="file" id="ocrPdfInput" accept=".pdf,application/pdf" style="display:none" onchange="handleOcrPdf(event)">
 
@@ -2769,11 +2769,11 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
   <!-- CODE EDITOR PANEL -->
   <div id="html_code_panel" style="padding:12px">
     <div style="font-size:11px;color:var(--text2);margin-bottom:6px;display:flex;align-items:center;gap:6px">
-      <span>📋 Paste HTML code — then press <strong style="color:var(--accent)">▶ Run</strong></span>
+      <span>📋 HTML code paste karein — phir <strong style="color:var(--accent)">▶ Run</strong> dabao</span>
     </div>
     <textarea id="html_code_input" spellcheck="false"
       style="width:100%;height:260px;background:#0d0f1a;color:#a8ff78;border:1.5px solid #059669;border-radius:11px;padding:12px;font-family:'Courier New',monospace;font-size:12px;line-height:1.6;resize:vertical;outline:none;box-sizing:border-box;tab-size:2"
-      placeholder="<!-- Paste HTML code here -->&#10;<!DOCTYPE html>&#10;<html>&#10;<head>&#10;  <title>My App</title>&#10;</head>&#10;<body>&#10;  <h1>Hello World!</h1>&#10;
+      placeholder="<!-- Yahan HTML code paste karein -->&#10;<!DOCTYPE html>&#10;<html>&#10;<head>&#10;  <title>My App</title>&#10;</head>&#10;<body>&#10;  <h1>Hello World!</h1>&#10;
 
 
 </body>&#10;</html>"></textarea>
@@ -2826,7 +2826,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
         <div style="position:absolute;top:6px;left:10px;font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;z-index:2">CODE</div>
         <textarea id="html_split_input" spellcheck="false"
           style="width:100%;height:100%;background:#0d0f1a;color:#a8ff78;border:none;padding:28px 12px 12px;font-family:'Courier New',monospace;font-size:11px;line-height:1.55;resize:none;outline:none;box-sizing:border-box"
-          placeholder="Paste HTML code here..." oninput="syncSplitCode()"></textarea>
+          placeholder="HTML code yahan paste karein..." oninput="syncSplitCode()"></textarea>
       </div>
       <!-- Rendered half -->
       <div style="position:relative">
@@ -2912,7 +2912,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
     <span id="cash_hist_count" class="prem-chip prem-chip-blue" style="margin-left:4px">0</span>
     <button class="btn br" style="padding:3px 9px;font-size:10px;margin-left:auto;border-radius:18px" onclick="clearAllCashHistory()">🗑️ Clear All</button>
   </div>
-  <div id="cash_history_list"><div style="text-align:center;color:var(--text2);padding:12px;font-size:12px">No history yet. Save 💾</div></div>
+  <div id="cash_history_list"><div style="text-align:center;color:var(--text2);padding:12px;font-size:12px">No history yet. Save karo 💾</div></div>
 </div>
 </section>
 
@@ -2925,7 +2925,7 @@ body.dark .prem-drop-zone{border-color:rgba(79,142,247,0.35)}
     <div class="sip-inp-prefix" style="border-radius:11px 0 0 11px">₹</div>
     <input class="sip-inp-field" type="number" id="a2w_in" placeholder="1500000.50" oninput="convA2W()" style="border-radius:0 11px 11px 0">
   </div>
-  <div style="font-size:10px;color:var(--text2);margin-bottom:10px">💡 Right side: equivalent INR value. Copy button: copies both number + words.</div>
+  <div style="font-size:10px;color:var(--text2);margin-bottom:10px">💡 Right side: equivalent INR value. Copy button: number + words dono copy hote hain.</div>
   <div id="a2w_countries"></div>
 </div>
 </section>
@@ -3909,7 +3909,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <div class="mil-form-card">
   <div class="mil-section-title">⛽ Nayi Entry</div>
-  <div class="mil-edit-banner" id="mil_edit_banner">✏️ Edit mode — make changes and press Save</div>
+  <div class="mil-edit-banner" id="mil_edit_banner">✏️ Edit mode — changes karein aur Save dabayein</div>
   <div class="mil-grid">
 
     <div class="mil-fg">
@@ -3931,7 +3931,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="mil-fg">
       <label>KM In Date * <span class="mil-auto-tag">Auto-filled</span></label>
       <input type="date" class="mil-inp" id="mil_kin_date">
-      <span class="mil-hint">Today's date auto-filled · can be changed</span>
+      <span class="mil-hint">Aaj ki date auto-fill · change kar sakte hain</span>
     </div>
 
     <div class="mil-fg">
@@ -3942,13 +3942,13 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="mil-fg">
       <label>KM Out Date <span class="mil-auto-tag">Auto-filled</span> <span class="mil-opt-tag">Baad mein bhi</span></label>
       <input type="date" class="mil-inp" id="mil_kout_date">
-      <span class="mil-hint">Can be left blank → Draft save</span>
+      <span class="mil-hint">Blank chhod sakte hain → Draft save</span>
     </div>
 
     <div class="mil-fg">
       <label>KM Out (Odometer) <span class="mil-opt-tag">Baad mein bhi</span></label>
       <input type="number" class="mil-inp" id="mil_kout" placeholder="e.g. 12950">
-      <span class="mil-hint">Blank → Draft will be saved</span>
+      <span class="mil-hint">Blank → Draft save hoga</span>
     </div>
 
     <div class="mil-fg">
@@ -3966,7 +3966,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <button class="btn bp" onclick="milSaveRecord()" style="flex:1">💾 Save Entry</button>
     <button class="btn bs" onclick="milClearForm()">✕ Clear</button>
   </div>
-  <div style="font-size:11px;color:var(--text2);margin-top:7px" id="mil_form_hint">KM Out blank → Draft will be saved</div>
+  <div style="font-size:11px;color:var(--text2);margin-top:7px" id="mil_form_hint">KM Out blank → Draft save hoga</div>
 </div>
 
 <!-- Summary Cards -->
@@ -4049,7 +4049,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <div class="modal">
     <button class="mc" onclick="closeM('swpModal')">✕</button>
     <div class="modal-title">💸 SWP Calculator</div>
-    <div class="ibox ig" style="margin-bottom:10px">📌 Systematic Withdrawal Plan — calculate regular withdrawal from invested corpus</div>
+    <div class="ibox ig" style="margin-bottom:10px">📌 Systematic Withdrawal Plan — invested corpus se regular withdrawal calculate karein</div>
     <label>Total Corpus / Invested Amount (₹)</label>
     <div style="position:relative;margin-bottom:8px">
       <div style="display:flex;align-items:center">
@@ -4156,7 +4156,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <!-- FORECLOSURE dual-box -->
     <div style="background:var(--surface2);border-radius:10px;padding:10px;margin-bottom:10px;border:1px solid var(--border)">
       <div style="font-size:11px;font-weight:700;color:var(--accent2);margin-bottom:2px">🔒 Foreclosure Charges</div>
-      <div style="font-size:10px;color:var(--text2);margin-bottom:7px">Will auto-update based on outstanding amount</div>
+      <div style="font-size:10px;color:var(--text2);margin-bottom:7px">Outstanding ke hisaab se auto-update hoga</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
         <div>
           <label style="font-size:10px;margin-bottom:3px">% of Outstanding</label>
@@ -4239,7 +4239,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <!-- Pay Total Loan (Foreclose) -->
     <div style="background:linear-gradient(135deg,rgba(220,38,38,.08),rgba(234,88,12,.06));border:1.5px solid rgba(220,38,38,.25);border-radius:12px;padding:12px">
       <div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px">🔒 Pay Full Loan (Foreclose Now)</div>
-      <div style="font-size:10px;color:var(--text2);margin-bottom:8px">Pay the current outstanding amount to close the loan. Profile will be marked ✅ Closed.</div>
+      <div style="font-size:10px;color:var(--text2);margin-bottom:8px">Abhi ka outstanding amount pay karke loan band kar dein. Profile mein ✅ Closed ho jayega.</div>
       <div id="pp_foreclose_amount_box" style="background:rgba(220,38,38,.07);border-radius:8px;padding:8px 10px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
         <span style="font-size:11px;color:var(--text2);font-weight:600">Foreclose Amount</span>
         <span style="font-family:'Baloo 2',sans-serif;font-size:18px;font-weight:800;color:var(--red)" id="pp_foreclose_total">₹0</span>
@@ -4284,7 +4284,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <div class="modal">
     <button class="mc" onclick="closeM('foreclosureModal')">✕</button>
     <div class="modal-title">🔒 Foreclosure</div>
-    <div class="ibox io" style="margin-bottom:10px">Calculate foreclosure charge based on outstanding principal. Percentage or manual amount — both options available.</div>
+    <div class="ibox io" style="margin-bottom:10px">Outstanding principal ke basis par foreclosure charge calculate karein. Percentage ya manual amount — dono option hain.</div>
 
     <!-- Outstanding live display -->
     <div id="fore_outstanding_banner" style="background:linear-gradient(135deg,rgba(234,88,12,.12),rgba(234,88,12,.06));border:1.5px solid rgba(234,88,12,.3);border-radius:10px;padding:10px 13px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">
@@ -4350,7 +4350,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <div class="modal">
     <button class="mc" onclick="closeM('processingFeesModal')">✕</button>
     <div class="modal-title">💼 Processing Fees</div>
-    <div class="ibox ig" style="margin-bottom:10px">Calculate processing fees based on loan amount. % or manual amount — both options available.</div>
+    <div class="ibox ig" style="margin-bottom:10px">Loan amount ke basis par processing fees calculate karein. % se ya manual amount — dono option hain.</div>
 
     <!-- Loan amount live display -->
     <div id="pfees_loan_banner" style="background:linear-gradient(135deg,rgba(37,99,235,.12),rgba(37,99,235,.06));border:1.5px solid rgba(37,99,235,.25);border-radius:10px;padding:10px 13px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">
@@ -4431,8 +4431,8 @@ document.addEventListener('DOMContentLoaded', function() {
       1. <a href="https://console.firebase.google.com" target="_blank" style="color:var(--accent)">console.firebase.google.com</a> → New Project<br>
       2. Build → Realtime Database → Create Database<br>
       3. Rules: <code style="background:var(--surface2);padding:2px 5px;border-radius:4px">{ "rules": { ".read": true, ".write": true } }</code><br>
-      4. Project Settings → General → Web App → Copy Config<br>
-      5. Paste values below and Save
+      4. Project Settings → General → Web App → Config copy karo<br>
+      5. Niche values paste karo aur Save karo
     </div>
     <label>API Key</label>
     <input class="inp" id="fb_apiKey" placeholder="AIzaSy...">
@@ -4444,7 +4444,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <input class="inp" id="fb_projectId" placeholder="myapp-12345">
     <div id="fbSetupErr" style="color:var(--red);font-size:11px;margin-bottom:8px;display:none"></div>
     <button class="btn bp bfull" onclick="saveFirebaseConfig()">🔥 Save & Connect Firebase</button>
-    <div style="margin-top:8px;font-size:11px;color:var(--text2)">Config will be saved in browser localStorage. Setup separately on each device or write directly in the HTML file.</div>
+    <div style="margin-top:8px;font-size:11px;color:var(--text2)">Config browser ke localStorage mein save hoga. Har device pe alag se setup karna hoga ya HTML file mein seedha likhein.</div>
   </div>
 </div>
 
@@ -4480,7 +4480,7 @@ window.addEventListener('appinstalled', function() {
 });
 window.triggerPWAInstall = function() {
   if(!_pwaPrompt) {
-    alert('📲 To install, use the 'Add to Home Screen' option in your browser menu!');
+    alert('📲 Install karne ke liye browser ke menu mein "Add to Home Screen" option use karein!');
     return;
   }
   _pwaPrompt.prompt();
@@ -4832,6 +4832,7 @@ else document.body.classList.remove('dark');
 // Session (which phone is logged in on THIS device) stored locally only
 const AUTH_KEY    = 'MyToolkit_Auth';
 const SESSION_KEY = 'MyToolkit_Session';
+const DEVICE_SESSION_KEY = 'MyToolkit_DeviceSession'; // persistent device remember-me
 const getLocalAuth  = ()=>{ try{ return JSON.parse(localStorage.getItem(AUTH_KEY))||{}; }catch{ return {}; } };
 const saveLocalAuth = d=>localStorage.setItem(AUTH_KEY, JSON.stringify(d));
 const getAuth2      = getLocalAuth; // alias for legacy code
@@ -4845,6 +4846,27 @@ async function initLogin(){
 
   // 2. Pull latest credentials from Firebase so login works on any device
   await _fbPullAuth();
+
+  // ── CHECK DEVICE SESSION (Remember Me) ──
+  // If user previously checked "Remember this device", auto-login without password
+  try {
+    const ds = JSON.parse(localStorage.getItem(DEVICE_SESSION_KEY)||'{}');
+    if(ds.phone && ds.token) {
+      const auth = getLocalAuth();
+      if(auth.users && auth.users[ds.phone]) {
+        // Verify token matches stored token
+        const storedToken = btoa(auth.users[ds.phone].password + '_device_' + ds.phone);
+        if(ds.token === storedToken) {
+          // ✅ Valid device session — auto-login silently
+          auth.currentPhone = ds.phone;
+          saveLocalAuth(auth);
+          localStorage.setItem(SK, JSON.stringify(auth.users[ds.phone].data||{}));
+          hideLoginScreen();
+          return;
+        }
+      }
+    }
+  } catch(e) {}
 
   const auth = getLocalAuth();
 
@@ -4861,32 +4883,8 @@ async function initLogin(){
     return;
   }
 
-  // ── Check if this device is remembered ──
-  const remembered = _getRememberedDevice();
-  if(remembered && remembered.phone && auth.users && auth.users[remembered.phone]){
-    // Auto-login silently
-    auth.currentPhone = remembered.phone;
-    saveLocalAuth(auth);
-    localStorage.setItem(SK, JSON.stringify(auth.users[remembered.phone].data||{}));
-    hideLoginScreen();
-    return;
-  }
-
-  // ── ALWAYS show login on every page load / refresh ──
+  // ── Show login screen ──
   document.getElementById('loginScreen').style.display='block';
-}
-
-// ── Device Remember Helpers ──
-// Stored in localStorage — same browser/device = remembered, new browser or device = not remembered
-const DEVICE_KEY = 'MyToolkit_DeviceAuth';
-function _getRememberedDevice(){
-  try{ return JSON.parse(localStorage.getItem(DEVICE_KEY))||null; }catch{ return null; }
-}
-function _rememberDevice(phone){
-  localStorage.setItem(DEVICE_KEY, JSON.stringify({ phone: phone, ts: Date.now() }));
-}
-function _forgetDevice(){
-  localStorage.removeItem(DEVICE_KEY);
 }
 
 function buildMigrationUI(oldData){
@@ -4902,7 +4900,7 @@ function buildMigrationUI(oldData){
       </div>
     </div>
     <div style="background:#eff6ff;border-radius:10px;padding:10px;margin-bottom:14px;font-size:12px;color:#1e40af;line-height:1.6">
-      ✅ Set your phone number and password — data will be saved.
+      ✅ Phone number aur password set karo — data save rahega.
     </div>
     <label style="font-size:12px;color:#5a6490;margin-bottom:4px;display:block;font-weight:500">📱 Your Phone Number</label>
     <input id="migPhone" type="tel" placeholder="Enter your phone number" style="width:100%;background:#eef1fa;border:1.5px solid rgba(37,99,235,.2);border-radius:10px;padding:11px 14px;color:#1e2240;font-size:14px;margin-bottom:10px;outline:none;font-family:'Inter',sans-serif">
@@ -4918,7 +4916,7 @@ function doMigrate(){
   const phone = (document.getElementById('migPhone')||{}).value?.trim();
   const pass  =  document.getElementById('migPass')?.value || '0000';
   const errEl =  document.getElementById('migError');
-  if(!phone){ if(errEl){errEl.textContent='Enter phone number';errEl.style.display='block';} return; }
+  if(!phone){ if(errEl){errEl.textContent='Phone number daalo';errEl.style.display='block';} return; }
   const oldData = gd();
   const auth = getAuth2();
   if(!auth.users) auth.users={};
@@ -4936,6 +4934,15 @@ function hideLoginScreen(){
 
   const auth  = getLocalAuth();
   const phone = auth.currentPhone;
+
+  // ── SAVE DEVICE SESSION if "Remember this device" was checked ──
+  try {
+    const rememberCb = document.getElementById('rememberDevice');
+    if(rememberCb && rememberCb.checked && phone && auth.users && auth.users[phone]) {
+      const token = btoa(auth.users[phone].password + '_device_' + phone);
+      localStorage.setItem(DEVICE_SESSION_KEY, JSON.stringify({phone, token, savedAt: Date.now()}));
+    }
+  } catch(e) {}
 
   // Load cached data first for instant UI
   if(phone && auth.users && auth.users[phone]){
@@ -4959,7 +4966,6 @@ function hideLoginScreen(){
 
 function lockScreen(){
   // Show login, hide app — used by logout and auto-logout
-  // NOTE: Device remember is NOT cleared on auto-logout — only on manual "forget device"
   document.getElementById('appContent').classList.remove('unlocked');
   document.getElementById('loginScreen').style.display='block';
   // Clear fields
@@ -4999,11 +5005,24 @@ function tryAutoLogin(){
     auth._firstTimeWarned = false;
     saveAuth(auth);
     localStorage.setItem(SK, JSON.stringify(user.data || {}));
-    // Remember device if checkbox checked
-    const cb = document.getElementById('rememberDeviceCb');
-    if(cb && cb.checked) _rememberDevice(phone);
     hideLoginScreen();
   }, 300);
+}
+
+// ── Remember Device toggle ──
+let _rememberDevice = false;
+function toggleRememberDevice(){
+  _rememberDevice = !_rememberDevice;
+  const box = document.getElementById('rememberDeviceBox');
+  const tick = document.getElementById('rememberDeviceTick');
+  if(_rememberDevice){
+    box.style.background='#2563eb';
+    tick.style.display='block';
+    tick.style.color='#fff';
+  } else {
+    box.style.background='#fff';
+    tick.style.display='none';
+  }
 }
 
 function doLogin(){
@@ -5037,16 +5056,17 @@ function doLogin(){
   // EXISTING USER
   const user = auth.users[phone];
   if(user.password !== pass){
-    errEl.textContent = '❌ Wrong password. Use "Change Password" if you forgot.';
+    errEl.textContent = '❌ Galat password. "Change Password" option use karein agar bhool gaye.';
     errEl.style.display='block'; return;
   }
   auth.currentPhone = phone;
   auth._firstTimeWarned = false;
   saveLocalAuth(auth);
   localStorage.setItem(SK, JSON.stringify(user.data || {}));
-  // Remember device if checkbox checked
-  const remCb = document.getElementById('rememberDeviceCb');
-  if(remCb && remCb.checked) _rememberDevice(phone);
+  // Save device token if "Remember this device" checked
+  if(_rememberDevice){
+    localStorage.setItem('MyToolkit_RememberDevice', JSON.stringify({phone: phone, ts: Date.now()}));
+  }
   // Push credentials to Firebase so other devices get latest
   hideLoginScreen();
 }
@@ -5097,21 +5117,21 @@ function doChangePassword(){
   errEl.style.display='none'; okEl.style.display='none';
 
   // Validate inputs
-  if(!oldPhone){ errEl.textContent='📱 Enter current phone number'; errEl.style.display='block'; return; }
-  if(!oldPass){  errEl.textContent='🔒 Enter current password';     errEl.style.display='block'; return; }
-  if(!newPass){  errEl.textContent='🔏 Enter new password';        errEl.style.display='block'; return; }
+  if(!oldPhone){ errEl.textContent='📱 Current phone number daalo'; errEl.style.display='block'; return; }
+  if(!oldPass){  errEl.textContent='🔒 Current password daalo';     errEl.style.display='block'; return; }
+  if(!newPass){  errEl.textContent='🔏 Naya password daalo';        errEl.style.display='block'; return; }
   if(newPass.length < 4){ errEl.textContent='⚠️ Password kam se kam 4 characters ka hona chahiye'; errEl.style.display='block'; return; }
-  if(newPass !== confPass){ errEl.textContent='❌ New password and confirm password do not match'; errEl.style.display='block'; return; }
-  if(newPass === oldPass){ errEl.textContent='⚠️ New password must be different from old password'; errEl.style.display='block'; return; }
+  if(newPass !== confPass){ errEl.textContent='❌ Naya password aur confirm password match nahi karte'; errEl.style.display='block'; return; }
+  if(newPass === oldPass){ errEl.textContent='⚠️ Naya password purane se alag hona chahiye'; errEl.style.display='block'; return; }
 
   // Verify old credentials
   const auth = getAuth2();
   if(!auth.users || !auth.users[oldPhone]){
-    errEl.textContent='❌ This phone number is not registered';
+    errEl.textContent='❌ Yeh phone number registered nahi hai';
     errEl.style.display='block'; return;
   }
   if(auth.users[oldPhone].password !== oldPass){
-    errEl.textContent='❌ Current password is wrong. Please try again.';
+    errEl.textContent='❌ Current password galat hai. Dobara try karein.';
     errEl.style.display='block'; return;
   }
 
@@ -5120,9 +5140,11 @@ function doChangePassword(){
   saveAuth(auth);
   // Push new credentials to Firebase so all devices get updated password
   setTimeout(()=>_fbPushAuth(), 500);
+  // Clear device session — old token invalid after password change
+  localStorage.removeItem(DEVICE_SESSION_KEY);
 
   // Show success
-  okEl.textContent='✅ Password changed successfully! Please login with your new password.';
+  okEl.textContent='✅ Password successfully change ho gaya! Ab naye password se login karein.';
   okEl.style.display='block';
   ['cp_old_pass','cp_new_pass','cp_confirm_pass'].forEach(f=>{
     const el=document.getElementById(f); if(el) el.value='';
@@ -5158,6 +5180,8 @@ function logoutUser(){
   }
   auth.currentPhone = null;
   saveLocalAuth(auth);
+  // ── Clear device session (Remember Me) ──
+  localStorage.removeItem(DEVICE_SESSION_KEY);
   stopRealtimeSync();
   visitedTabs = []; // Reset visited tabs on logout
   // ── Clear notes so next user's data doesn't leak ──
@@ -5167,12 +5191,6 @@ function logoutUser(){
   if(_nIframe){ _nIframe.srcdoc = ''; _nIframe.src = 'about:blank'; }
   var _sfLoaded_ref = window._sfLoaded;
   window._sfLoaded = false; // force reload for next user
-  // ── If device was remembered, ask if they want to forget ──
-  if(_getRememberedDevice()){
-    if(confirm('Forget this device?\n\nOK = Yes, will ask password next time\nCancel = No, keep device remembered')){
-      _forgetDevice();
-    }
-  }
   lockScreen();
 }
 
@@ -5728,7 +5746,7 @@ function epFeePctChanged(){
     document.getElementById('ep_fees_amt').value=amt;
     noteEl.textContent=pct+'% of ₹'+fmt(P)+' = ₹'+fmt(amt);
   } else {
-    noteEl.textContent=(P<=0&&!isNaN(pct))?'Please fill loan amount first':'';
+    noteEl.textContent=(P<=0&&!isNaN(pct))?'Loan amount pehle bharo':'';
   }
 }
 function epFeeAmtChanged(){
@@ -5825,7 +5843,7 @@ function openForeclosureModal(){
 }
 function _foreModalUpdateFromPct(outPri, pct){
   const charge=outPri>0&&pct>0?Math.round(outPri*pct/100):0;
-  document.getElementById('fore_pct_result').textContent=outPri>0&&pct>0?pct+'% = ₹'+fmt(charge):(outPri<=0?'Please check loan amount':'');
+  document.getElementById('fore_pct_result').textContent=outPri>0&&pct>0?pct+'% = ₹'+fmt(charge):(outPri<=0?'Loan amount check karein':'');
   document.getElementById('fore_modal_summary').style.display=charge>0?'block':'none';
   if(charge>0){
     document.getElementById('fore_sum_out').textContent='₹'+fmt(outPri);
@@ -6020,7 +6038,7 @@ function calcPrePayment(){
 }
 
 function savePrePaymentToProfile(){
-  if(!ppLastResult){alert('Please press Calculate Effect first');return}
+  if(!ppLastResult){alert('Pehle Calculate Effect dabao');return}
   const p=gs('loanProfiles').find(x=>x.id===curPid);if(!p)return;
   let ps=gs('loanProfiles');const idx=ps.findIndex(x=>x.id===curPid);if(idx<0)return;
   const ppDate=ppLastResult.ppDate||new Date().toISOString().slice(0,10);
@@ -6051,7 +6069,7 @@ function payFullLoanNow(){
   const outPri=Math.max(0,(p.P||0)-paid.priPaid);
   const _fc=p.foreClosureAmt>0?p.foreClosureAmt:(p.foreClosurePct>0?outPri*p.foreClosurePct/100:0);
   const _ft=outPri+_fc;
-  const msg=`🏁 LOAN FULL PAYMENT CONFIRMATION\n\nLoan: ${p.name}\nOutstanding Principal: ₹${fmt(outPri)}${_fc>0?'\nForeclosure Charges: ₹'+fmt(_fc):''}\nTotal to Pay: ₹${fmt(_ft)}\n\nDo you confirm? Profile will be marked as "Closed".`;
+  const msg=`🏁 LOAN FULL PAYMENT CONFIRMATION\n\nLoan: ${p.name}\nOutstanding Principal: ₹${fmt(outPri)}${_fc>0?'\nForeclosure Charges: ₹'+fmt(_fc):''}\nTotal to Pay: ₹${fmt(_ft)}\n\nKya aap confirm karte hain? Profile mein "Closed" mark ho jaayega.`;
   if(!confirm(msg))return;
   let ps=gs('loanProfiles');const idx=ps.findIndex(x=>x.id===curPid);if(idx<0)return;
   const timeStr=new Date().toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
@@ -6079,7 +6097,7 @@ function openVariableRate(){closeM('editMenuModal');varRatesList=[];document.get
 function addVarRate(){const dt=document.getElementById('vr_date').value,rt=parseFloat(document.getElementById('vr_rate').value);if(!dt||!rt){alert('Enter date and rate');return}varRatesList.push({date:dt,rate:rt});renderVRList()}
 function renderVRList(){document.getElementById('vr_list').innerHTML=varRatesList.map((v,i)=>`<div style="display:flex;justify-content:space-between;padding:6px;background:var(--surface2);border-radius:7px;margin-bottom:5px;font-size:12px"><span>${fmtDate(v.date)} — ${v.rate}%</span><button onclick="varRatesList.splice(${i},1);renderVRList()" style="background:none;border:none;color:var(--red);cursor:pointer">×</button></div>`).join('')}
 function applyVarRate(){
-  if(!varRatesList.length){alert('No rate change added');return}
+  if(!varRatesList.length){alert('Koi rate change add nahi kiya');return}
   const p=gs('loanProfiles').find(x=>x.id===curPid);if(!p)return;
   let ps=gs('loanProfiles');const idx=ps.findIndex(x=>x.id===curPid);if(idx<0)return;
   const sorted=[...varRatesList].sort((a,b)=>new Date(a.date)-new Date(b.date));
@@ -6133,7 +6151,7 @@ function calcMoratorium(){
   document.getElementById('mor_save_row').style.display='block';
 }
 function saveMoratoriumToProfile(){
-  if(!morLastResult){alert('Please Calculate first');return}
+  if(!morLastResult){alert('Pehle Calculate karein');return}
   let ps=gs('loanProfiles');const idx=ps.findIndex(x=>x.id===curPid);if(idx<0)return;
   ps[idx].P=morLastResult.newPrincipal;
   ps[idx].emi=morLastResult.newEMI;
@@ -6527,7 +6545,7 @@ async function handleConvFromFile(e){
 }
 
 async function convertPdfTo(fmt){
-  if(!convPdfDoc){alert('Please upload a PDF first');return}
+  if(!convPdfDoc){alert('Pehle PDF upload karein');return}
   const pages=convPdfDoc.numPages;
   const quality=(parseInt(document.getElementById('conv_quality').value)||85)/100;
   const scale=convDPI/72;
@@ -6767,7 +6785,7 @@ async function contentToPdf(content,isHTML,filename){
 function textToPdf(){
   const text=document.getElementById('conv_paste_text').value.trim();
   const title=document.getElementById('conv_paste_title').value.trim()||'document';
-  if(!text){alert('Please enter text first');return}
+  if(!text){alert('Pehle text enter karein');return}
   contentToPdf(text,false,title+'.txt');
 }
 
@@ -6943,10 +6961,10 @@ const shareCash=()=>{if(navigator.share)navigator.share({text:cashTxt()});else n
 // ── Cash History (max 10) ──
 function saveCashHistory(){
   const total=document.getElementById('cash_total').textContent;
-  if(!total||total==='0'){alert('No amount to save');return;}
+  if(!total||total==='0'){alert('Koi amount nahi hai save karne ke liye');return;}
   let hist=gs('cashHistory')||[];
   const breakdown=dn.map(d=>{const n=parseInt(document.getElementById('nt_'+d).value)||0;return n>0?{den:d,qty:n,val:n*d}:null}).filter(Boolean);
-  if(!breakdown.length){alert('Please add notes/coins first');return;}
+  if(!breakdown.length){alert('Pehle notes/coins daalo');return;}
   const entry={id:Date.now(),total:parseInt(total.replace(/,/g,'')),totalFmt:total,date:new Date().toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),breakdown,words:document.getElementById('cash_words').textContent};
   hist.unshift(entry);
   if(hist.length>10)hist=hist.slice(0,10); // max 10
@@ -6959,7 +6977,7 @@ function renderCashHistory(){
   const countEl=document.getElementById('cash_hist_count');
   if(countEl)countEl.textContent=hist.length;
   const el=document.getElementById('cash_history_list');if(!el)return;
-  if(!hist.length){el.innerHTML='<div style="text-align:center;color:var(--text2);padding:12px;font-size:12px">No history yet. Save 💾</div>';return;}
+  if(!hist.length){el.innerHTML='<div style="text-align:center;color:var(--text2);padding:12px;font-size:12px">No history yet. Save karo 💾</div>';return;}
   el.innerHTML=hist.map(h=>`
     <div class="prem-card" style="padding:10px;margin-bottom:8px;margin-top:0">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
@@ -6989,7 +7007,7 @@ function shareCashEntry(id){
   if(navigator.share)navigator.share({text:txt});else navigator.clipboard.writeText(txt).then(()=>alert('Copied!'));
 }
 function clearAllCashHistory(){
-  if(!confirm('Delete all history?'))return;
+  if(!confirm('Sab history delete karein?'))return;
   ss('cashHistory',[]);renderCashHistory();
 }
 
@@ -7201,15 +7219,15 @@ function cmpSelectAll(){
   renderCmpHistory();
 }
 function cmpDelSelected(){
-  if(!cmpHistSelected.size){alert('No entry selected');return}
-  if(!confirm(`${cmpHistSelected.size} entries delete?`))return;
+  if(!cmpHistSelected.size){alert('Koi entry select nahi hai');return}
+  if(!confirm(`${cmpHistSelected.size} entries delete karein?`))return;
   let hist=gs('cmpHistory')||[];
   hist=hist.filter(h=>!cmpHistSelected.has(h.id));
   cmpHistSelected.clear();
   ss('cmpHistory',hist);renderCmpHistory();
 }
 function cmpDelOne(id){
-  if(!confirm('Delete this entry?'))return;
+  if(!confirm('Is entry ko delete karein?'))return;
   let hist=gs('cmpHistory')||[];
   hist=hist.filter(h=>h.id!==id);
   cmpHistSelected.delete(id);
@@ -7266,7 +7284,7 @@ function resetAutoLogout(){
     if(_nIframe2){ _nIframe2.srcdoc=''; _nIframe2.src='about:blank'; }
     window._sfLoaded = false;
       lockScreen();
-    alert('⏱️ 10 minutes of inactivity — auto logged out. Please login again.');
+    alert('⏱️ 10 minute inactivity — auto logout. Please login karein.');
   },AUTO_LOGOUT_MS);
 }
 ['click','touchstart','keydown','scroll','mousemove'].forEach(ev=>{
@@ -7316,7 +7334,7 @@ async function aiImportFile(e, type){
     } else if(type==='pdf'){
       statusEl.innerHTML=`<div class="ibox io">📄 PDF text extract ho raha hai...</div>`;
       if(typeof pdfjsLib==='undefined'){
-        statusEl.innerHTML=`<div class="ibox" style="border-left:3px solid var(--red)">❌ PDF.js failed to load. Please refresh.</div>`;return;
+        statusEl.innerHTML=`<div class="ibox" style="border-left:3px solid var(--red)">❌ PDF.js load nahi hua. Refresh karein.</div>`;return;
       }
       const ab=await file.arrayBuffer();
       const pdf=await pdfjsLib.getDocument({data:new Uint8Array(ab),verbosity:0}).promise;
@@ -7502,10 +7520,10 @@ function _applyExtractedProfiles(data, fileName, statusEl){
   });
   if(count>0){
     statusEl.innerHTML=`<div class="ibox ig">✅ ${count} profile${count>1?'(s)':''} ka data extract hua!<br>
-    <strong>Form filled</strong> — check details and press <strong>Save Profile</strong> button.<br>
+    <strong>Form fill ho gaya</strong> — details check karein aur <strong>Save Profile</strong> button dabayein.<br>
     <small style="color:var(--text2)">Agar koi field empty hai to manually bharen</small></div>`;
   } else {
-    statusEl.innerHTML=`<div class="ibox" style="border-left:3px solid var(--accent2)">⚠️ No valid loan data found in this file.</div>`;
+    statusEl.innerHTML=`<div class="ibox" style="border-left:3px solid var(--accent2)">⚠️ Koi valid loan data nahi mila is file mein.</div>`;
   }
 }
 
@@ -7571,7 +7589,7 @@ Text:\n${text}`}]
       const arr=Array.isArray(parsed)?parsed:[parsed];
       _applyExtractedProfiles(arr, fileName, statusEl);
     } else {
-      statusEl.innerHTML=`<div class="ibox" style="border-left:3px solid var(--accent2)">⚠️ Could not parse AI response.<br><small>Raw: ${rawText.substring(0,100)}</small></div>`;
+      statusEl.innerHTML=`<div class="ibox" style="border-left:3px solid var(--accent2)">⚠️ AI ka response parse nahi hua.<br><small>Raw: ${rawText.substring(0,100)}</small></div>`;
     }
   }catch(err){
     statusEl.innerHTML=`<div class="ibox" style="border-left:3px solid var(--red)">❌ Claude API error: ${err.message}<br><small>Check console for details. API key ya network issue ho sakta hai.</small></div>`;
@@ -7619,7 +7637,7 @@ Return only JSON array, no explanation.`}
     if(parsed){
       _applyExtractedProfiles(Array.isArray(parsed)?parsed:[parsed], fileName, statusEl);
     } else {
-      statusEl.innerHTML=`<div class="ibox" style="border-left:3px solid var(--accent2)">⚠️ No loan data found in photo or not clearly visible.<br><small>Try a cropped or clearer image.</small></div>`;
+      statusEl.innerHTML=`<div class="ibox" style="border-left:3px solid var(--accent2)">⚠️ Photo mein loan data nahi mila ya clearly visible nahi.<br><small>Cropped ya clearer image try karein.</small></div>`;
     }
   }catch(err){
     statusEl.innerHTML=`<div class="ibox" style="border-left:3px solid var(--red)">❌ Vision API error: ${err.message}</div>`;
@@ -7835,7 +7853,7 @@ async function compressPDF(){
     txt.textContent='❌ Error: '+err.message;
     fill.style.width='0%';
     note.style.color='var(--red)';
-    note.textContent='For large or encrypted PDFs, split first. Error: '+err.message;
+    note.textContent='Large ya encrypted PDF ke liye pehle split karein. Error: '+err.message;
     document.getElementById('pdf_btn').disabled=false;
     console.error('PDF compress:',err);
   }
@@ -7865,7 +7883,7 @@ function showFirebaseSetup(){
   // Show proper status in the modal
   const statusHtml=_online
     ? `<div class="ibox ig">🟢 <strong>Connected!</strong> Real-time sync active.<br>UID: ${_uid||'anonymous'}</div>`
-    : `<div class="ibox" style="border-left:3px solid var(--red)">🔴 <strong>Not connected</strong> — Check your internet.<br>App is working in offline mode (data is being saved locally).</div>`;
+    : `<div class="ibox" style="border-left:3px solid var(--red)">🔴 <strong>Not connected</strong> — Internet check karein.<br>App offline mode mein kaam kar raha hai (data local save ho raha hai).</div>`;
   const errEl=document.getElementById('fbSetupErr');
   if(errEl){errEl.innerHTML=statusHtml;errEl.style.display='block';}
   openM('firebaseSetupModal');
@@ -7945,7 +7963,7 @@ function milClearForm(){
   var kod=document.getElementById('mil_kout_date');if(kod)kod.value=t;
   _milEditId=null;
   var ti=document.getElementById('mil_form_title');if(ti)ti.textContent='⛽ Nayi Entry';
-  var hi=document.getElementById('mil_form_hint');if(hi)hi.textContent='KM Out blank → Draft will be saved';
+  var hi=document.getElementById('mil_form_hint');if(hi)hi.textContent='KM Out blank → Draft save hoga';
   var eb=document.getElementById('mil_edit_banner');if(eb)eb.classList.remove('show');
 }
 function milEditRecord(id){
@@ -7962,16 +7980,16 @@ function milEditRecord(id){
 }
 function milAddKmOut(id){
   var r=_milRecords.find(function(x){return x.id===id;});if(!r)return;
-  var ko=prompt('Enter KM Out odometer reading:','');
+  var ko=prompt('KM Out odometer reading darj karein:','');
   if(ko===null||ko.trim()==='')return;
-  if(isNaN(ko)){alert('Enter numbers only');return;}
+  if(isNaN(ko)){alert('Sirf number darj karein');return;}
   var defDate=_milTodayStr();
   var kod=prompt('KM Out date (YYYY-MM-DD):\nExample: '+defDate,defDate);
   r.kout=parseFloat(ko);r.koutDate=kod?kod.trim():'';
   _milPersist();milRender();
 }
 function milDeleteRecord(id){
-  if(!confirm('Permanently delete this entry?'))return;
+  if(!confirm('Is entry ko permanently delete karein?'))return;
   _milRecords=_milRecords.filter(function(r){return r.id!==id;});
   _milPersist();milRender();
 }
@@ -7984,7 +8002,7 @@ function milRender(){
   if(cnt)cnt.textContent='Total '+_milRecords.length+' entries — Complete: '+complete.length+' | Draft: '+_milRecords.filter(function(r){return r.kout==null;}).length;
   if(_milRecords.length===0){
     if(sr)sr.style.display='none';
-    list.innerHTML='<div class="mil-empty"><div class="eico">📋</div><p style="font-size:13px">No entries yet.<br>Add your first entry using the form above.</p></div>';
+    list.innerHTML='<div class="mil-empty"><div class="eico">📋</div><p style="font-size:13px">Abhi koi entry nahi.<br>Upar form se pehli entry add karein.</p></div>';
     return;
   }
   var totalKm=complete.reduce(function(a,r){return a+(r.kout-r.kin);},0);
@@ -8031,7 +8049,7 @@ function saveMileageEntry(){}
 function resetMileage(){}
 function renderMileageHistory(){milRender();}
 function delMileageEntry(id){milDeleteRecord(String(id));}
-function clearMileageHistory(){if(!confirm('Delete all entries?'))return;_milRecords=[];_milPersist();milRender();}
+function clearMileageHistory(){if(!confirm('Sab entries delete karein?'))return;_milRecords=[];_milPersist();milRender();}
 // Init render on page load
 milRender();
 
@@ -8064,7 +8082,7 @@ function autoTrimSignature(){
   const w=ec.width,h=ec.height;
   let top2=h,bot=0,lft=w,rgt=0;
   for(let y=0;y<h;y++){for(let x=0;x<w;x++){const i=(y*w+x)*4;if(d[i+3]>10){if(y<top2)top2=y;if(y>bot)bot=y;if(x<lft)lft=x;if(x>rgt)rgt=x;}}}
-  if(lft>rgt||top2>bot){alert('Please extract signature first');return}
+  if(lft>rgt||top2>bot){alert('Pehle signature extract karein');return}
   const pad=4;
   const newW=Math.min(w,rgt-lft+1+pad*2),newH=Math.min(h,bot-top2+1+pad*2);
   const srcX=Math.max(0,lft-pad),srcY=Math.max(0,top2-pad);
@@ -8095,8 +8113,8 @@ function setPdfEditTab(t){
 let pdfTextAnnotations=[];
 function addTextToPdf(){
   const txt=document.getElementById('pe_text_content').value.trim();
-  if(!txt){alert('Enter text');return}
-  if(!editPages.length){alert('Please upload a PDF first');return}
+  if(!txt){alert('Text daalo');return}
+  if(!editPages.length){alert('Pehle PDF upload karein');return}
   const page=parseInt(document.getElementById('pe_text_page').value)||1;
   const size=parseInt(document.getElementById('pe_text_size').value)||16;
   const x=parseInt(document.getElementById('pe_text_x').value)||50;
@@ -8106,7 +8124,7 @@ function addTextToPdf(){
   pdfTextAnnotations.push({id:Date.now(),text:txt,page,size,x,y,color,bold});
   renderPdfTextList();
   document.getElementById('pe_text_content').value='';
-  alert(`✅ Text "${txt.substring(0,20)}" page ${page} will be added. Download it.`);
+  alert(`✅ Text "${txt.substring(0,20)}" page ${page} par add hoga. Download karein.`);
 }
 function renderPdfTextList(){
   const el=document.getElementById('pe_text_list');if(!el)return;
@@ -8143,10 +8161,10 @@ function selectPdfSig(dataUrl){
   document.querySelectorAll('#pe_sign_list img').forEach(img=>{
     img.style.borderColor=img.src===dataUrl?'var(--accent)':'var(--border)';
   });
-  alert('✅ Signature selected! Set page and position then click "Place Signature".');
+  alert('✅ Signature selected! Page aur position set karke "Place Signature" click karein.');
 }
 async function addSignatureToPdf(){
-  if(!editPages.length){alert('Please upload a PDF first');return}
+  if(!editPages.length){alert('Pehle PDF upload karein');return}
   // Get signature data
   let sigUrl=selectedSigDataUrl;
   if(!sigUrl){
@@ -8154,7 +8172,7 @@ async function addSignatureToPdf(){
     const ctx=c.getContext('2d');
     const id2=ctx.getImageData(0,0,c.width,c.height);
     const hasContent=Array.from(id2.data).some((v,i)=>i%4===3&&v>0);
-    if(!hasContent){alert('Draw a signature or select a saved one');return}
+    if(!hasContent){alert('Signature draw karein ya saved signature select karein');return}
     sigUrl=c.toDataURL('image/png');
   }
   const page=parseInt(document.getElementById('pe_sig_page').value)||1;
@@ -8163,7 +8181,7 @@ async function addSignatureToPdf(){
   const y=parseInt(document.getElementById('pe_sig_y').value)||50;
   // Store annotation
   pdfTextAnnotations.push({id:Date.now(),type:'image',dataUrl:sigUrl,page,x,y,width:sigW});
-  alert(`✅ Signature page ${page} will be added. Download it.`);
+  alert(`✅ Signature page ${page} par add hoga. Download karein.`);
 }
 
 // Override downloadEditedPDF to apply text and signature annotations
@@ -8220,7 +8238,7 @@ function _hexToRgbPdf(hex){
 let pdfReplaceAnnotations=[];
 
 async function extractPdfText(){
-  if(!editPages.length){alert('Please upload a PDF first');return}
+  if(!editPages.length){alert('Pehle PDF upload karein');return}
   const area=document.getElementById('pe_replace_extract_area');
   const blocksEl=document.getElementById('pe_replace_blocks');
   area.style.display='block';
@@ -8265,8 +8283,8 @@ function fillReplaceForm(page,text,x,y,size){
 function addTextReplacement(){
   const oldTxt=document.getElementById('pe_rep_old').value.trim();
   const newTxt=document.getElementById('pe_rep_new').value.trim();
-  if(!oldTxt||!newTxt){alert('Fill both old and new text');return}
-  if(!editPages.length){alert('Please upload a PDF first');return}
+  if(!oldTxt||!newTxt){alert('Purana aur naya text dono fill karein');return}
+  if(!editPages.length){alert('Pehle PDF upload karein');return}
   const page=parseInt(document.getElementById('pe_rep_page').value)||1;
   const size=parseFloat(document.getElementById('pe_rep_size').value)||12;
   const x=parseFloat(document.getElementById('pe_rep_x').value)||50;
@@ -8283,7 +8301,7 @@ function addTextReplacement(){
   renderReplaceList();
   document.getElementById('pe_rep_old').value='';
   document.getElementById('pe_rep_new').value='';
-  alert(`✅ Replacement added! Download it.`);
+  alert(`✅ Replacement added! Download karein.`);
 }
 
 function renderReplaceList(){
@@ -8390,8 +8408,8 @@ function clearPenCanvas(){
 }
 
 async function applyPenToPdf(){
-  if(!editPages.length){alert('Please upload a PDF first');return}
-  if(!penCanvas){alert('Please render the page in the Pen Draw tab first');return}
+  if(!editPages.length){alert('PDF upload karein pehle');return}
+  if(!penCanvas){alert('Pehle Pen Draw tab mein page render karein');return}
   const pageNum=parseInt(document.getElementById('pe_pen_page').value)||1;
   const pageIdx=pageNum-1;
   // Store canvas drawing as image annotation
@@ -8399,7 +8417,7 @@ async function applyPenToPdf(){
   const pg=editPages[pageIdx].page;
   const {width:pw,height:ph}=pg.getSize();
   pdfTextAnnotations.push({id:Date.now(),type:'image',dataUrl,page:pageNum,x:0,y:0,width:pw,height:ph,isFullPage:true});
-  alert(`✅ Drawing page ${pageNum} will be applied. Download it.`);
+  alert(`✅ Drawing page ${pageNum} par apply hogi. Download karein.`);
 }
 
 // Patch downloadEditedPDF to support whitebox and full-page image
@@ -8621,7 +8639,7 @@ function copySipResult(){
   const modeLabel = mode==='lump'?'Lump Sum':mode==='target'?'Target SIP':'SIP';
   const text=`📈 ${modeLabel} Calculator Result\n━━━━━━━━━━━━━━━━━\n💰 Maturity Value: ₹${fmt(maturity)}\n📦 Total Invested: ₹${fmt(totalInvested)}\n💹 Wealth Gained: ₹${fmt(gains)}\n📊 Return: ${rateA}% p.a. | ${months} months\n━━━━━━━━━━━━━━━━━\n— MyToolkit Pro`;
   if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(()=>alert('✅ Result copied! Paste it anywhere.')).catch(()=>{
+    navigator.clipboard.writeText(text).then(()=>alert('✅ Result copy ho gaya! Kahi bhi paste karein.')).catch(()=>{
       const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('✅ Copied!');
     });
   } else {
@@ -8648,7 +8666,7 @@ function shareSipResult(){
 
 // ═══════════ SIP PROFILES ═══════════
 function openSipSaveModal(){
-  if(!sipResultData){alert('Please calculate SIP first');return}
+  if(!sipResultData){alert('Pehle SIP calculate karein');return}
   openM('sipSaveModal');
   document.getElementById('sip_pname').value='';
   document.getElementById('sip_pfund').value='';
@@ -8659,8 +8677,8 @@ function openSipSaveModal(){
 
 function saveSipProfile(){
   const name=document.getElementById('sip_pname').value.trim();
-  if(!name){alert('Enter profile name');return}
-  if(!sipResultData){alert('SIP data not found. Please calculate again.');return}
+  if(!name){alert('Profile name daalo');return}
+  if(!sipResultData){alert('SIP data nahi mila. Dobara calculate karein.');return}
   const ps=gs('sipProfiles')||[];
   const {maturity,totalInvested,gains,rateA,months,mode,monthly}=sipResultData;
   ps.push({
@@ -8718,7 +8736,7 @@ function renderSipProfiles(){
   const el=document.getElementById('sip_profiles_list');
   if(!el) return;
   if(!ps.length){
-    el.innerHTML='<div style="text-align:center;color:var(--text2);padding:15px;font-size:12px">No SIP profiles yet. Calculate and Save.</div>';
+    el.innerHTML='<div style="text-align:center;color:var(--text2);padding:15px;font-size:12px">No SIP profiles yet. Calculate karein aur Save karein.</div>';
     // Reset all summary cells to —
     const resetEl=(id)=>{const e=document.getElementById(id);if(e)e.textContent='—'};
     resetEl('sip_ov_badge');
@@ -8857,9 +8875,9 @@ function openSipEditModal(idx){
 function saveSipEditProfile(){
   const idx=parseInt(document.getElementById('sip_edit_idx').value);
   const ps=gs('sipProfiles')||[];
-  if(!ps[idx]){alert('Profile not found');return}
+  if(!ps[idx]){alert('Profile nahi mili');return}
   const name=document.getElementById('sip_edit_name').value.trim();
-  if(!name){alert('Enter profile name');return}
+  if(!name){alert('Profile name daalo');return}
   const monthly=parseFloat(document.getElementById('sip_edit_monthly').value)||ps[idx].monthly||0;
   const rateA=parseFloat(document.getElementById('sip_edit_rate').value)||ps[idx].rateA||0;
   const tenureVal=parseFloat(document.getElementById('sip_edit_tenure_val').value)||0;
@@ -8889,7 +8907,7 @@ function saveSipEditProfile(){
 }
 
 function delSipProfile(idx){
-  if(!confirm('Delete this SIP profile?')) return;
+  if(!confirm('Yeh SIP profile delete karein?')) return;
   const ps=gs('sipProfiles')||[];
   ps.splice(idx,1);
   ss('sipProfiles',ps);
@@ -8911,7 +8929,7 @@ function cmpSipLump(){
   const amt=parseFloat(document.getElementById('sip_cmp_amt').value)||0;
   const rate=parseFloat(document.getElementById('sip_cmp_rate').value)||0;
   const yrs=parseFloat(document.getElementById('sip_cmp_years').value)||0;
-  if(!amt||!rate||!yrs){alert('Fill all fields');return}
+  if(!amt||!rate||!yrs){alert('Sabhi fields fill karein');return}
 
   const months=yrs*12;
   const r=rate/12/100;
@@ -9015,7 +9033,7 @@ function calcSWP(){
 }
 
 function openSwpSaveModal(){
-  if(!swpResultData){alert('Please calculate SWP first');return}
+  if(!swpResultData){alert('Pehle SWP calculate karein');return}
   document.getElementById('swp_pname').value='';
   document.getElementById('swp_pnotes').value='';
   closeM('swpModal');
@@ -9024,8 +9042,8 @@ function openSwpSaveModal(){
 
 function saveSwpProfile(){
   const name=document.getElementById('swp_pname').value.trim();
-  if(!name){alert('Enter profile name');return}
-  if(!swpResultData){alert('SWP data not found. Please calculate again.');return}
+  if(!name){alert('Profile name daalo');return}
+  if(!swpResultData){alert('SWP data nahi mila. Dobara calculate karein.');return}
   const ps=gs('swpProfiles')||[];
   ps.push({
     id:Date.now(),name,
@@ -9065,7 +9083,7 @@ async function handleWordPdf(e){
 }
 
 async function pdfToWord(){
-  if(!wordPdfDoc){alert('Please upload a PDF first');return}
+  if(!wordPdfDoc){alert('Pehle PDF upload karein');return}
   const totalPages=wordPdfDoc.numPages;
   const fromPg=Math.max(1,parseInt(document.getElementById('word_pg_from').value)||1);
   const toPg=Math.min(totalPages,parseInt(document.getElementById('word_pg_to').value)||totalPages);
@@ -9222,7 +9240,7 @@ async function handlePptxPdf(e){
 }
 
 async function pdfToPptx(){
-  if(!pptxPdfDoc){alert('Please upload a PDF first');return}
+  if(!pptxPdfDoc){alert('Pehle PDF upload karein');return}
   const totalPages=pptxPdfDoc.numPages;
   const fromPg=Math.max(1,parseInt(document.getElementById('pptx_pg_from').value)||1);
   const toPg=Math.min(totalPages,parseInt(document.getElementById('pptx_pg_to').value)||totalPages);
@@ -9409,7 +9427,7 @@ async function handleEpubPdf(e){
 }
 
 async function pdfToEpub(){
-  if(!epubPdfDoc){alert('Please upload a PDF first');return}
+  if(!epubPdfDoc){alert('Pehle PDF upload karein');return}
   const totalPages=epubPdfDoc.numPages;
   const title=(document.getElementById('epub_title').value.trim()||epubPdfFile.name.replace(/\.pdf$/i,'')).replace(/&/g,'&amp;').replace(/</g,'&lt;');
   const author=(document.getElementById('epub_author').value.trim()||'Unknown').replace(/&/g,'&amp;').replace(/</g,'&lt;');
@@ -9577,7 +9595,7 @@ async function handleOcrPdf(e){
 }
 
 async function runOcrPdf(){
-  if(!ocrPdfDoc){alert('Please upload a PDF first');return}
+  if(!ocrPdfDoc){alert('Pehle PDF upload karein');return}
   const totalPages=ocrPdfDoc.numPages;
   const fromPg=Math.max(1,parseInt(document.getElementById('ocr_pg_from').value)||1);
   const toPg=Math.min(totalPages,parseInt(document.getElementById('ocr_pg_to').value)||totalPages);
@@ -9750,7 +9768,7 @@ function _renderIntoFrame(frameId, code){
 
 function runHtmlCode(){
   const code=document.getElementById('html_code_input').value.trim();
-  if(!code){alert('Please paste or upload HTML code first');return;}
+  if(!code){alert('Pehle HTML code paste karein ya upload karein');return;}
   _htmlCurrentCode=code;
   // Switch to app view and render
   setHtmlViewMode('app');
@@ -9816,7 +9834,7 @@ function htmlLoadSample(){
 <body>
 <div class="card">
   <h1>✨ MyToolkit App</h1>
-  <p>Paste HTML code and see how it looks as a rendered app!</p>
+  <p>HTML code paste karo aur dekho yeh rendered app ki tarah kaise dikhta hai!</p>
   <input type="text" id="nameInp" placeholder="Apna naam likhein...">
   <button onclick="greet()">👋 Greet Me!</button>
   <div id="msg"></div>
@@ -9838,7 +9856,7 @@ function greet(){
 
 function openHtmlFullscreen(){
   const code=document.getElementById('html_code_input').value.trim()||_htmlCurrentCode;
-  if(!code){alert('Please paste or run HTML code first');return;}
+  if(!code){alert('Pehle HTML code paste ya run karein');return;}
   const overlay=document.getElementById('html_fullscreen_overlay');
   const frame=document.getElementById('html_fullscreen_frame');
   overlay.style.display='flex';
@@ -9853,7 +9871,7 @@ function closeHtmlFullscreen(){
 
 function downloadRenderedHtml(){
   const code=document.getElementById('html_code_input').value.trim()||_htmlCurrentCode;
-  if(!code){alert('Please paste HTML code first');return;}
+  if(!code){alert('Pehle HTML code paste karein');return;}
   // Extract title from code
   const tm=/<title[^>]*>([^<]+)<\/title>/i.exec(code);
   const fname=(tm?tm[1].trim().replace(/[^a-z0-9_\-\s]/gi,'').trim():'myapp').replace(/\s+/g,'_')||'myapp';
@@ -9870,7 +9888,7 @@ function previewHtmlFile(){}
 function downloadHtmlFile(){downloadRenderedHtml();}
 function copyHtmlCode(){
   const code=document.getElementById('html_code_input').value.trim()||_htmlCurrentCode;
-  if(!code){alert('No HTML code found');return;}
+  if(!code){alert('Koi HTML code nahi hai');return;}
   navigator.clipboard.writeText(code).then(()=>alert('✅ HTML code copied!')).catch(()=>{});
 }
 function setHtmlTheme(){}
@@ -10220,7 +10238,7 @@ function previewHtmlFile(){liveHtmlPreview();}
 
 function downloadHtmlFile(){
   const opts=_getHtmlOpts();
-  if(!opts.text.trim()){alert('Please type or paste some text first');return}
+  if(!opts.text.trim()){alert('Pehle kuch text type ya paste karein');return}
   const fullHtml=_buildFullHtml(opts);
   const blob=new Blob([fullHtml],{type:'text/html;charset=utf-8'});
   const url=URL.createObjectURL(blob);
@@ -10235,7 +10253,7 @@ function downloadHtmlFile(){
 
 function copyHtmlCode(){
   const opts=_getHtmlOpts();
-  if(!opts.text.trim()){alert('Please type or paste some text first');return}
+  if(!opts.text.trim()){alert('Pehle kuch text type ya paste karein');return}
   const fullHtml=_buildFullHtml(opts);
   navigator.clipboard.writeText(fullHtml)
     .then(()=>alert('✅ HTML code copied!'))
@@ -10408,7 +10426,7 @@ function previewT2H(){
   const html=buildT2HHtml();
   const frame=document.getElementById('t2h_preview_frame');
   const box=document.getElementById('t2h_preview_box');
-  if(!document.getElementById('t2h_text').value.trim()){alert('Please write some text first!');return;}
+  if(!document.getElementById('t2h_text').value.trim()){alert('Pehle kuch text likhein!');return;}
   box.style.display='block';
   const blob=new Blob([html],{type:'text/html'});
   const url=URL.createObjectURL(blob);
@@ -10418,7 +10436,7 @@ function previewT2H(){
 }
 
 function downloadT2H(){
-  if(!document.getElementById('t2h_text').value.trim()){alert('Please write some text first!');return;}
+  if(!document.getElementById('t2h_text').value.trim()){alert('Pehle kuch text likhein!');return;}
   const html=buildT2HHtml();
   const title=(document.getElementById('t2h_title').value.trim()||'my_document').replace(/\s+/g,'_').replace(/[^a-z0-9_\-]/gi,'');
   const blob=new Blob([html],{type:'text/html;charset=utf-8'});
@@ -10429,7 +10447,7 @@ function downloadT2H(){
 }
 
 function copyT2HCode(){
-  if(!document.getElementById('t2h_text').value.trim()){alert('Please write some text first!');return;}
+  if(!document.getElementById('t2h_text').value.trim()){alert('Pehle kuch text likhein!');return;}
   const html=buildT2HHtml();
   const codeBox=document.getElementById('t2h_code_box');
   const codeOut=document.getElementById('t2h_code_output');
@@ -10487,7 +10505,7 @@ initLogin();
 <!-- DV Sign Modal -->
 <div id="dvSignModal">
   <div class="dv-sign-sheet">
-    <div style="font-size:.95rem;font-weight:700;color:#e8eaf6;text-align:center;margin-bottom:10px">✍️ Draw Signature</div>
+    <div style="font-size:.95rem;font-weight:700;color:#e8eaf6;text-align:center;margin-bottom:10px">✍️ Signature Draw Karein</div>
     <canvas id="dvSignCanvas"></canvas>
     <div style="display:flex;gap:8px;margin-top:12px">
       <button onclick="dvClearSign()" style="flex:1;padding:10px;border-radius:10px;border:none;background:#1e2235;color:#8896b8;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer">Clear</button>
@@ -10500,7 +10518,7 @@ initLogin();
 <!-- DV Text Modal -->
 <div id="dvTextModal">
   <div class="dv-text-sheet">
-    <div style="font-size:.95rem;font-weight:700;color:#e8eaf6;text-align:center;margin-bottom:10px">✏️ Add Text</div>
+    <div style="font-size:.95rem;font-weight:700;color:#e8eaf6;text-align:center;margin-bottom:10px">✏️ Text Add Karein</div>
     <textarea id="dvTextInput" placeholder="Yahan text likhein..."></textarea>
     <div style="display:flex;gap:6px;margin-bottom:8px" id="dvTxtColors">
       <div class="dv-cdot sel" style="background:#000" data-color="#000" onclick="dvSetTxtColor(this)"></div>
@@ -10615,9 +10633,9 @@ function closeDvViewerGoTool(tool) {
 function dvShareDoc() {
   if (dvCurrentPdfFile && navigator.share) {
     navigator.share({ title: dvCurrentPdfFile.name, files: [dvCurrentPdfFile] })
-      .catch(() => dvToast('Share failed'));
+      .catch(() => dvToast('Share nahi hua'));
   } else {
-    dvToast('Share feature is not supported in this browser');
+    dvToast('Share feature browser mein supported nahi hai');
   }
 }
 
@@ -10749,7 +10767,7 @@ function dvActivateTool(tool, btn) {
   document.querySelectorAll('#dvp-annotate .dv-tbtn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   if (tool === 'text') { dvOpenTextModal(); }
-  else if (tool === 'highlight') { dvToast('Swipe on document to highlight'); dvEnableCanvases(); }
+  else if (tool === 'highlight') { dvToast('Document pe swipe karein highlight ke liye'); dvEnableCanvases(); }
 }
 function dvSetTool(tool, btn) {
   dvCurrentTool = tool;
@@ -10796,12 +10814,12 @@ document.getElementById('dvFontSz').oninput = function() {
 };
 function dvPlaceText() {
   const txt = document.getElementById('dvTextInput').value.trim();
-  if (!txt) { dvToast('Write some text first!'); return; }
+  if (!txt) { dvToast('Kuch text likhein pehle!'); return; }
   dvCloseTextModal();
   dvPendingText = true;
   dvCurrentTool = 'text';
   dvEnableCanvases();
-  dvToast('Tap on document to place text');
+  dvToast('Document pe tap karein text daalne ke liye');
 }
 function dvPlaceTextAt(x, y, wrap) {
   const txt = document.getElementById('dvTextInput').value.trim();
@@ -10825,7 +10843,7 @@ function dvInsertStamp(type) {
   dvCurrentTool = 'stamp';
   window._dvPendingStamp = type;
   dvEnableCanvases();
-  dvToast('Tap on document to place stamp');
+  dvToast('Document pe tap karein stamp daalne ke liye');
 }
 function dvPlaceStampAt(x, y, wrap, type) {
   const colors = { APPROVED: '#3dd68c', REJECTED: '#ff5565', PAID: '#4f8eff', COPY: '#ffb547' };
@@ -11285,7 +11303,7 @@ function reCalc() {
   // Old tenure (months)
   var oldTenure = reCalcTenure(outstanding, curRate, curEmi);
   if (oldTenure <= 0 || !isFinite(oldTenure)) {
-    alert('EMI is too small, loan will never end. Please increase EMI.'); return;
+    alert('EMI bahut chhota hai, loan kabhi khatam nahi hoga. EMI badhayein.'); return;
   }
   var oldInterest = reCalcInterest(outstanding, curRate, curEmi, oldTenure);
 
@@ -11293,12 +11311,12 @@ function reCalc() {
 
   if (reCurrentTab === 'prepay') {
     var prepay = parseFloat(document.getElementById('re_prepay_amt').value);
-    if (!prepay || prepay >= outstanding) { alert('Enter a valid pre-payment amount'); return; }
+    if (!prepay || prepay >= outstanding) { alert('Valid pre-payment amount darj karein'); return; }
     newOutstanding = outstanding - prepay;
     newRate = curRate;
   } else {
     newRate = parseFloat(document.getElementById('re_new_rate').value);
-    if (!newRate) { alert('Enter revised rate'); return; }
+    if (!newRate) { alert('Revised rate darj karein'); return; }
     newOutstanding = outstanding;
   }
 
@@ -11374,7 +11392,7 @@ function reShowHistory() {
   var hist = gs('re_history') || [];
   var list = document.getElementById('re_history_list');
   if (!hist.length) {
-    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px">No history found</div>';
+    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px">Koi history nahi hai</div>';
   } else {
     list.innerHTML = hist.map(function(h, i) {
       return '<div style="background:var(--surface2);border-radius:10px;padding:11px;margin-bottom:8px;border:1px solid var(--border)">' +
@@ -11746,7 +11764,7 @@ function eligShareSE() {
 // Place from saved signatures library
 function dvPlaceFromSavedSig() {
   const sigs = gs('signatures') || [];
-  if (!sigs.length) { dvToast('No saved signatures — create one in the Sign tab first'); return; }
+  if (!sigs.length) { dvToast('Koi saved signature nahi — pehle sign tab mein signature banao'); return; }
   const latest = sigs[sigs.length - 1];
   const wrap = document.querySelector('.dv-page-wrap');
   if (!wrap) return;
@@ -11922,7 +11940,7 @@ function dvShowViewBtn(btnId, cardId, file) {
 <div style="padding:0 0 24px">
 <div style="background:linear-gradient(135deg,#0f172a,#1e3a8a,#2563eb);border-radius:0 0 20px 20px;padding:16px 16px 20px;margin-bottom:14px;box-shadow:0 4px 20px rgba(37,99,235,.3)">
   <div style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:2px">🏠 Amenities Rate Solver</div>
-  <div style="font-size:11px;color:rgba(255,255,255,.6)">Enter B1 and B2 — exact rates will be found automatically</div>
+  <div style="font-size:11px;color:rgba(255,255,255,.6)">B1 aur B2 daalo — exact rates automatically milenge</div>
 </div>
 <div style="display:flex;gap:10px;margin:0 12px 10px">
   <div class="card" style="flex:1;margin:0;padding:12px 14px">
@@ -11977,7 +11995,7 @@ function dvShowViewBtn(btnId, cardId, file) {
   </table>
 </div>
 <div style="margin:0 12px">
-  <button id="am_btnAdd" onclick="amOpenAddModal()" class="btn bs bfull" style="display:none;border:2px dashed var(--accent);margin-bottom:8px;justify-content:center">➕ Add New Description</button>
+  <button id="am_btnAdd" onclick="amOpenAddModal()" class="btn bs bfull" style="display:none;border:2px dashed var(--accent);margin-bottom:8px;justify-content:center">➕ Naya Description Add Karo</button>
   <button id="am_btnExcel" onclick="amExportExcel()" class="btn bfull" style="display:none;background:linear-gradient(135deg,#1d7044,#1a6b3e);color:#fff;margin-bottom:8px;justify-content:center">📊 Excel Mein Export Karo</button>
 </div>
 </div>
@@ -11985,8 +12003,8 @@ function dvShowViewBtn(btnId, cardId, file) {
 <!-- Amenities Modal -->
 <div id="am_modalOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1100;align-items:center;justify-content:center;padding:16px">
   <div style="background:var(--surface);border-radius:16px;padding:18px;width:100%;max-width:400px;box-shadow:0 10px 40px rgba(0,0,0,.25);border:1px solid var(--border)">
-    <h3 id="am_modalTitle" style="font-size:1rem;margin-bottom:6px;color:var(--accent)">➕ Add New Item</h3>
-    <div id="am_modalHint" style="font-size:0.75rem;color:var(--text2);margin-bottom:14px;background:var(--surface2);border-radius:8px;padding:8px 10px;line-height:1.5">💡 Just type the <b>Description name</b> — rest of the details will auto-fill!</div>
+    <h3 id="am_modalTitle" style="font-size:1rem;margin-bottom:6px;color:var(--accent)">➕ Naya Item Add Karo</h3>
+    <div id="am_modalHint" style="font-size:0.75rem;color:var(--text2);margin-bottom:14px;background:var(--surface2);border-radius:8px;padding:8px 10px;line-height:1.5">💡 Sirf <b>Description name</b> type karo — baaki details auto-fill ho jaayengi!</div>
     <div style="margin-bottom:10px">
       <label style="font-size:0.7rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;display:block">Description Name</label>
       <input type="text" id="am_mName" class="inp" style="margin:0" placeholder="Type karo ya list se choose karo..." oninput="amOnNameInput()" list="am_descList" autocomplete="off">
@@ -12001,7 +12019,7 @@ function dvShowViewBtn(btnId, cardId, file) {
         <div style="flex:1;min-width:60px;background:var(--surface);border-radius:7px;padding:7px 9px;text-align:center;border:1px solid var(--border)"><div style="font-size:0.6rem;color:var(--text2);margin-bottom:2px">High Rate</div><div style="font-size:0.82rem;font-weight:800" id="am_pvHi">—</div></div>
       </div>
     </div>
-    <span id="am_customToggle" onclick="amToggleCustom()" style="display:none;font-size:0.75rem;color:var(--accent);cursor:pointer;text-decoration:underline;margin-bottom:8px">✏️ Want to edit manually?</span>
+    <span id="am_customToggle" onclick="amToggleCustom()" style="display:none;font-size:0.75rem;color:var(--accent);cursor:pointer;text-decoration:underline;margin-bottom:8px">✏️ Manually edit karna chahte ho?</span>
     <div id="am_customFields" style="display:none">
       <div style="margin-bottom:8px"><label style="font-size:0.7rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;display:block">Unit of Measurement</label><input type="text" id="am_mUnit" class="inp" style="margin:0" placeholder="Sq.fts / Running fts / Units"></div>
       <div style="margin-bottom:8px"><label style="font-size:0.7rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;display:block">Base Units (at B1=1500)</label><input type="number" id="am_mUnits" class="inp" style="margin:0" placeholder="e.g. 500" min="1"></div>
@@ -12085,11 +12103,11 @@ function amOnInput(){
   if(b2<min){
     const sug=amSuggestB1(b2);
     wb.style.display='block';
-    wb.innerHTML=`⚠ <b>Target is too low!</b><br>Minimum for B1=${b1}: <b>${amInr(min)}</b><br>${sug?`✅ Fix: Set B1 to <b style="color:#27ae60">${sug} sq.ft</b>`:'Increase Target'}`;
+    wb.innerHTML=`⚠ <b>Target bahut kam hai!</b><br>B1=${b1} ke liye min: <b>${amInr(min)}</b><br>${sug?`✅ Fix: B1 ko <b style="color:#27ae60">${sug} sq.ft</b> karo`:'Target badhao'}`;
   } else if(b2>max){
     const sug=amSuggestB1(b2);
     wb.style.display='block';
-    wb.innerHTML=`⚠ <b>Target is too high!</b><br>Maximum for B1=${b1}: <b>${amInr(max)}</b><br>${sug?`✅ Fix: Set B1 to <b style="color:#27ae60">${sug} sq.ft</b>`:'Increase B1'}`;
+    wb.innerHTML=`⚠ <b>Target bahut zyada hai!</b><br>B1=${b1} ke liye max: <b>${amInr(max)}</b><br>${sug?`✅ Fix: B1 ko <b style="color:#27ae60">${sug} sq.ft</b> karo`:'B1 badhao'}`;
   } else {
     wb.style.display='none';
   }
@@ -12099,7 +12117,7 @@ function amStartSolve(){
   if(amRunning) return;
   const b1=+document.getElementById('am_b1').value;
   const b2=+document.getElementById('am_b2').value;
-  if(!b1||!b2){amSetS('❌','Enter both B1 and B2');return;}
+  if(!b1||!b2){amSetS('❌','B1 aur B2 dono daalo');return;}
   const items=amSc(b1);
   amRunning=true;
   const btn=document.getElementById('am_solveBtn');
@@ -12145,14 +12163,14 @@ function amStartSolve(){
 
   function done(){
     amRunning=false;
-    btn.disabled=false; btn.textContent='🔁 Try New Combination';
+    btn.disabled=false; btn.textContent='🔁 Naya Combination Try Karo';
     document.getElementById('am_btnAdd').style.display='block';
-    if(!best){amSetS('❌','No solution found. Increase B1.');return;}
+    if(!best){amSetS('❌','Solution nahi mila. B1 badhao.');return;}
     amLastRates=best.rates; amLastTotal=best.total;
     const isExact=bestDiff===0;
     const sug=outOfRange?amSuggestB1(b2):null;
     const outMsg=sug?`Range bahar — Closest match! B1 ko ${sug} sq.ft karo exact ke liye`:`Range bahar — Closest match mila`;
-    amSetS(isExact?'✅':(outOfRange?'⚠️':'⚡'),isExact?'Exact match found!':(outOfRange?outMsg:'Best match — press "Try Again"'),`${attempts.toLocaleString()} attempts`);
+    amSetS(isExact?'✅':(outOfRange?'⚠️':'⚡'),isExact?'Exact match mil gaya!':(outOfRange?outMsg:'Best match — "Naya Try" dabao'),`${attempts.toLocaleString()} attempts`);
     document.getElementById('am_summaryRow').style.display='flex';
     document.getElementById('am_sbT').textContent=amInr(b2);
     document.getElementById('am_sbG').textContent=amInr(best.total);
@@ -12225,11 +12243,11 @@ function amOnNameInput(){
 function amToggleCustom(){
   amCustomOpen=!amCustomOpen;
   document.getElementById('am_customFields').style.display=amCustomOpen?'block':'none';
-  document.getElementById('am_customToggle').textContent=amCustomOpen?'🔼 Close custom fields':'✏️ Want to edit manually?';
+  document.getElementById('am_customToggle').textContent=amCustomOpen?'🔼 Custom fields band karo':'✏️ Manually edit karna chahte ho?';
 }
 function amOpenAddModal(){
   amEditIndex=-1;amAutoFilledItem=null;amCustomOpen=false;
-  document.getElementById('am_modalTitle').textContent='➕ Add New Item';
+  document.getElementById('am_modalTitle').textContent='➕ Naya Item Add Karo';
   document.getElementById('am_modalHint').style.display='block';
   document.getElementById('am_mName').value='';
   document.getElementById('am_mUnit').value='';
@@ -12264,14 +12282,14 @@ document.getElementById('am_modalOverlay').addEventListener('click',function(e){
 
 function amSaveModal(){
   const nameRaw=document.getElementById('am_mName').value.trim();
-  if(!nameRaw){alert('Enter description name!');return;}
+  if(!nameRaw){alert('Description name daalo!');return;}
   let item;
   if(amEditIndex>=0){
     const unit=document.getElementById('am_mUnit').value.trim();
     const u=+document.getElementById('am_mUnits').value;
     const lo=+document.getElementById('am_mLo').value;
     const hi=+document.getElementById('am_mHi').value;
-    if(!unit||!u||!lo||!hi){alert('Fill all fields!');return;}
+    if(!unit||!u||!lo||!hi){alert('Saare fields bharo!');return;}
     if(lo>=hi){alert('Low rate, High rate se kam honi chahiye!');return;}
     item={name:nameRaw,unit,u,lo,hi};
   } else if(amAutoFilledItem&&!amCustomOpen){
@@ -12287,16 +12305,16 @@ function amSaveModal(){
     if(!amCustomOpen){
       amCustomOpen=true;
       document.getElementById('am_customFields').style.display='block';
-      document.getElementById('am_customToggle').textContent='🔼 Close custom fields';
+      document.getElementById('am_customToggle').textContent='🔼 Custom fields band karo';
       document.getElementById('am_customToggle').style.display='inline-block';
-      alert('This description is not in the database.\nFill in your details manually below and then Save.');
+      alert('Yeh description database mein nahi hai.\nNeeche apni details manually bharo aur phir Save karo.');
       return;
     }
     const unit=document.getElementById('am_mUnit').value.trim();
     const u=+document.getElementById('am_mUnits').value;
     const lo=+document.getElementById('am_mLo').value;
     const hi=+document.getElementById('am_mHi').value;
-    if(!unit||!u||!lo||!hi){alert('Fill all fields!');return;}
+    if(!unit||!u||!lo||!hi){alert('Saare fields bharo!');return;}
     if(lo>=hi){alert('Low rate, High rate se kam honi chahiye!');return;}
     item={name:nameRaw,unit,u,lo,hi};
   }
@@ -12304,7 +12322,7 @@ function amSaveModal(){
   amCloseModal();
   amOnInput();
   if(document.getElementById('am_tableWrap').style.display!=='none'){
-    amSetS('💡','Item updated — solve again','');
+    amSetS('💡','Item update hua — dobara solve karo','');
     document.getElementById('am_tableWrap').style.display='none';
     document.getElementById('am_summaryRow').style.display='none';
     document.getElementById('am_solveBtn').textContent='🎯 Exact Match Dhundo';
@@ -12417,7 +12435,7 @@ function createInstallBanner(){
       <span style="font-size:22px">🛠️</span>
       <div>
         <div style="font-weight:700;font-size:13px;color:#fff">MyToolkit Pro</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.75)">Install as app — fast & offline</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.75)">App ki tarah install karein — fast & offline</div>
       </div>
     </div>
     <button id="pwa-install-btn" style="background:#fff;color:#1d4ed8;border:none;border-radius:8px;padding:7px 14px;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0">Install करें</button>
@@ -12445,7 +12463,7 @@ function createInstallBanner(){
     const {outcome} = await deferredPrompt.userChoice;
     deferredPrompt = null;
     dismissBanner();
-    if(outcome === 'accepted') showToast('✅ App is being installed!', 3000);
+    if(outcome === 'accepted') showToast('✅ App install ho rahi hai!', 3000);
   };
   document.getElementById('pwa-dismiss-btn').onclick = function(){
     dismissBanner();
@@ -12468,7 +12486,7 @@ window.addEventListener('beforeinstallprompt', function(e){
 });
 
 window.addEventListener('appinstalled', function(){
-  showToast('🎉 MyToolkit Pro installed!', 4000);
+  showToast('🎉 MyToolkit Pro install ho gaya!', 4000);
   dismissBanner();
   deferredPrompt = null;
 });
@@ -12484,10 +12502,10 @@ if(isIOS && !isStandalone && !sessionStorage.getItem('ios-hint-shown')){
       <div style="display:flex;align-items:flex-start;gap:10px">
         <span style="font-size:28px;flex-shrink:0">📲</span>
         <div>
-          <div style="font-weight:700;font-size:13px;color:#fff;margin-bottom:4px">Install on iPhone</div>
+          <div style="font-weight:700;font-size:13px;color:#fff;margin-bottom:4px">iPhone pe install karein</div>
           <div style="font-size:12px;color:rgba(255,255,255,.85);line-height:1.5">
-            Tap <strong style="background:rgba(255,255,255,.2);padding:1px 5px;border-radius:4px">Share ⬆️</strong> below,<br>
-            then choose <strong style="background:rgba(255,255,255,.2);padding:1px 5px;border-radius:4px">Add to Home Screen</strong>
+            Neeche <strong style="background:rgba(255,255,255,.2);padding:1px 5px;border-radius:4px">Share ⬆️</strong> tap karein,<br>
+            phir <strong style="background:rgba(255,255,255,.2);padding:1px 5px;border-radius:4px">Add to Home Screen</strong> chunein
           </div>
         </div>
         <button onclick="this.closest('#ios-pwa-hint').remove()" style="background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:6px;padding:4px 8px;cursor:pointer;flex-shrink:0;font-size:13px">✕</button>
